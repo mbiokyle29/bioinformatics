@@ -9,11 +9,11 @@ import sys
 import re
 import string
 
-if (len(sys.argv) < 2):
+if (len(sys.argv) < 3):
     print "Usage:   python", sys.argv[0], "<aligned_reads_filename> [<out_filename>]"
     exit()
 else:
-    print "\n\nBowtie2 output filename = ", sys.argv[1]
+    print "\n\nBowtie2 output filename = ", sys.argv[2]
     fp = open(sys.argv[1])
 
     if (len(sys.argv) > 2):
@@ -72,9 +72,6 @@ for ch in symbols:
         print >>op,'{0:8s}'.format(ch),'{0:8d}'.format(symbolCounts[ch])
     else:
         print >>op,'{0:8s}'.format(ch),'{0:8d}'.format(0)
-
-
-
 exit()
 
 
