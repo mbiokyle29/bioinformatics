@@ -3,7 +3,8 @@
 # Eric Johannsen    Dec 2013
 #
 #
-# Take a bowtie2 output file in SAM format, parse each line, counting number reads that match uniquely by chromosome number.
+# Take a bowtie2 output file in SAM format, parse each line
+# counting number reads that match uniquely by chromosome number.
 
 import sys
 import re
