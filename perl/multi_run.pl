@@ -19,13 +19,16 @@ GetOptions ("read_dir=s" => \$read_dir,
 
 
 # Grab everything after bin name for fullpath
-my $fp_bowtie2X = `which bowtie2`;
+my $fp_bowtie2 = `which bowtie2`;
 chomp($fp_bowtie2);
-my $fp_results = $fp_bowtie2."results/";
-my $fp_read = $fp_bowtie2."reads/";
 
-print $fp_read."\n";
-print $fp_bowtie2."\n";
+# Build full paths 
+# needs reads and results folder in bowtie2 dir
+my $fp_results = (substr $fp_bowtie2, 0, -length("bowtie2"))."results/";
+my $fp_read = (substr $fp_bowtie2, 0, -length("bowtie2"))."reads/".$read_dir."/";
+
+# Figure out the number of cores to run on (total on machine - 1)
+my $cores = `nproc` - 1; 
 
 opendir DIR, $fp_read;
 my @read_files = grep { !/^\./ } readdir(DIR);
@@ -38,7 +41,7 @@ for my $read_file (@read_files)
 	if($read_file =~ m/^(.*)\.fastq$/)
 	{
 		my $output = $1.".sam";
-		my $results = "bowtie2 -t --no-unal -x $map_base $fp_read$read_file -S $fp_results$output";
+		my $results = "bowtie2 -p $cores -t --no-unal -x $map_base $fp_read$read_file -S $fp_results$output";
 		print "For $read_file: \n";
 		print $results."\n";
 	}
