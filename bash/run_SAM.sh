@@ -1,0 +1,6 @@
+#!/bin/bash
+/Users/johannsenlab/Kyle/scripts/python/SAM-stats.py /Users/johannsenlab/Kyle/bowtie2-2.1.0/results/run383.3CHT-d18_ACTTGA_L005_R1.sam /Users/johannsenlab/Kyle/bowtie2-2.1.0/results/run383.3CHT-d18_ACTTGA_L005_R1.out
+/Users/johannsenlab/Kyle/scripts/python/SAM-stats.py /Users/johannsenlab/Kyle/bowtie2-2.1.0/results/run383.minusHTd18-ChIP-rep1_CGTACG_L005_R1.sam /Users/johannsenlab/Kyle/bowtie2-2.1.0/results/run383.minusHTd18-ChIP-rep1_CGTACG_L005_R1.out
+/Users/johannsenlab/Kyle/scripts/python/SAM-stats.py /Users/johannsenlab/Kyle/bowtie2-2.1.0/results/run383.minusHTd18-ChIP-rep2_ATTCCT_L005_R1.sam /Users/johannsenlab/Kyle/bowtie2-2.1.0/results/run383.minusHTd18-ChIP-rep2_ATTCCT_L005_R1.out
+/Users/johannsenlab/Kyle/scripts/python/SAM-stats.py /Users/johannsenlab/Kyle/bowtie2-2.1.0/results/run383.plusHT-ChIP-rep-1_GATCAG_L005_R1.sam /Users/johannsenlab/Kyle/bowtie2-2.1.0/results/run383.plusHT-ChIP-rep-1_GATCAG_L005_R1.out
+/Users/johannsenlab/Kyle/scripts/python/SAM-stats.py /Users/johannsenlab/Kyle/bowtie2-2.1.0/results/run383.plusHT-ChIP-rep2_GTTTCG_L005_R1.sam /Users/johannsenlab/Kyle/bowtie2-2.1.0/results/run383.plusHT-ChIP-rep2_GTTTCG_L005_R1.out
