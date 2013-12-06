@@ -47,11 +47,11 @@ for my $read_file (@read_files)
 	{
 		my $output = $1.".sam";
 		my $results = "bowtie2 -p $cores -t --no-unal -x $map_base $fp_read$read_file -S $fp_results$output";
-		print "For $read_file: \n";
-		print $results."\n";
+		my $bowtie_output = `$results`;
 		
 		# Output file and alignment counter
-		my $sam_stat = $output.".stat";
+		my $ts = time();
+		my $sam_stat = $output.".$ts.stat";
 		my $align_count = 0;
 		
 		# Read from one, write stats into other
@@ -78,33 +78,9 @@ for my $read_file (@read_files)
 			say STAT "$genome had $genomes{$genome} reads";
 		}
 		say STAT "total alignements = $align_count";
+		say STAT "output from bowtie2: "
+		say STAT "$bowtie_output";
 		close STAT;
-		
-		
 	}
+	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
