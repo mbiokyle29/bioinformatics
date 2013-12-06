@@ -3,6 +3,8 @@
 # Kyle McChesney
 # Start of pipeline, run a folder full of reads through bowtie2
 # need bowtie2 and nproc installed
+#
+# Need to fix map full path, and output files, better implement skip if EBV genome
 use warnings;
 use strict;
 use Getopt::Long;
@@ -30,7 +32,9 @@ my $fp_results = (substr $fp_bowtie2, 0, -length("bowtie2"))."results/";
 my $fp_read = (substr $fp_bowtie2, 0, -length("bowtie2"))."reads/".$read_dir."/";
 
 # Figure out the number of cores to run on (total on machine - 1)
-my $cores = `nproc` - 1; 
+# for linux my $cores = `nproc` - 1; 
+my $cores = `sysctl -n hw.ncpu`;
+chomp($cores);
 
 # Grab all the files, ignore . and ..
 opendir DIR, $fp_read;
@@ -48,14 +52,17 @@ for my $read_file (@read_files)
 		my $output = $1.".sam";
 		my $results = "bowtie2 -p $cores -t --no-unal -x $map_base $fp_read$read_file -S $fp_results$output";
 		my $bowtie_output = `$results`;
-		
+		say $bowtie_output;
+
+		next if($map_base eq "EBV");
 		# Output file and alignment counter
 		my $ts = time();
-		my $sam_stat = $output.".$ts.stat";
+		my $sam_stat = $fp_results.$output.".$ts.stat";
 		my $align_count = 0;
-		
+		my $fp_output = $fp_results.$output;
+	
 		# Read from one, write stats into other
-		open  SAM, '<', $output;
+		open  SAM, '<', $fp_output;
 		open  STAT, '>', $sam_stat;
 		
 		# read in one line at a time and process
@@ -78,9 +85,9 @@ for my $read_file (@read_files)
 			say STAT "$genome had $genomes{$genome} reads";
 		}
 		say STAT "total alignements = $align_count";
-		say STAT "output from bowtie2: "
+		say STAT "output from bowtie2: ";
 		say STAT "$bowtie_output";
 		close STAT;
 	}
-	
 }
+
