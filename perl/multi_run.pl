@@ -28,8 +28,10 @@ chomp($fp_bowtie2);
 
 # Build full paths 
 # needs reads and results folder in bowtie2 dir
-my $fp_results = (substr $fp_bowtie2, 0, -length("bowtie2"))."results/";
-my $fp_read = (substr $fp_bowtie2, 0, -length("bowtie2"))."reads/".$read_dir."/";
+my $fp = (substr $fp_bowtie2, 0, -length("bowtie2"));
+my $fp_results = $fp."results/";
+my $fp_read = $fp."reads/".$read_dir."/";
+my $fp_maps = $fp."maps/";
 
 # Figure out the number of cores to run on (total on machine - 1)
 # for linux my $cores = `nproc` - 1; 
@@ -49,18 +51,20 @@ for my $read_file (@read_files)
 	my $read_count = 0;
 	if($read_file =~ m/^(.*)\.fastq$/)
 	{
-		my $output = $1.".sam";
-		my $results = "bowtie2 -p $cores -t --no-unal -x $map_base $fp_read$read_file -S $fp_results$output";
+		my $sam = $1.".sam";
+		my $results = "bowtie2 -p $cores -t --no-unal -x $fp_maps$map_base $fp_read$read_file -S $fp_results$sam";
 		my $bowtie_output = `$results`;
 		say $bowtie_output;
 
 		next if($map_base eq "EBV");
 		# Output file and alignment counter
 		my $ts = time();
-		my $sam_stat = $fp_results.$output.".$ts.stat";
+		my $sam_stat = $fp_results.$sam.".$ts.stat";
 		my $align_count = 0;
-		my $fp_output = $fp_results.$output;
-	
+		
+		my $fp_output = $fp_results.$sam;
+		
+		
 		# Read from one, write stats into other
 		open  SAM, '<', $fp_output;
 		open  STAT, '>', $sam_stat;
@@ -68,7 +72,11 @@ for my $read_file (@read_files)
 		# read in one line at a time and process
 		while (<SAM>)
 		{
-			my @line = split("\t", chomp($_));
+			my $in = $_;
+			next if ($in =~ /^@/);
+			chomp($in);
+			
+			my @line = split("\t", $in);
 			$align_count++;
 			# increment or add to hash
 			if ($genomes{$line[2]})
@@ -79,7 +87,7 @@ for my $read_file (@read_files)
 		close SAM;
 		
 		# Write the .stat file
-		say STAT "Chromosome frequencey results for $output:";
+		say STAT "Chromosome frequencey results for $sam:";
 		for my $genome (keys(%genomes))
 		{
 			say STAT "$genome had $genomes{$genome} reads";
