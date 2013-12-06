@@ -2,12 +2,12 @@
 #
 # Kyle McChesney
 # Start of pipeline, run a folder full of reads through bowtie2
-#
+# need bowtie2 and nproc installed
 use warnings;
 use strict;
 use Getopt::Long;
 use threads;
-use Cwd qw(abs_path);
+use feature 'say';
 
 my $read_dir;
 my $map_base;
@@ -16,10 +16,10 @@ my $matched = 0;
 # $genoms{'genomeX'} = (count of that genome in alignment)
 our %genomes;
 
-GetOptions ("read_dir=s" => \$read_dir,
-			"map_base=s" => \$map_base,
+GetOptions ("d=s" => \$read_dir,
+			"m=s" => \$map_base,
 			 "matched=i" => \$matched) or die("malformed command line args \n");
-
+			 
 # Grab path for bowtie
 my $fp_bowtie2 = `which bowtie2`;
 chomp($fp_bowtie2);
@@ -58,19 +58,29 @@ for my $read_file (@read_files)
 		open  SAM, '<', $output;
 		open  STAT, '>', $sam_stat;
 		
-		# one line at a time
+		# read in one line at a time and process
 		while (<SAM>)
 		{
 			my @line = split("\t", chomp($_));
-			if exists ($genomes{$line[2]})
+			$align_count++;
+			# increment or add to hash
+			if ($genomes{$line[2]})
 			{
 				$genomes{$line[2]}++;
-			}
-			else
-			{
-				$genomes{$line[2]} = 1;
-			}
+			} else { $genomes{$line[2]} = 1; }
 		}
+		close SAM;
+		
+		# Write the .stat file
+		say STAT "Chromosome frequencey results for $output:";
+		for my $genome (keys(%genomes))
+		{
+			say STAT "$genome had $genomes{$genome} reads";
+		}
+		say STAT "total alignements = $align_count";
+		close STAT;
+		
+		
 	}
 }
 
