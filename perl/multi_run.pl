@@ -25,7 +25,7 @@ switch($os)
 {
 	case "Linux" { $cores = `nproc`; }
 	case "Darwin" { $cores = `sysctl -n hw.ncpu`; }
-	else die "Are you on windows? \n";
+	else	{die "Are you on windows? \n"; }
 }
 
 chomp($cores);
@@ -65,7 +65,7 @@ for my $read_file (@read_files)
 	{
 		my $base_name = $1;		
 		my $fp_sam = $fp_results.$1.".sam";
-		my $results = "bowtie2 -p $cores -t --no-unal -x $fp_maps$map_base $fp_read$read_file -S $fp_results$sam";
+		my $results = "bowtie2 -p $cores -t --no-unal -x $fp_maps$map_base $fp_read$read_file -S $fp_sam";
 		my $bowtie_output = `$results`;
 		say $bowtie_output;
 		
@@ -77,12 +77,12 @@ for my $read_file (@read_files)
 		
 		# Output file and alignment counter
 		my $ts = time();
-		my $sam_stat = $fp_$sam.".$ts.stat";
+		my $sam_stat = $fp_sam.".$ts.stat";
 		my $align_count = 0;
 		
 		# Read from one, write stats into other
 		open  SAM, '<', $fp_sam;
-		open  STAT, '>', $fp_stat;
+		open  STAT, '>', $sam_stat;
 		
 		# read in one line at a time and process
 		while (<SAM>)
@@ -102,7 +102,7 @@ for my $read_file (@read_files)
 		close SAM;
 		
 		# Write the .stat file
-		say STAT "Chromosome frequencey results for $sam:";
+		say STAT "Chromosome frequencey results for $fp_sam:";
 		for my $genome (keys(%genomes))
 		{
 			say STAT "$genome had $genomes{$genome} reads";
