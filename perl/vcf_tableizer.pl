@@ -9,7 +9,7 @@ opendir DIR, $dir;
 while(readdir(DIR))
 {
 	my $vcf = $_;
-	chomp($vcf);
+	next if($vcf !~ /\.vcf$/);
 	my $out = $dir.$vcf.".out.txt";
 	
 	open VCF, "<", $dir.$vcf;
