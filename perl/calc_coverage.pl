@@ -35,5 +35,5 @@ closedir DIR;
 
 foreach my $file (@align_files)
 {
-	my $
+	java -Xmx2g -jar GenomeAnalysisTK.jar -R ../Mertz/reference/epstein_barr_virus.fasta -T DepthOfCoverage -o test -I ../Mertz/alignment/test/Mut_1-1.bam
 }
