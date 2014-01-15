@@ -146,7 +146,24 @@ if [ "$REFextension" == "bam" ]; then
 	exit 1
    fi
    echo "Calling variants: $REF_FILE"
-   java -Xms3g -Xmx4g -jar $GATK -T UnifiedGenotyper -R $genomeFile -I $REF_FILE -o $tmpDIR/$REFfilebase.vcf -nct 8 -glm BOTH -minIndelFrac 0.5 -baq CALCULATE_AS_NECESSARY -dcov 1000 -A AlleleBalance -A DepthOfCoverage -A MappingQualityZero -stand_emit_conf 10.0 -rf BadCigar -rf NotPrimaryAlignment
+   java -Xms3g -Xmx4g -jar $GATK 
+   -T UnifiedGenotyper 
+   -R $genomeFile 
+   -I $REF_FILE 
+   -o $tmpDIR/$REFfilebase.vcf 
+   -nct 8 						# Threads to run on
+   -glm BOTH 					# genotype liklihood... Look for SNP INDEL or BOTH 
+   -minIndelFrac 0.5 			# Minimum Fraction of reads at locus having an indel
+   -baq CALCULATE_AS_NECESSARY  # CalculationMode?
+   -dcov 1000 					# Down sample coverage
+   -A AlleleBalance				# All the -A s add vcf annotations
+   -A DepthOfCoverage 
+   -A MappingQualityZero 
+   -stand_emit_conf 10.0		#Confidence threshold
+   -rf BadCigar					# Read Filters
+   -rf NotPrimaryAlignment
+   
+   
    REF_FILE=$tmpDIR/$REFfilebase.vcf
 fi
 
@@ -159,7 +176,22 @@ if [ "$EXPextension" == "bam" ]; then
 	exit 1
    fi
    echo "Calling variants: $EXP_FILE"
-   java -Xms3g -Xmx4g -jar $GATK -T UnifiedGenotyper -R $genomeFile -I $EXP_FILE -o $tmpDIR/$EXPfilebase.vcf -nct 8 -glm BOTH -minIndelFrac 0.5 -baq CALCULATE_AS_NECESSARY -dcov 1000 -A AlleleBalance -A DepthOfCoverage -A MappingQualityZero -stand_emit_conf 10.0 -rf BadCigar -rf NotPrimaryAlignment
+   java -Xms3g -Xmx4g -jar $GATK 
+   -T UnifiedGenotyper 
+   -R $genomeFile 
+   -I $EXP_FILE 
+   -o $tmpDIR/$EXPfilebase.vcf 
+   -nct 8 
+   -glm BOTH 
+   -minIndelFrac 0.5 
+   -baq CALCULATE_AS_NECESSARY 
+   -dcov 1000 -A AlleleBalance 
+   -A DepthOfCoverage 
+   -A MappingQualityZero 
+   -stand_emit_conf 10.0 
+   -rf BadCigar 
+   -rf NotPrimaryAlignment
+   
    EXP_FILE=$tmpDIR/$EXPfilebase.vcf
 fi
 
