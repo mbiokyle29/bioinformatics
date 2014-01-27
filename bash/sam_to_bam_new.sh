@@ -16,8 +16,6 @@ do
 		filename  = ${f%.*}
 		filename_bam = "$filename.bam"
 		samtools view -S -b -o filename+= RUN383.3CHT-input.sam
-
-
 done
 
 #samtools view -S -b -o mRUN383.3CHT-input.bam RUN383.3CHT-input.sam

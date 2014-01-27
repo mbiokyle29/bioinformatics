@@ -1,20 +1,34 @@
 #!/usr/bin/perl
 #
 # Kyle McChesney
-# Start of pipeline, run a folder full of reads through bowtie2
-# need bowtie2 and nproc installed
+# Start of a bowtie alignment pipeline
+# Also does so simple chromosome analysis when aligning against multi-chromosome maps
+# Is picky about file structure 
+# -takes a directory (fullpath) full of read files in fastq format
+# -takes a map_base which is the base name of the bowtie mapped reference to use
+# -can also set bowtie2 to run in matched mode with -matched flag
 #
+# Dependencies
+# -bowtie2
+# -nproc or sysctil <- OSX JUNK
+#
+# TODO
 # Need to fix map full path, and output files, better implement skip if EBV genome
+# Error messages and help also...
+
 use warnings;
 use strict;
 use Getopt::Long;
-use threads;
 use feature qw(say);
 use Switch;
 
 my $read_dir;
 my $map_base;
 my $matched = 0;
+
+GetOptions ("d=s" => \$read_dir,
+			"m=s" => \$map_base,
+			 "matched=i" => \$matched) or die("malformed command line args \n");
 
 # Figure out the number of cores to run on (total on machine - 1)
 my $cores;
@@ -25,7 +39,7 @@ switch($os)
 {
 	case "Linux" { $cores = `nproc`; }
 	case "Darwin" { $cores = `sysctl -n hw.ncpu`; }
-	else	{die "Are you on windows? \n"; }
+	else { die "Are you on windows? \n"; }
 }
 
 chomp($cores);
@@ -33,9 +47,7 @@ chomp($cores);
 # $genoms{'genomeX'} = (count of that genome in alignment)
 our %genomes;
 
-GetOptions ("d=s" => \$read_dir,
-			"m=s" => \$map_base,
-			 "matched=i" => \$matched) or die("malformed command line args \n");
+
 			 
 # Grab path for bowtie
 my $fp_bowtie2 = `which bowtie2`;
@@ -47,8 +59,6 @@ my $fp = (substr $fp_bowtie2, 0, -length("bowtie2"));
 my $fp_results = $fp."results/";
 my $fp_read = $fp."reads/".$read_dir."/";
 my $fp_maps = $fp."maps/";
-
-
 
 # Grab all the files, ignore . and ..
 opendir DIR, $fp_read;
