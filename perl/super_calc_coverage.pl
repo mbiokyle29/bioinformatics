@@ -1,16 +1,15 @@
 #!/usr/bin/perl
 #
-# calc_coverage.pl - BAM files + reference genome --> Depth of coverage
+# super_calc_coverage.pl - BAM files + reference genome --> Depth of coverage
 #
 #This script takes the following:
 # a full file path to a directory with alignment results in bam format.
 # a full file path to the reference genome
 # a full file path to the GATK .jar file
+# optional - a "range string" that looks like: x-y,a-b No spaces comma seperated and the ranges 
 #
 # It runs each bam file through the GATK DepthOfCoverage Track and saves those results
-# in a coverage/ directory. It then uses the GATK results to create two files for each bam file
-# a filename.POS and a filename.DEP which contain all positions in ref genome (POS) and the corresponding depth (DEP)
-# This are for easier copying into excel
+# 
 #
 # TODO Work on GATK options, should be able to make less files
 # TODO Work on batch processing, smart lumping (only do WT1 and WT2 together, even if in same dir)
@@ -22,24 +21,25 @@ use strict;
 use feature qw(say);
 use File::Slurp;
 use Data::Dumper;
+use Getopt::Long;
 
-# Directory with bam files
-my $read_dir = shift;
+# GetOpts pre-def  reads dir, ref, gatk, range
+my ($read_dir, $ref, $gatk_path, $run_with_range);
 
-# Reference Genome
-my $ref = shift;
+GetOptions 
+(
+	"d=s" => \$read_dir,
+	"m=s" => \$ref,
+	"g=s" => \$gatk_path,
+	"r=s" => \$run_with_range,
+);
 
-# GATK path
-my $gatk_path = shift;
-
-# RANGE
-my $run_with_ranges = 0;
 my @no_ranges;
 my %ranges;
 
 if(@no_ranges = split(",",shift))
 { 
-	$run_with_ranges = 1;
+	$run_with_range = 1;
 	my %ranges;
 	foreach my $range (@no_ranges)
 	{
@@ -82,7 +82,7 @@ foreach my $file (@align_files)
 		my $pos = $1;
 		my $depth = $split[1];
 		$depth_arr[--$pos] = $depth;
-		if($run_with_ranges) 
+		if($run_with_range) 
 		{
 			foreach my $lower (keys(%ranges))
 			{
@@ -103,9 +103,12 @@ foreach my $file (@align_files)
 	close POS;
 	
 	open COV, ">", $output_dir.$output.".coverage";
+	say COV "Depth\t$file\tCumulative";
+	my $cumulative = 0;	
 	foreach my $depth (sort { $a <=> $b } keys(%base_of_depth))
-	{
-		say COV "$depth $base_of_depth{$depth}";
+	{		
+		$cumulative += $base_of_depth{$depth};
+		say COV "$depth\t$base_of_depth{$depth}\t$cumulative";
 	}
 	close COV;
 }
