@@ -50,15 +50,10 @@ our %genomes;
 
 			 
 # Grab path for bowtie
-my $fp_bowtie2 = `which bowtie2`;
-chomp($fp_bowtie2);
-
-# Build full paths 
-# needs reads and results folder in bowtie2 dir
-my $fp = (substr $fp_bowtie2, 0, -length("bowtie2"));
-my $fp_results = $fp."results/";
-my $fp_read = $fp."reads/".$read_dir."/";
-my $fp_maps = $fp."maps/";
+my $fp_bowtie2 = "/home/kyle/lab/bowtie2/";
+my $fp_results = $fp_bowtie2."results/";
+my $fp_read = $fp_bowtie2."reads/".$read_dir."/";
+my $fp_maps = $fp_bowtie2."maps/";
 
 # Grab all the files, ignore . and ..
 opendir DIR, $fp_read;
@@ -71,7 +66,7 @@ my $match_arg = "-U" unless $matched;
 for my $read_file (@read_files)
 {	
 	my $read_count = 0;
-	if($read_file =~ m/^(.*)\.fastq$/)
+	if($read_file =~ m/^(.*)\.fq$/)
 	{
 		my $base_name = $1;		
 		my $fp_sam = $fp_results.$1.".sam";
