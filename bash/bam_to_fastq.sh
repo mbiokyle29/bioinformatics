@@ -1,0 +1,7 @@
+picard-tools SamToFastq I=IonXpress_001_R_2013_12_02_14_41_46_user_BES-73-Mertz_Mertz_1_analysiswithreference.basecaller.bam F=Ion1.fastq
+picard-tools SamToFastq I=IonXpress_002_R_2013_12_02_14_41_46_user_BES-73-Mertz_Mertz_1_analysiswithreference.basecaller.bam F=Ion2.fastq
+picard-tools SamToFastq I=IonXpress_003_R_2013_12_02_14_41_46_user_BES-73-Mertz_Mertz_1_analysiswithreference.basecaller.bam F=Ion3.fastq
+picard-tools SamToFastq I=IonXpress_004_R_2013_12_02_14_41_46_user_BES-73-Mertz_Mertz_1_analysiswithreference.basecaller.bam F=Ion4.fastq
+picard-tools SamToFastq I=IonXpress_005_R_2013_12_02_14_41_46_user_BES-73-Mertz_Mertz_1_analysiswithreference.basecaller.bam F=Ion5.fastq
+picard-tools SamToFastq I=IonXpress_006_R_2013_12_02_14_41_46_user_BES-73-Mertz_Mertz_1_analysiswithreference.basecaller.bam F=Ion6.fastq
+picard-tools SamToFastq I=nomatch_R_2013_12_02_14_41_46_user_BES-73-Mertz_Mertz_1_analysiswithreference.basecaller.bam F=NoMatch.fastq
