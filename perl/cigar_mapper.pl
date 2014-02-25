@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-#90985 90986 90987
 use warnings;
 use strict;
 use Getopt::Long;
