@@ -38,28 +38,33 @@ my @lines = read_file($sam);
 # Get rid of EOF
 pop(@ref_seq);
 
+#  Open output file
 $sam =~ m/(.*)\.sam$/;
 my $output = $1.".cigar";
 open my $out, ">", $output;
 
+# Run through all the SAM alignments
 foreach my $line (@lines)
 {
-	# skip the junk at the start
+	# skip the junk at the start (the header)
 	next if ($line =~ m/^@/);
+
+  # Columns are in the array, get the stuff we want
 	my @fields = split("\t", $line);
 
-	# Columns are in the array, get the stuff we want
-	my $seq_string = $fields[9];
-	my @seq = split(//, $seq_string); # String of the SEQ	
-	my $read_length = length($fields[9]); #length of SEQ	
-	my $read_start = $fields[3]; # Starting position POS    
-	my $read_end =  ($read_start+$read_length)-1; # Ending position (POS+len(SEQ)-1)
-	
+  # Get the actual SEQ
+  my $seq_string = $fields[9];
+	my @seq = split(//, $seq_string);
+
+  #length, start and end (POS+len(SEQ)-1)
+	my $read_length = length($fields[9]);
+	my $read_start = $fields[3];
+	my $read_end =  ($read_start+$read_length)-1;
+
 	# Parse cigar string to calculate actual alignment length
 	# Also do some basic stats/qual
 	my $cigar_string = uc($fields[5]); # upper case it for easy-mode
 	my @cigar_chunks;
-
 	## TODO IGNORE THE SOFT CLIPPED AND EVERYHTING ELSE
 	## TODO HUGE SOURCE OF ERROR BAD MUST FIX
 	while($cigar_string =~ m/(\d+[DMI])/g)
@@ -67,29 +72,30 @@ foreach my $line (@lines)
 		push(@cigar_chunks, $1);
 	}
 
-	# Results
+	# Do some magic with the cigar string
 	my $cigar_stack = &build_cigar_stack(\@cigar_chunks);
 	my $cigar_length = &calc_cigar_length(\@cigar_chunks);
 	my $cigar_start = $read_start;
 	my $cigar_end = ($read_start+$cigar_length-1);
 
 	# If the input range ending point is less then the cigar/read start
-	next if($end_pos < $cigar_start); 
+	next if($end_pos < $cigar_start);
 
 	# If the input start point is more then the read end
 	next if($start_pos > $cigar_end);
-	
-	# Build alignemt hash
+
+	# Build alignemt hash since this read is valid
 	my $alignment_ref = &build_alignment_hash($seq_string, $read_start, $cigar_stack);
 	my %alignment = %$alignment_ref;
 
-	# Valid alignment that overlaps the range
-	say $out "Match!, For input range: $start_pos - $end_pos";	
+  # Report
+	say $out "Match!, For input range: $start_pos - $end_pos";
 	say $out "The read starting from $cigar_start to $cigar_end";
 	say $out "(the calculated cigar length was: $cigar_length";
 	say $out "with string $cigar_string";
 	say $out "The calculated alignment sequnce is:";
-	
+
+  # Show the alignment matched up to the reference sequence (TODO NOTE WARN)
 	my $count = $start_pos;
 	while($count <= $end_pos)
 	{
@@ -120,31 +126,14 @@ sub calc_cigar_length
 	my $cigar_length = 0;
 
 	foreach my $chunk (@cigar_chunks)
-	{				
-		if(chop($chunk) =~ m/[MD]/)		
-		{			
+	{
+		if(chop($chunk) =~ m/[MD]/)
+		{
 			$chunk =~ m/(\d+)/;
 			$cigar_length += $chunk;
 		}
 	}
 	return $cigar_length;
-}
-
-sub calc_soft_count
-{
-	my $cigar = shift;
-	my @cigar_chunks = @$cigar;
-	my $soft_count = 0;
-
-	foreach my $chunk (@cigar_chunks)
-	{				
-		if(chop($chunk) eq "S")		
-		{			
-			$chunk =~ m/(\d+)/;
-			$soft_count += $chunk;
-		}
-	}
-	return $soft_count;
 }
 
 # Takes:
@@ -181,4 +170,25 @@ sub build_alignment_hash
 		}
 	}
 	return \%alignment;
+}
+
+
+sub build_master_matrix
+{
+  my $genome_lenth = shift;
+  my %master_matrix;
+  my $pos_count = 1;
+  while($pos_count < $genome_lenth)
+  {
+    my %bases =
+    (
+        A => 0,
+        T => 0,
+        G => 0,
+        C => 0,
+    );
+    $master_matrix{$pos_count} = %bases;
+    $pos_count++;
+  }
+  return \%bases;
 }
