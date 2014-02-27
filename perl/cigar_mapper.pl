@@ -7,12 +7,14 @@ use Data::Dumper;
 use feature qw(say switch);
 
 my ($start_pos, $end_pos, $sam, $reference);
+my $keep_bad = 0;
 
 GetOptions (
-	"s=i" => \$start_pos,
-	"e=i" => \$end_pos,
-	"r=s" => \$sam,
-	"m=s" => \$reference
+	"start=i" => \$start_pos,
+	"end=i" => \$end_pos,
+	"sam=s" => \$sam,
+	"reference=s" => \$reference,
+	"bad=i" => \$keep_bad
 );
 
 # CHECK ARGS
@@ -30,10 +32,14 @@ if($end_pos < $start_pos)
 	die "read_finder.pl -s starting_position -e ending_position -r sam_file";
 }
 
+
 # Get the reference genome and reads
 my @reference_file = read_file($reference);
 my @ref_seq = split(//, pop(@reference_file));
 my @lines = read_file($sam);
+
+my $ref = &build_master_matrix($start_pos, $end_pos);
+my %base_matrix = %$ref;
 
 # Get rid of EOF
 pop(@ref_seq);
@@ -41,7 +47,8 @@ pop(@ref_seq);
 #  Open output file
 $sam =~ m/(.*)\.sam$/;
 my $output = $1.".cigar";
-open my $out, ">", $output;
+my $output_redux = $output."_toblast";
+open my $blast, ">", $output_redux;
 
 # Run through all the SAM alignments
 foreach my $line (@lines)
@@ -49,28 +56,34 @@ foreach my $line (@lines)
 	# skip the junk at the start (the header)
 	next if ($line =~ m/^@/);
 
-  # Columns are in the array, get the stuff we want
+    # Columns are in the array, get the stuff we want
 	my @fields = split("\t", $line);
 
-  # Get the actual SEQ
-  my $seq_string = $fields[9];
+    # Get the actual SEQ
+    my $seq_string = $fields[9];
 	my @seq = split(//, $seq_string);
-
-  #length, start and end (POS+len(SEQ)-1)
-	my $read_length = length($fields[9]);
-	my $read_start = $fields[3];
-	my $read_end =  ($read_start+$read_length)-1;
 
 	# Parse cigar string to calculate actual alignment length
 	# Also do some basic stats/qual
 	my $cigar_string = uc($fields[5]); # upper case it for easy-mode
 	my @cigar_chunks;
-	## TODO IGNORE THE SOFT CLIPPED AND EVERYHTING ELSE
-	## TODO HUGE SOURCE OF ERROR BAD MUST FIX
+	
+	# Handle Soft Clips at the start
+	if($cigar_string =~ m/^(\d+)S/)
+	{
+		my $start_clip = $1;
+		$seq_string = substr($seq_string, $start_clip);
+	}
+	
+	# Build Cigar Stack
 	while($cigar_string =~ m/(\d+[DMI])/g)
 	{
 		push(@cigar_chunks, $1);
 	}
+
+    #length, start and end (POS+len(SEQ)-1)
+	my $read_length = length($seq_string);
+	my $read_start = $fields[3];
 
 	# Do some magic with the cigar string
 	my $cigar_stack = &build_cigar_stack(\@cigar_chunks);
@@ -81,29 +94,48 @@ foreach my $line (@lines)
 	# If the input range ending point is less then the cigar/read start
 	next if($end_pos < $cigar_start);
 
-	# If the input start point is more then the read end
+	# If the input start point is more then the cigar end
 	next if($start_pos > $cigar_end);
 
 	# Build alignemt hash since this read is valid
 	my $alignment_ref = &build_alignment_hash($seq_string, $read_start, $cigar_stack);
 	my %alignment = %$alignment_ref;
-
-  # Report
-	say $out "Match!, For input range: $start_pos - $end_pos";
-	say $out "The read starting from $cigar_start to $cigar_end";
-	say $out "(the calculated cigar length was: $cigar_length";
-	say $out "with string $cigar_string";
-	say $out "The calculated alignment sequnce is:";
-
-  # Show the alignment matched up to the reference sequence (TODO NOTE WARN)
-	my $count = $start_pos;
-	while($count <= $end_pos)
-	{
-		say $out "$count";
-		say $out "$alignment{$count} --  $ref_seq[$count-1]";
-		$count++;
-	}
+	
+	###
+  	# Report
+  	###
+  	foreach my $key (sort( {$a <=> $b} keys(%alignment)))
+  	{
+  		if($alignment{$key} ne uc($ref_seq[$key-1]))
+  		{
+  			say $blast "$key $alignment{$key} and $ref_seq[$key-1]";
+  			say $blast "for $cigar_string with calculated length of $cigar_length and starting at $cigar_start";
+  			say $blast "$seq_string";
+  		}
+  		if($start_pos <= $key && $key <= $end_pos)
+  		{
+  			$base_matrix{$key}{$alignment{$key}}++;
+  		}
+  	}
+  	say $blast "\n";
 }
+
+open my $out, ">", $output;
+foreach my $key (sort( {$a <=> $b} keys(%base_matrix)))
+{
+	say $out "$key => ";
+	my %hash = %{ $base_matrix{$key} };
+	say $out "\tA => $hash{A}";
+	say $out "\tT => $hash{T}";
+	say $out "\tC => $hash{C}";
+	say $out "\tG => $hash{G}";
+	say $out "\tX => $hash{X}";
+}
+
+close $out;
+close $blast;
+
+&call_snps(\%base_matrix, \@ref_seq, $output, $keep_bad);
 
 sub build_cigar_stack
 {
@@ -172,13 +204,76 @@ sub build_alignment_hash
 	return \%alignment;
 }
 
+sub call_snps
+{
+	my $hash_ref = shift;
+	my $arr_ref = shift;
+	my $output = shift;
+	my $keep_bad = shift;
+	
+	###
+	my $snp_file = $output."snp";
+	open my $snp, ">", $snp_file;
+	
+	my $bad_file;
+	my $bad;
+	
+	if($keep_bad)
+	{
+		$bad_file = $output."low_coverage";
+		open $bad, ">", $bad_file; 
+	}
+	###
+	
+	my %matrix = %$hash_ref;
+	my @ref_seq = @$arr_ref;
+	
+	foreach my $key (sort( {$a <=> $b} keys(%matrix)))
+	{
+		my %base_hash = %{$matrix{$key}};
+		my $depth = 0;
+		my $most = 0;
+		my $most_base;
+		
+		foreach my $inner_key (keys(%base_hash))
+		{
+			my $d = $base_hash{$inner_key};
+			if($d > $most)
+			{
+				$most = $d;
+				$most_base = $inner_key;
+			}
+			$depth += $d;
+		}
+		
+		# Check for good coverage
+		if($depth < 10)
+		{
+			if($bad_file)
+			{
+				say $bad "Base position $key only had a depth of $depth!"
+			}
+			next;
+		}
+		
+		# Check for 'snp'
+		if($most_base ne uc($ref_seq[$key-1]))
+		{
+			say $snp "SNP Called at base position $key!";
+			say $snp "Reference sequence has base: $ref_seq[$key-1]";
+			say $snp "But the most prevelant base was: $most_base";
+		}
+	}
+	close $snp;
+	if($keep_bad) { close $bad_file; }	
+}
 
 sub build_master_matrix
 {
-  my $genome_lenth = shift;
+  my $start_pos = shift;
+  my $end_pos = shift;
   my %master_matrix;
-  my $pos_count = 1;
-  while($pos_count < $genome_lenth)
+  while($start_pos <= $end_pos)
   {
     my %bases =
     (
@@ -186,9 +281,10 @@ sub build_master_matrix
         T => 0,
         G => 0,
         C => 0,
+        X => 0,
     );
-    $master_matrix{$pos_count} = %bases;
-    $pos_count++;
+    $master_matrix{$start_pos} = \%bases;
+    $start_pos++;
   }
-  return \%bases;
+  return \%master_matrix;
 }
