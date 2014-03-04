@@ -1,9 +1,0 @@
-# Report (106)
-
-	say $out "Match!, For input range: $start_pos - $end_pos";
-	say $out "The read starting from $cigar_start to $cigar_end";
-	say $out "(the calculated cigar length was: $cigar_length";
-	say $out "with string $cigar_string";
-	say $out "The calculated alignment sequnce is:";
-  	# Show the alignment matched up to the reference sequence (TODO NOTE WARN)
-  	say $out "read stared at $read_start";
