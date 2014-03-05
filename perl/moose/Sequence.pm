@@ -21,5 +21,22 @@ sub seq_array
 	return \@seq;
 }
 
+sub base_at
+{
+	my $self = shift;
+	my $pos = shift;
+	$pos--
+;	return substr($self->seq, $pos,1); 
+}
+
+sub range
+{
+	my $self = shift;
+	my $start = shift;
+	$start--;
+	my $end = shift;
+	return substr($self->seq, $start, $end);
+}
+
 __PACKAGE__->meta->make_immutable;
 1;
