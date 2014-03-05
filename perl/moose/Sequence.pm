@@ -14,6 +14,11 @@ has 'seq' => (
 	required => 1,
 );
 
+has 'seq_arr' => (
+	is => 'rw',
+	isa => 'ArrayRef'
+	
+);
 sub seq_array
 {
 	my $self = shift;
@@ -25,8 +30,8 @@ sub base_at
 {
 	my $self = shift;
 	my $pos = shift;
-	$pos--
-;	return substr($self->seq, $pos,1); 
+	$pos--;
+	return substr($self->seq, $pos,1); 
 }
 
 sub range
