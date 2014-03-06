@@ -38,8 +38,8 @@ my @reference_file = read_file($reference);
 my @ref_seq = split(//, pop(@reference_file));
 my @lines = read_file($sam);
 
-my $ref = &build_master_matrix($start_pos, $end_pos);
-my %base_matrix = %$ref;
+my $base_matrix = &build_master_matrix($start_pos, $end_pos);
+#my %base_matrix = %$ref;
 
 # Get rid of EOF
 pop(@ref_seq);
@@ -69,14 +69,14 @@ foreach my $line (@lines)
 	my @cigar_chunks;
 	
 	# Handle Soft Clips at the start
-	if($cigar_string =~ m/^(\d+)S/)
-	{
-		my $start_clip = $1;
-		$seq_string = substr($seq_string, $start_clip);
-	}
+	#if($cigar_string =~ m/^(\d+)S/)
+	#{
+	#	my $start_clip = $1;
+	#	$seq_string = substr($seq_string, $start_clip);
+	#}
 	
 	# Build Cigar Stack
-	while($cigar_string =~ m/(\d+[DMI])/g)
+	while($cigar_string =~ m/(\d+[SDMI])/g)
 	{
 		push(@cigar_chunks, $1);
 	}
@@ -96,48 +96,58 @@ foreach my $line (@lines)
 
 	# If the input start point is more then the cigar end
 	next if($start_pos > $cigar_end);
+	
+	&parse_inserts($seq_string, $read_start, $cigar_stack, $output);
 
 	# Build alignemt hash since this read is valid
-	my $alignment_ref = &build_alignment_hash($seq_string, $read_start, $cigar_stack);
-	my %alignment = %$alignment_ref;
+	my ($alignment_ref, $insertion_ref) = &build_alignment_hash($seq_string, $read_start, $cigar_stack);
 	
 	###
   	# Report
   	###
-  	foreach my $key (sort( {$a <=> $b} keys(%alignment)))
+  	foreach my $key (sort( {$a <=> $b} keys(%$alignment_ref)))
   	{
-  		if($alignment{$key} ne uc($ref_seq[$key-1]))
+  		if($$alignment_ref{$key} ne uc($ref_seq[$key-1]))
   		{
-  			say $blast "$key $alignment{$key} and $ref_seq[$key-1]";
+  			say $blast "$key $$alignment_ref{$key} and $ref_seq[$key-1]";
   			say $blast "for $cigar_string with calculated length of $cigar_length and starting at $cigar_start";
   			say $blast "$seq_string";
   		}
   		if($start_pos <= $key && $key <= $end_pos)
   		{
-  			$base_matrix{$key}{$alignment{$key}}++;
+  			$$base_matrix{$key}{$$alignment_ref{$key}}++;
   		}
+  	}
+  	foreach my $key (sort( {$a <=> $b} keys(%$insertion_ref)))
+  	{
+  		if($start_pos <= $key && $key <= $end_pos)
+  		{
+  			$$base_matrix{$key}{"I"}++;
+  		}
+
   	}
   	say $blast "\n";
 }
 
 open my $out, ">", $output;
-foreach my $key (sort( {$a <=> $b} keys(%base_matrix)))
+foreach my $key (sort( {$a <=> $b} keys(%$base_matrix)))
 {
 	say $out "$key => ";
-	my %hash = %{ $base_matrix{$key} };
+	my %hash = %{ $$base_matrix{$key} };
 	say $out "\tA => $hash{A}";
 	say $out "\tT => $hash{T}";
 	say $out "\tC => $hash{C}";
 	say $out "\tG => $hash{G}";
 	say $out "\tX => $hash{X}";
+	say $out "\tI => $hash{I}";
 }
 
 close $out;
 close $blast;
 
-&call_snps(\%base_matrix, \@ref_seq, $output, $keep_bad);
-&make_wig(\%base_matrix, $output);
-&call_dels(\%base_matrix, $output);
+&call_snps($base_matrix, \@ref_seq, $output, $keep_bad);
+&make_wig($base_matrix, $output);
+&call_indels($base_matrix, $output);
 
 sub build_cigar_stack
 {
@@ -174,34 +184,60 @@ sub calc_cigar_length
 #	a special CIGAR 'stack' *see &build_cigar_stack () (scalar)
 sub build_alignment_hash
 {
-	my @arr_seq = split(//,shift);
+	my @read_seq = split(//,shift);
 	my $ref_pointer = shift;
 	my @cigar_stack = split(//,shift);
-	my $seq_pointer = 0;
+	
+
 	my %alignment;
+
+	my $read_pointer = 0;
+	
+	## This is gonna be rough...
+	## Temporary fix
+	my %insertions;
 
 	foreach my $cigar (@cigar_stack)
 	{
 		given($cigar)
 		{
+			# When an M is poped, there is a match/mismatch
+			# Increment both the pointers and update the alignement hash
+			# Set it to the base from the read.
 			when("M")
 			{
-				$alignment{$ref_pointer} = $arr_seq[$seq_pointer];
+				$alignment{$ref_pointer} = $read_seq[$read_pointer];
 				$ref_pointer++;
-				$seq_pointer++;
+				$read_pointer++;
 			}
+
+			# When a D is poped, there is a deletion,
+			# A base which appears in the reference sequence is missing from the
+			# read sequence
 			when("D")
 			{
 				$alignment{$ref_pointer} = "X";
 				$ref_pointer++;
 			}
+
+			# When an I is poped, there is an insertion
+			# Same goes for S, but should only happen at start and end
+			# We are gonna use a second hash to track insertions
+			# This is easier then having alignment positions with X/I or A/I ect 
 			when("I")
 			{
-				$seq_pointer++;
+				$insertions{$ref_pointer-1} = "I";
+				$read_pointer++;
+			}
+
+			# Dont increment b/c its soft clipped
+			when("S")
+			{
+				$insertions{$ref_pointer-1} = "I";
 			}
 		}
 	}
-	return \%alignment;
+	return (\%alignment, \%insertions);
 }
 
 sub call_snps
@@ -256,9 +292,7 @@ sub call_snps
 		# Check for 'snp'
 		if($most_base ne uc(@$arr_ref[$key-1]))
 		{
-			say $snp "SNP Called at base position $key!";
-			say $snp "Reference sequence has base: $ref_seq[$key-1]";
-			say $snp "But the most prevelant base was: $most_base";
+			say $snp "$key . $ref_seq[$key-1] --> $most_base";
 		}
 	}
 	close $snp;
@@ -324,39 +358,101 @@ sub make_wig
 #which would be the fraction of times 
 #that a deletion is identified at that location.  
 #Above some threshold, say 50%, we can all that a likely deletion. 
-sub call_dels
+sub call_indels
 {
 	my $matrix = shift;
 	my $output = shift;
-	$output =~ s/cigar/dels/;
+	$output =~ s/cigar/indels/;
 
-	open my $del, ">". $output;
+	open my $indel, ">". $output;
 
 	foreach my $base (sort( {$a <=> $b} keys(%$matrix)))
 	{
 		my $denominator = 0;
-		my $inner_ref = \%{$$matrix{$base}};
-		foreach my $nucleotide (keys(%$inner_ref))
+
+		my %inner_ref = %{$$matrix{$base}};
+		
+		foreach my $nucleotide (keys(%inner_ref))
 		{
 			if($nucleotide ne "I")
 			{
-				$denominator += $$inner_ref{$nucleotide};
+				$denominator += $inner_ref{$nucleotide};
 			}
 		}
+
 		if($denominator)
 		{
-			my $del_percent = ($$inner_ref{"X"}/$denominator);
-		
+			my $del_percent = ($inner_ref{"X"}/$denominator);
+			my $ins_percent = ($inner_ref{"I"}/$denominator);
 			if ($del_percent >= .50)
 			{
-				say $del "$base is likely a deletion with: $del_percent";
-				say $del "\tA => $$inner_ref{A}";
-				say $del "\tT => $$inner_ref{T}";
-				say $del "\tC => $$inner_ref{C}";
-				say $del "\tG => $$inner_ref{G}";
-				say $del "\tX => $$inner_ref{X}";
+				say $indel "$base is likely a deletion with: $del_percent";
+				say $indel "\tA => $inner_ref{A}";
+				say $indel "\tT => $inner_ref{T}";
+				say $indel "\tC => $inner_ref{C}";
+				say $indel "\tG => $inner_ref{G}";
+				say $indel "\tX => $inner_ref{X}";
+				say $indel "\tI => $inner_ref{I}";
+			}
+			if ($ins_percent >= .50)
+			{
+				say $indel "$base is likely an insertion with: $ins_percent";
+				say $indel "\tA => $inner_ref{A}";
+				say $indel "\tT => $inner_ref{T}";
+				say $indel "\tC => $inner_ref{C}";
+				say $indel "\tG => $inner_ref{G}";
+				say $indel "\tX => $inner_ref{X}";
+				say $indel "\tI => $inner_ref{I}";
 			}
 		}
 	}
-	close $del;
+	close $indel;
+}
+
+sub parse_inserts
+{
+	my @read_seq = split(//,shift);
+	my $ref_pointer = shift;
+	my @cigar_stack = split(//,shift);
+	my $output = shift;
+
+	$output =~ s/cigar/inserts/;
+
+	open my $ins, ">>", $output;
+
+	my $read_pointer = 0;
+	my $inserting = 0;
+	my $insertion_seq = '';
+	my $starting_position = 0;
+
+	foreach my $cigar (@cigar_stack)
+	{
+		if($cigar eq "I" && $inserting)
+		{
+			$insertion_seq .= $read_seq[$read_pointer];
+			$read_pointer++;
+		}
+
+		elsif($cigar eq "I")
+		{
+			$insertion_seq = $read_seq[$read_pointer];
+			$starting_position = $ref_pointer;
+			$inserting = 1;
+			$read_pointer++;
+		}
+
+		else
+		{
+			if($inserting)
+			{
+				say $ins "Insertion: $starting_position $insertion_seq";
+				$inserting = 0;
+				$starting_position = 0;
+				$insertion_seq = '';
+			}
+			$read_pointer++;
+			$ref_pointer++;
+		}
+	}
+	close $ins;
 }
