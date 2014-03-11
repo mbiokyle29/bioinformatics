@@ -97,7 +97,8 @@ foreach my $line (@lines)
 	# If the input start point is more then the cigar end
 	next if($start_pos > $cigar_end);
 	
-	&parse_inserts($seq_string, $read_start, $cigar_stack, $output);
+	# Parse insert strings 
+	&parse_inserts($seq_string, $read_start, $cigar_stack, $output))
 
 	# Build alignemt hash since this read is valid
 	my ($alignment_ref, $insertion_ref) = &build_alignment_hash($seq_string, $read_start, $cigar_stack);
@@ -133,19 +134,19 @@ open my $out, ">", $output;
 foreach my $key (sort( {$a <=> $b} keys(%$base_matrix)))
 {
 	say $out "$key => ";
-	my %hash = %{ $$base_matrix{$key} };
-	say $out "\tA => $hash{A}";
-	say $out "\tT => $hash{T}";
-	say $out "\tC => $hash{C}";
-	say $out "\tG => $hash{G}";
-	say $out "\tX => $hash{X}";
-	say $out "\tI => $hash{I}";
+	my $hash = $$base_matrix{$key};
+	say $out "\tA => $$hash{A}";
+	say $out "\tT => $$hash{T}";
+	say $out "\tC => $$hash{C}";
+	say $out "\tG => $$hash{G}";
+	say $out "\tX => $$hash{X}";
+	say $out "\tI => $$hash{I}";
 }
 
 close $out;
 close $blast;
 
-&call_snps($base_matrix, \@ref_seq, $output, $keep_bad);
+&call_snps($base_matrix, \@ref_seq, $output);
 &make_wig($base_matrix, $output);
 &call_indels($base_matrix, $output);
 
@@ -244,33 +245,24 @@ sub call_snps
 {
 	my $hash_ref = shift;
 	my $arr_ref = shift;
-	my $output = shift;
-	my $keep_bad = shift;
-	
+	my $output = shift;	
 	###
 	my $snp_file = $output."snp";
 	open my $snp, ">", $snp_file;
 
-	my $bad_file;
-	my $bad;
-	
-	if($keep_bad)
-	{
-		$bad_file = $output."low_coverage";
-		open $bad, ">", $bad_file; 
-	}
-	###
-	
+	my $bad_file = $output.".low_coverage";
+	open my $bad, ">", $bad_file; 
+		
 	foreach my $key (sort( {$a <=> $b} keys(%$hash_ref)))
 	{
-		my %base_hash = %{$$hash_ref{$key}};
+		my $base_hash = $$hash_ref{$key};
 		my $depth = 0;
 		my $most = 0;
 		my $most_base;
 		
-		foreach my $inner_key (keys(%base_hash))
+		foreach my $inner_key (keys(%$base_hash))
 		{
-			my $d = $base_hash{$inner_key};
+			my $d = $$base_hash{$inner_key};
 			if($d > $most)
 			{
 				$most = $d;
@@ -282,10 +274,7 @@ sub call_snps
 		# Check for good coverage
 		if($depth < 10)
 		{
-			if($bad_file)
-			{
-				say $bad "Base position $key only had a depth of $depth!"
-			}
+			say $bad "Base position $key only had a depth of $depth!";
 			next;
 		}
 		
@@ -296,7 +285,7 @@ sub call_snps
 		}
 	}
 	close $snp;
-	if($keep_bad) { close $bad_file; }	
+	close $bad_file;
 }
 
 sub build_master_matrix
@@ -369,40 +358,45 @@ sub call_indels
 	foreach my $base (sort( {$a <=> $b} keys(%$matrix)))
 	{
 		my $denominator = 0;
-
-		my %inner_ref = %{$$matrix{$base}};
+		my $depth = 0;
+		my $inner_ref = $$matrix{$base};
 		
-		foreach my $nucleotide (keys(%inner_ref))
+		foreach my $nucleotide (keys(%$inner_ref))
 		{
 			if($nucleotide ne "I")
 			{
-				$denominator += $inner_ref{$nucleotide};
+				$denominator += $$inner_ref{$nucleotide};
 			}
+			$depth += $$inner_ref{$nucleotide};
+		}
+		if ($depth < 10)
+		{
+			next;
 		}
 
 		if($denominator)
 		{
-			my $del_percent = ($inner_ref{"X"}/$denominator);
-			my $ins_percent = ($inner_ref{"I"}/$denominator);
+			my $del_percent = ($$inner_ref{"X"}/$denominator);
+			my $ins_percent = ($$inner_ref{"I"}/$denominator);
 			if ($del_percent >= .50)
 			{
 				say $indel "$base is likely a deletion with: $del_percent";
-				say $indel "\tA => $inner_ref{A}";
-				say $indel "\tT => $inner_ref{T}";
-				say $indel "\tC => $inner_ref{C}";
-				say $indel "\tG => $inner_ref{G}";
-				say $indel "\tX => $inner_ref{X}";
-				say $indel "\tI => $inner_ref{I}";
+				say $indel "\tA => $$inner_ref{A}";
+				say $indel "\tT => $$inner_ref{T}";
+				say $indel "\tC => $$inner_ref{C}";
+				say $indel "\tG => $$inner_ref{G}";
+				say $indel "\tX => $$inner_ref{X}";
+				say $indel "\tI => $$inner_ref{I}";
 			}
 			if ($ins_percent >= .50)
 			{
 				say $indel "$base is likely an insertion with: $ins_percent";
-				say $indel "\tA => $inner_ref{A}";
-				say $indel "\tT => $inner_ref{T}";
-				say $indel "\tC => $inner_ref{C}";
-				say $indel "\tG => $inner_ref{G}";
-				say $indel "\tX => $inner_ref{X}";
-				say $indel "\tI => $inner_ref{I}";
+				say $indel "\tA => $$inner_ref{A}";
+				say $indel "\tT => $$inner_ref{T}";
+				say $indel "\tC => $$inner_ref{C}";
+				say $indel "\tG => $$inner_ref{G}";
+				say $indel "\tX => $$inner_ref{X}";
+				say $indel "\tI => $$inner_ref{I}";
 			}
 		}
 	}
@@ -450,8 +444,12 @@ sub parse_inserts
 				$starting_position = 0;
 				$insertion_seq = '';
 			}
-			$read_pointer++;
 			$ref_pointer++;
+			
+			if($cigar ne "D")
+			{
+				$read_pointer++;
+			}		
 		}
 	}
 	close $ins;
