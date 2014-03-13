@@ -7,7 +7,7 @@ use Data::Dumper;
 use feature qw(say switch);
 
 my ($start_pos, $end_pos, $sam, $reference);
-my $keep_bad = 0;
+my $no_positions = 1;
 
 GetOptions (
 	"start=i" => \$start_pos,
@@ -25,13 +25,16 @@ unless ($sam && $reference)
 	die "read_finder.pl -s starting_position -e ending_position -r sam_file -m reference_genome";
 }
 
-# if the ending position is less then the start position
-if($end_pos < $start_pos)
+if($start_pos && $end_pos)
 {
-	print "ending position cannot be less then start position!";
-	die "read_finder.pl -s starting_position -e ending_position -r sam_file";
+	$no_positions = 0;
+	# if the ending position is less then the start position
+	if($end_pos < $start_pos)
+	{
+		print "ending position cannot be less then start position!";
+		die "read_finder.pl -s starting_position -e ending_position -r sam_file";
+	}
 }
-
 
 # Get the reference genome and reads
 my @reference_file = read_file($reference);
@@ -39,10 +42,16 @@ my @ref_seq = split(//, pop(@reference_file));
 my @lines = read_file($sam);
 
 my $base_matrix = &build_master_matrix($start_pos, $end_pos);
-#my %base_matrix = %$ref;
-
 # Get rid of EOF
 pop(@ref_seq);
+
+## Set start and end to max if none entered
+if($no_positions)
+{
+	$start_pos = 1;
+	$end_pos = scalar @ref_seq;
+}
+
 
 #  Open output file
 $sam =~ m/(.*)\.sam$/;
