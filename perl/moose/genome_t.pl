@@ -1,6 +1,7 @@
 use Genome;
 
 my $fasta_file = shift;
-my $genome  = Genome->(
-	fasta => $fasta_file
+
+my $genome  = Genome->new(
+	fasta => $fasta_file,
 );

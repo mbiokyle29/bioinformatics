@@ -48,7 +48,7 @@ sub build
 		$self->name = $ref_name;
 	}
 
-	my $ref_seq;
+	my $ref_seq;       
 	while(<$fa>)
 	{
 		my $line = $_;
