@@ -2,6 +2,7 @@ package Genome;
 use Moose;
 use namespace::autoclean;
 use DBI;
+use Data::Dumper;
 
 my $dbh = DBI->connect('dbi:mysql:genomes','genomes','ebvHACK958$');
 
@@ -27,21 +28,27 @@ has 'name' => (
 );
 
 
-sub build
+sub BUILD
 {
 	my $self = shift;
 	my $fasta = $self->fasta;
 	open my $fa, "<", $fasta;
+
+	# skip first line
+	<$fa>;
+
+	$fasta =~ m/(.*)\.fa(sta)?$/;
+	my $ref_name = $1;
+	$ref_name =~ s/-/_/g;
 	
-	my $ref_name = <$fa>;
-	$ref_name =~ s/\.fa(sta)*//;
+	$self->name = $ref_name;
 
 	#Check if already exists save us some time
-	my $table_check = "SHOW TABLES LIKE '?'";
+	my $table_check = "SHOW TABLES LIKE ?";
 	my $check_sth = $dbh->prepare($table_check);
 	$check_sth->execute($ref_name);
 
-	if($check_sth->fetchrow_arrayref->[0])
+	if($check_sth->fetchrow_arrayref)
 	{
 		#no need to dump to mysql
 		# jsut build model of existing table
@@ -57,9 +64,10 @@ sub build
 			$ref_seq.=$line;
 		}
 	}
-	my $make_table = "CREATE TABLE ? (base VARCHAR(1), position long)";
+
+	my $make_table = "CREATE TABLE $ref_name (base VARCHAR(1), position BIGINT)";
 	my $sth = $dbh->prepare($make_table);
-	$sth->execute($ref_name) or die "Error Creating table for genome $ref_name $DBI::errstr\n";	
+	$sth->execute() or die "Error Creating table for genome $ref_name $DBI::errstr\n";	
 
 	my @bases = split(//,$ref_seq);
 	my $counter = 1;
@@ -71,6 +79,12 @@ sub build
 		$counter++;
 	}
 }
+
+sub seq
+{
+
+}
+
 
 __PACKAGE__->meta->make_immutable;
 1;
