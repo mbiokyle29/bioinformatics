@@ -4,7 +4,7 @@ use Cigar;
 use Sequence;
 use namespace::autoclean;
 
-has 'raw_read' => (
+has 'raw_string' => (
 	isa => 'String',
 	required => 1,
 	is => 'ro'
@@ -24,7 +24,6 @@ has 'cigar' => (
 sub BUILD
 {
 	my $self = shift;
-
 }
 
 

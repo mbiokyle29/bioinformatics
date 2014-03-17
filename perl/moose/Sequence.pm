@@ -16,10 +16,12 @@ has 'seq' => (
 
 has 'seq_arr' => (
 	is => 'rw',
-	isa => 'ArrayRef'
-	
+	isa => 'ArrayRef',
+	builder => '_build_array',
+	lazy => 1
 );
-sub seq_array
+
+sub _build_array
 {
 	my $self = shift;
 	my @seq = split(//, $self->seq);

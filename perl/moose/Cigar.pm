@@ -8,6 +8,12 @@ has 'raw_string' => (
 	is => 'ro'
 );
 
+has 'start_pos' => (
+	isa => 'Int',
+	required => 1,
+	is => 'ro'
+);
+
 has 'array' => (
 	isa => 'ArrayRef',
 	is => 'rw',
@@ -18,14 +24,15 @@ has 'array' => (
 has 'stack' => (
 	isa => 'Str',
 	builder => '_build_stack',
-	is => 'rw'
+	is => 'rw',
+	lazy => 1
 );
 
 has 'length' => (
 	isa => 'Int',
-	builder => '_build_length',
 	is => 'rw',
-	lazy    => 1
+	builder => '_build_length',
+	lazy => 1
 );
 
 has 'start_pos' => (
@@ -53,25 +60,18 @@ sub _build_array
 		push(@array, $1);
 	}
 
+	return \@array; 
 }
 
 sub _build_stack
 {
-	my $self = shift;
-	my $cigar = $self->raw_string;
-	my @chunks;
-
-	while($cigar =~ m/(\d+[SDMI])/g)
-	{
-		push(@chunks, $1);
-	}
-
+	my $self = shift;	
 	my $cigar_stack;
-	foreach my $chunk (@chunks)
+	foreach my $chunk ($self->array)
 	{
 		my $code = chop($chunk);
 		my $push = $code x $chunk;
-		$cigar_stack.= $push;
+		$cigar_stack .= $push;
 	}
 	return $cigar_stack;
 }
@@ -79,36 +79,26 @@ sub _build_stack
 sub _build_length
 {
 	my $self = shift;
-	my $cigar = $self->raw_string;
-	my @chunks;
-
-	while($cigar =~ m/(\d+[DM])/g)
-	{
-		push(@chunks, $1);
-	}
-
-	my $cigar_length = 0;
-
-	foreach my $chunk (@chunks)
+	my $length = 0;
+	foreach my $chunk ($self->array)
 	{
 		if(chop($chunk) =~ m/[MD]/)
 		{
 			$chunk =~ m/(\d+)/;
-			$cigar_length += $chunk;
+			$length += $chunk;
 		}
 	}
-	return $cigar_length;
-}
-
-sub _build_start
-{
-	return 1;
+	return $length;
 }
 
 sub _build_end
 {
-	return 1;
+	my $self = shift;
+	if($self->length)
+	{
+		return ($self->start_pos+$self->length);
+	}
+	return -1;
 }
-
 
 1;
