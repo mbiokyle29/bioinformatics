@@ -1,14 +1,18 @@
 use Sequence;
 
 my $seq = Sequence->new(
-	length => 5,
-	seq => "ATCGA",
+	seq => "ATCGA"
 );
-
-print $seq->length;
-my $ref = $seq->seq_array;
+print $seq->seq;
+print $seq->length."\n";
+my $ref = $seq->seq_arr;
 
 foreach my $nt (@$ref)
 {
-	print "$nt\n";
+	print "$nt";
 }
+print "\n";
+
+print "Range 1 to 2: \n";
+print $seq->range(1,2); 
+print $seq->base_at($seq->length);

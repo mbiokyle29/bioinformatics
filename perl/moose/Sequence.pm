@@ -3,9 +3,10 @@ use Moose;
 use namespace::autoclean;
 
 has 'length' => (
-	is  => 'ro',
+	is  => 'rw',
 	isa => 'Int',
-	required => 1,
+	builder => '_build_length',
+	lazy => 1
 );
 
 has 'seq' => (
@@ -17,15 +18,13 @@ has 'seq' => (
 has 'seq_arr' => (
 	is => 'rw',
 	isa => 'ArrayRef',
-	builder => '_build_array',
-	lazy => 1
 );
 
-sub _build_array
+sub BUILD
 {
 	my $self = shift;
 	my @seq = split(//, $self->seq);
-	return \@seq;
+	$self->seq_arr(\@seq);
 }
 
 sub base_at
@@ -43,6 +42,11 @@ sub range
 	$start--;
 	my $end = shift;
 	return substr($self->seq, $start, $end);
+}
+
+sub _build_length
+{
+	return length(shift->seq);
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -14,6 +14,13 @@ has 'start_pos' => (
 	is => 'ro'
 );
 
+has 'end_pos' => (
+	isa => 'Int',
+	is => 'rw',
+	lazy => 1,
+	builder => '_build_end_pos'
+);
+
 has 'array' => (
 	isa => 'ArrayRef',
 	is => 'rw',
@@ -31,8 +38,8 @@ has 'stack' => (
 has 'length' => (
 	isa => 'Int',
 	is => 'rw',
-	builder => '_build_length',
-	lazy => 1
+	lazy => 1,
+	builder => '_build_length'
 );
 
 has 'start_pos' => (
