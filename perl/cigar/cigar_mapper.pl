@@ -14,7 +14,6 @@ GetOptions (
 	"end=i" => \$end_pos,
 	"sam=s" => \$sam,
 	"reference=s" => \$reference,
-	"bad=i" => \$keep_bad
 );
 
 # CHECK ARGS
@@ -107,7 +106,7 @@ foreach my $line (@lines)
 	next if($start_pos > $cigar_end);
 	
 	# Parse insert strings 
-	&parse_inserts($seq_string, $read_start, $cigar_stack, $output))
+	&parse_inserts($seq_string, $read_start, $cigar_stack, $output);
 
 	# Build alignemt hash since this read is valid
 	my ($alignment_ref, $insertion_ref) = &build_alignment_hash($seq_string, $read_start, $cigar_stack);
@@ -385,8 +384,18 @@ sub call_indels
 
 		if($denominator)
 		{
-			my $del_percent = ($$inner_ref{"X"}/$denominator);
-			my $ins_percent = ($$inner_ref{"I"}/$denominator);
+			my $del_percent;
+			my $ins_percent;
+					
+			if($$inner_ref{"X"})
+			{
+				$del_percent = ($$inner_ref{"X"}/$denominator);
+			}
+			if($$inner_ref{"I"})
+			{
+				$ins_percent = ($$inner_ref{"I"}/$denominator);	
+			}
+			
 			if ($del_percent >= .50)
 			{
 				say $indel "$base is likely a deletion with: $del_percent";
