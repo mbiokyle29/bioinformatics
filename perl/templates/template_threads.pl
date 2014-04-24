@@ -36,12 +36,12 @@ sub work
 {
 	my $next;
 	while($keep_working || $next = $work_queue->dequeue_nb())
-    {
+  {
         next unless $file;
       	##
       	##
       	##
       	##
       	$file = undef;
-    }
+  }
 }
