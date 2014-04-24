@@ -124,5 +124,5 @@ sub sam_to_bam {
     my $sorted    = $base_name . ".sorted";
     `samtools view -S -b -o $bam $sam`;
     `samtools sort $bam $sorted`;
-    `samtools index $sorted`;
+    `samtools index $sorted.bam`;
 }
