@@ -40,14 +40,10 @@ sub work
 	while($keep_working || $next = $work_queue->dequeue_nb())
     {
         next unless $file;
-      	if($file =~ m/_GC_binary/)
-        {
-
-        }
-        else
-        {
-
-        }
+        $file =~ m/chr([^_]+_[GCN]+)_binary/;
+        $chr_code = $1;
+        my $command = "perl process_score.pl $file $chr_code 200 50";
+        `$command`;
         $file = undef;
     }
 }

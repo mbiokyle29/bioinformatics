@@ -5,6 +5,8 @@ use threads;
 use threads::shared;
 use Thread::Queue;
 
+my $script_path = shift;
+
 # WORK QUEUE
 my $work_queue = Thread::Queue->new();
 my $keep_working :shared = 1;
@@ -16,11 +18,12 @@ my @workers;
 my $cores = `nproc` - 2;
 for(1..$cores)
 {
-	 push(@workers, threads->create('work', my $script_path = shift;);
+	 push(@workers, threads->create('work', $script_path));
 }
 
 ###
 #	PUSH ALL WORK TO QUEUE
+use File::Slurp;
 my @files = read_dir($script_path);
 foreach my $file (@files)
 {
@@ -36,12 +39,12 @@ $_->join for @workers;
 sub work 
 {
   my $script_path = shift;
-	my $next;
-	while($keep_working || $next = $work_queue->dequeue_nb())
+	my $file;
+	while($keep_working || ($file = $work_queue->dequeue_nb()))
     {
-        next unless $file;
+        next unless ($file);
       	$file =~ m/chr(.+)\.fa/;
-        $chr_code = $1;
+        my $chr_code = $1;
       	my $command = "perl $script_path/cal_binary_GC_N_score.pl $file $chr_code 1";
         `$command`;
       	$file = undef;

@@ -1,11 +1,14 @@
 #!/usr/bin/perl
+# Mosiacs pre-processing automation script
+# runs the cal_binary_map_score.py for each of the mappability b.out files
+# Takes a path to the char info file and a path to the scripts
 use warnings;
 use strict;
 use threads;
 use Thread::Queue;
 use File::Slurp;
 
-my $char_info = shift;
+my ($char_info, $scripts_path) = @ARGV;
 my @chars = read_file($char_info);
 my %char_length;
 foreach my $line (@chars)
@@ -14,6 +17,7 @@ foreach my $line (@chars)
 	my $char = $feilds[0];
 	$char  =~ s/chr//;
 	my $length = $feilds[1];
+	chomp($length);
 	$char_length{$char} = $length;
 }
 
@@ -26,7 +30,6 @@ my @workers;
 
 # Set up threads
 my $cores = `nproc` - 2;
-my $scripts_path = "/home/kyle/lab/mosaics/prepro-scripts";
 for(1..$cores)
 {
 	 push(@workers, threads->create('work', $scripts_path, \%char_length));

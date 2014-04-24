@@ -1,4 +1,8 @@
 #!/usr/bin/perl
+# Mosiacs pre-processing automation script
+# runs the process_score_java.pl for each of the mappability _map_binary files
+# Takes a path to the scripts
+
 use warnings;
 use strict;
 use threads;
@@ -45,7 +49,7 @@ sub work
         $file =~ m/^(.+)_binary(\.txt)?$/;
         my $output = $1;
         ## Tag length?
-        my $command = "perl $script_path/process_score_java.pl $file $output 28 200 50";
+        my $command = "perl $script_path/process_score_java.pl $file $output 41 200 50";
       	`$command`;
       	$file = undef;
     }
