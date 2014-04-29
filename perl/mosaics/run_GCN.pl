@@ -8,19 +8,21 @@ use Thread::Queue;
 # WORK QUEUE
 my $work_queue = Thread::Queue->new();
 my $keep_working :shared = 1;
+my $script_path = shift;
 
 # WORKERS
 my @workers;
 
 # Set up threads
-my $cores = `nproc` - 2;
-for(1..$cores)
+my $cores = `nproc`;
+for(1..10)
 {
-	 push(@workers, threads->create('work', my $script_path = shift;);
+	 push(@workers, threads->create('work', $script_path));
 }
 
 ###
 #	PUSH ALL WORK TO QUEUE
+use File::Slurp;
 my @files = read_dir($script_path);
 foreach my $file (@files)
 {
@@ -36,13 +38,13 @@ $_->join for @workers;
 sub work 
 {
   my $script_path = shift;
-	my $next;
-	while($keep_working || $next = $work_queue->dequeue_nb())
+	my $file;
+	while($keep_working || ($file = $work_queue->dequeue_nb()))
     {
         next unless $file;
         $file =~ m/chr([^_]+_[GCN]+)_binary/;
-        $chr_code = $1;
-        my $command = "perl process_score.pl $file $chr_code 200 50";
+        my $chr_code = $1;
+        my $command = "perl process_score_ng.pl $file $chr_code 200 50";
         `$command`;
         $file = undef;
     }

@@ -8,7 +8,7 @@ use strict;
 use threads;
 use threads::shared;
 use Thread::Queue;
-use File::Slurp;
+
 
 # WORK QUEUE
 my $work_queue = Thread::Queue->new();
@@ -27,6 +27,7 @@ for(1..$cores)
 
 
 #	PUSH ALL WORK TO QUEUE
+use File::Slurp;
 my @files = read_dir($script_path);
 foreach my $file (@files)
 {
@@ -42,14 +43,14 @@ $_->join for @workers;
 sub work 
 {
 	my $script_path = shift;
-	my $next;
-	while($keep_working || $next = $work_queue->dequeue_nb())
+	my $file;
+	while($keep_working || ($file = $work_queue->dequeue_nb()))
     {
         next unless $file;
         $file =~ m/^(.+)_binary(\.txt)?$/;
         my $output = $1;
         ## Tag length?
-        my $command = "perl $script_path/process_score_java.pl $file $output 41 200 50";
+        my $command = "perl $script_path/process_score_java.pl $file $output 40 200 50";
       	`$command`;
       	$file = undef;
     }
