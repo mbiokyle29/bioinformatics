@@ -3,6 +3,7 @@
 # Mosaics Processing Script
 # Will likly make use of supplied Mosaics preprocessing scripts
 # -Generate all the nessecary GC/N/M Binlevel data from a collection of .fa files
+# - Skipping the early PeakSeq steps, those take way to long, assume b.out files are in script dir
 # -Align the results
 # -Meta generate an R Script
 
@@ -18,14 +19,14 @@ use feature qw|say|;
 use File::Slurp;
 
 # Predefine Arguments
-my ($script_dir, $fa_dir);
+my ($script_dir, $fa_dir, $chr_info);
 
 GetOptions (
 	"scripts=s" => \$script_dir,
 	"fa=s" => \$fa_dir
 );
 
-unless($script_dir && $fa_dir)
+unless($script_dir && $fa_dir && $chr_info)
 {
 	die "Error, Invalid Command-Line args \n Useage: MosaicsPipe.pl --scripts DirectoryOfScripts --fa DirectoryOfFaFiles \n";
 }
@@ -39,19 +40,32 @@ my $gcn_queue = Thread::Queue->new();
 my (@map_workers, @gcn_workers);
 
 # Set up threads
+my @char_infos = read_file($char_info) or die "Could not read char info file $char_info";
+my %lengths;
+foreach my $char_line(@char_infos)
+{
+  my @line = split(//, $char_line);
+  $lengths{$line[0]} = $line[1];
+}
+
 for(0..3)
 {
-	 push(@map_workers, threads->create('map_work', $script_dir));
+	 push(@map_workers, threads->create('map_work', $script_dir, %lengths));
 	 push(@gcn_workers, threads->create('gcn_work', $script_dir));
 }
 
 # Grab only the fa files from the directory
-my @genome_files = grep {/.*\.fa$/} read_dir($fa_dir) or die "Could not read scripts";
+my @genome_files = grep {/.*\.fa$/} read_dir($fa_dir) or die "Could not read .fa files";
 
 foreach my $genome_file (@genome_files)
 {
-	$map_queue->enqueue($genome_file);
 	$gcn_queue->enqueue($genome_file);
+}
+
+my @b_out_files = grep {/.*b\.out$/} read_dir($fa_dir) or die "Could not read b.out files";
+foreach my $b_file (@b_out_files)
+{
+  $map_queue->enqueue($b_file);
 }
 
 # Signal work is done, wait
@@ -119,15 +133,18 @@ sub gcn_work
 sub map_work 
 {
 	my $next;
+  my ($script_dir, $lengths) = @_;
 	while($keep_working || $next = $map_queue->dequeue_nb())
-  	{
-        next unless $next;
-      	##
-      	##
-      	##
-      	##
-      	$next = undef;
-  	}
+  {
+    next unless $next;
+    ##
+    ##
+    # python cal_binary_map_score.py [chrID] 1 [chr_length] > [output_file]
+    # perl process_score_java.pl [input_binary_file] [output_pre] [tagL] [fragL] [binsize]
+    ##
+    ##
+    $next = undef;
+  }
 }
 
 ## ALIGNMENT ##
