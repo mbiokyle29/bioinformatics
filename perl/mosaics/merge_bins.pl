@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # Merge bins of genome files into one huge one to feed to mosaics
-# Takes a dir and a type (M, N, GC,)
+# Takes a dir and a type (map, N, GC,)
 # Expects 'mosaics' file like file names
 use warnings;
 use strict;
