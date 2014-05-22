@@ -10,7 +10,7 @@
 #
 # Dependencies
 # -bowtie2
-# -nproc or sysctil <- OSX JUNK
+# -nproc or sysctil
 #
 # TODO
 # Need to fix map full path, and output files, better implement skip if EBV genome
@@ -54,9 +54,10 @@ my $fp_results = $fp_bowtie2 . "results/";
 my $fp_maps    = $fp_bowtie2 . "maps/";
 
 # Grab all the files, ignore . and ..
-opendir DIR, $read_dir;
-my @read_files = grep { !/^\./ } readdir(DIR);
-closedir DIR;
+my $dir_h;
+opendir $dir_h, $read_dir;
+my @read_files = grep { !/^\./ } readdir($dir_h);
+closedir $dir_h;
 
 # Default to unmatched unless specified in command
 my $match_arg = "-U" unless $matched;
@@ -83,11 +84,11 @@ for my $read_file (@read_files) {
         my $align_count = 0;
 
         # Read from one, write stats into other
-        open SAM,  '<', $fp_sam;
-        open STAT, '>', $sam_stat;
+        open my $sam_fh,  '<', $fp_sam;
+        open my $stat_fh, '>', $sam_stat;
 
         # read in one line at a time and process
-        while (<SAM>) {
+        while (<$sam_fh>) {
             my $in = $_;
             next if ( $in =~ /^@/ );
             chomp($in);
@@ -101,17 +102,17 @@ for my $read_file (@read_files) {
             }
             else { $genomes{ $line[2] } = 1; }
         }
-        close SAM;
+        close $sam_fh;
 
         # Write the .stat file
-        say STAT "Chromosome frequencey results for $fp_sam:";
+        say $stat_fh "Chromosome frequencey results for $fp_sam:";
         for my $genome ( keys(%genomes) ) {
-            say STAT "$genome had $genomes{$genome} reads";
+            say $stat_fh "$genome had $genomes{$genome} reads";
         }
-        say STAT "total alignements = $align_count";
-        say STAT "output from bowtie2: ";
-        say STAT "$bowtie_output";
-        close STAT;
+        say $stat_fh "total alignements = $align_count";
+        say $stat_fh "output from bowtie2: ";
+        say $stat_fh "$bowtie_output";
+        close $stat_fh;
     }
 }
 

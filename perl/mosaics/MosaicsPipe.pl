@@ -1,150 +1,210 @@
 #/usr/bin/perl
 # MosaicsPipe.pl
-# Mosaics Processing Script
-# Will likly make use of supplied Mosaics preprocessing scripts
-# -Generate all the nessecary GC/N/M Binlevel data from a collection of .fa files
-# - Skipping the early PeakSeq steps, those take way to long, assume b.out files are in script dir
-# -Align the results
-# -Meta generate an R Script
-
-## SET UP THE THREADS ##
+# Kyle McChesney
+# Script to generate and run an R Script to analyize CHiP Seq data with MOSAICS
+# Defualts:
+#	fragment length = 200
+#	bin size = 50
 use warnings;
 use strict;
-use threads;
-use threads::shared;
-use Thread::Queue;
 use Getopt::Long;
 use Data::Printer;
 use feature qw|say|;
 use File::Slurp;
+use Statistics::R;
 
-# Predefine Arguments
-my ($script_dir, $fa_dir, $chr_info);
+# R connection
+my $r_con = Statistics::R->new();
+my @commands; # Will store all the nessecary commands
 
+# Useage
+my $useage = "useage: ./MosaicsPipe.pl --type OS|TS|IO --mode auto|interactive (...)";
+
+# Analysis type for MOSAICS fit
+use constant OS => "OS";
+use constant TS => "TS";
+use constant IO => "IO";
+
+# Predefine Arguments - Type Flags
+my ($analysis_type, $auto, $dir);
+# Predefine Arguments - Bin-Level Files
+my ($chip, $chip_type, $input, $map_score, $gc_score, $n_score);
 GetOptions (
-	"scripts=s" => \$script_dir,
-	"fa=s" => \$fa_dir
+	"type=s" => \&handle_type,
+	"mode=s" => \&handle_mode,
+	"chip=s" => \$chip,
+	"format=s" => \&handle_chip,
+	"input=s" => \$input,
+	"map=s" => \$map_score,
+	"gc=s" => \$gc_score,
+	"n=s" => \$n_score
 );
 
-unless($script_dir && $fa_dir && $chr_info)
-{
-	die "Error, Invalid Command-Line args \n Useage: MosaicsPipe.pl --scripts DirectoryOfScripts --fa DirectoryOfFaFiles \n";
+# Check we got everything for automatic mode
+# Then run
+if($auto && &verify_auto_reqs()) 
+{ 
+	my $type_string = "type = c(";
+	my $files_string = "fileName = c(";
+	my $bin_command = "bin1 <- readBins(";
+	
+	say "Starting automatic run-mode";
+	say "Analysis Type => $type";
+	
+	# Handle the chip file
+	my $out_path = abs_path($chip);
+	my $const_chip = "constructBins(infile=\"$chip\", fileFormat=\"$chip_type\", 
+		outfileLoc=\"$out_path\", byChr=FALSE, fragLen=200, binSize=50)";
+	push(@commands, $const_chip);
+
+	if($input)
+	{
+		my $const_input = "constructBins(infile=\"$input\", fileFormat=\"$chip_type\", 
+		outfileLoc=\"$out_path\", byChr=FALSE, fragLen=200, binSize=50)";
+		push(@commands, $const_input);
+	}
+
+
+	
+
+	bin1 <- readBins(type = c("chip", "input", "M", "GC", "N"), 
+		fileName = c("chip.sam_fragL200_bin50.txt", "input.sam_fragL200_bin50.txt", 
+			"hg19_ebv_M_fragL200_bin50.txt", "hg19_ebv_GC_fragL200_bin50.txt", "hg19_ebv_N_fragL200_bin50.txt"))
+
 }
 
-# WORK QUEUE
-my $keep_working :shared = 1;
-my $map_queue = Thread::Queue->new();
-my $gcn_queue = Thread::Queue->new();
 
-# WORKERS
-my (@map_workers, @gcn_workers);
 
-# Set up threads
-my @char_infos = read_file($char_info) or die "Could not read char info file $char_info";
-my %lengths;
-foreach my $char_line(@char_infos)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Verify that user inputted the nessecary data for the given analysis type
+sub verify_auto_reqs
 {
-  my @line = split(//, $char_line);
-  $lengths{$line[0]} = $line[1];
+	# At the very least we need the chip data no matter the type
+	unless($chip) 
+	{ 
+		die "chip data must be submitted for automatic OS analysis \n $usage"; 
+	}
+	given($type)
+	{
+		when(OS)
+		{
+			unless($input or ($map_score and $gc_score and $n_score))
+			{
+				die "input data or GC,M and N data must be submitted for automatic OS analysis \n $usage";
+			}
+		}
+		when(TS)
+		{
+			unless($input)
+			{
+				die "input data must be submitted for automatic TS analysis \n $usage";
+			}
+		}
+		when(IO)
+		{
+			unless ($input) 
+			{
+				die "input data must be submitted for automatic IO analysis \n $usage";
+			}
+		}
+	}
+	return 1;
 }
 
-for(0..3)
+## Libraries ##
+sub run_updates
 {
-	 push(@map_workers, threads->create('map_work', $script_dir, %lengths));
-	 push(@gcn_workers, threads->create('gcn_work', $script_dir));
+	my $r_con = shift;
+	my $connect = 'source("http://bioconductor.org/biocLite.R")';
+	my $installer = 'biocLite("BiocInstaller")';
+	my $upgrader = 'biocLite("BiocUpgrade")';
+	my $upgrade = 'update.packages()';
+	my @commands = ($connect, $installer, $upgrader, $upgrade);
+	$r_con->run(@commands) or die "Could not check for updates";
+	return 1;
 }
 
-# Grab only the fa files from the directory
-my @genome_files = grep {/.*\.fa$/} read_dir($fa_dir) or die "Could not read .fa files";
-
-foreach my $genome_file (@genome_files)
+sub load_libs
 {
-	$gcn_queue->enqueue($genome_file);
+	my $r_con = shift;
+	my $parallel = "library(parallel)";
+	my $mosaics = "library(mosaics)";
+	$r_con->run(($parallel, $mosaics)) or die "Could not load R libraries";
+	return 1;
 }
 
-my @b_out_files = grep {/.*b\.out$/} read_dir($fa_dir) or die "Could not read b.out files";
-foreach my $b_file (@b_out_files)
+
+## GetOpts Handler Functions ##
+
+# Operation Mode
+sub handle_mode
 {
-  $map_queue->enqueue($b_file);
+	my ($name, $value) = @_;
+	if($value eq "interactive")
+	{
+		$auto = 0;
+	} elsif ($value eq "auto") {
+		$auto = 1;
+	} else {
+		say "Error: Invalid value $value for mode arguement";
+		say "Valid options are auto or interactive";
+		die "$usage";
+	}
 }
 
-# Signal work is done, wait
-$map_queue->end();
-$gcn_queue->end();
-$keep_working = 0;
-$_->join for @workers;
-
-## GC N ##
-sub gcn_work 
+# Mosaics analysis type
+sub handle_type 
 {
-	my $script_dir = shift;
-	my $next;
-	while($keep_working || $next = $gcn_queue->dequeue_nb())
-  	{
-  		##
-        next unless $next;
-      	##
-      	
-      	# Step one generate binary GC and N for the file
-      	chomp($next);
-      	$next =~ m/^chr(.*)\.fa$/;
-      	my $chr_id = $1;
-      	my $binary_command = "perl $script_dir"."cal_binary_GC_N_score.pl $next $chr_id 1";
-      	my $binary_results = `$command 2>&1`;
-      	
-      	# Return code is in $? bit shift by 8 to check
-      	my $return_code = ($?>>8);
-      	if($return_code != -1)
-      	{
-      		# First command was success, run the next
-      		my $binlevel_command = "perl $script_dir"."process_score.pl";
-      		my $gc_code = $chr_id."_GC";
-      		my $n_code = $chr_id."_N";
-      		my $gc_file = "chr".$gc_code."_binary.txt";
-      		my $n_file = "chr".$n_code."_binary.txt";
-
-      		my $binlevel_gc_result = `$binlevel_command $gc_file $gc_code 200 50 2>&1`;
-      		$return_code = ($?>>8);
-      		if($return_code == -1)
-      		{
-				say "Error! binlevel GC failed for $file";
-      			say "$binlevel_gc_result";
-      		}
-
-      		my $binlevel_n_result = `$binlevel_command $n_file $n_code 200 50 2>&1`;
-      		$return_code = ($?>>8);
-      		if($return_code == -1)
-      		{
-      			say "Error! binlevel N failed for $file";
-      			say "$binlevel_n_result";
-      		}
-      	} else {
-      		say "Error! binary level gc/n failed for $file";
-      		say "$binary_results";
-      	}
-
-      	##
-      	$next = undef;
-      	##
-  	}
+	my ($name, $value) = @_;
+	if    ($value eq OS) { $analysis_type = OS; }
+	elsif ($value eq TS) { $analysis_type = TS; }
+	elsif ($value eq IO) { $analysis_type = IO; }
+	else {
+		say "Error: Invalid value $value for type arguement";
+		say "Valid options are OS TS or IO";
+		die "$usage";
+	}
 }
 
-## PEAK SEQ ##
-sub map_work 
+# CHiP results file format
+sub handle_chip 
 {
-	my $next;
-  my ($script_dir, $lengths) = @_;
-	while($keep_working || $next = $map_queue->dequeue_nb())
-  {
-    next unless $next;
-    ##
-    ##
-    # python cal_binary_map_score.py [chrID] 1 [chr_length] > [output_file]
-    # perl process_score_java.pl [input_binary_file] [output_pre] [tagL] [fragL] [binsize]
-    ##
-    ##
-    $next = undef;
-  }
+	my ($name, $value) = @_;
+	my @valid_types = qw|eland_result eland_extended eland_export bowtie sam bed csem|;
+	unless($value ~~ @valid_types)
+	{
+		say "CHiP File format $value is invald!";
+		say "Must be one of: @valid_types";
+		die "$usage";
+	} 
 }
-
-## ALIGNMENT ##
