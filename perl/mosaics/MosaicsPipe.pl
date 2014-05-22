@@ -9,9 +9,10 @@ use warnings;
 use strict;
 use Getopt::Long;
 use Data::Printer;
-use feature qw|say|;
+use feature qw|say switch|;
 use File::Slurp;
 use Statistics::R;
+use Cwd qw|abs_path|;
 
 # R connection
 my $r_con = Statistics::R->new();
@@ -39,80 +40,101 @@ GetOptions (
 	"gc=s" => \$gc_score,
 	"n=s" => \$n_score
 );
-
+unless($analysis_type and $auto)
+{
+	say "Error: type and mode are required!";
+	die $useage;
+}
 # Check we got everything for automatic mode
 # Then run
-if($auto && &verify_auto_reqs()) 
+if($auto && &verify_auto_reqs($analysis_type)) 
 { 
 	my $type_string = "type = c(";
 	my $files_string = "fileName = c(";
-	my $bin_command = "bin1 <- readBins(";
+	my $bin_name = "bin1";
+	my $bin_command = $bin_name." <- readBins(";
+	my $chip_bin;
+	my $input_bin;
 	
 	say "Starting automatic run-mode";
-	say "Analysis Type => $type";
+	say "Analysis Type => $analysis_type";
 	
 	# Handle the chip file
-	my $out_path = abs_path($chip);
+	$chip = abs_path($chip);
+	my $out_path = $chip;
+	$out_path =~ s/\/[^\/]+$/\//;
 	my $const_chip = "constructBins(infile=\"$chip\", fileFormat=\"$chip_type\", 
 		outfileLoc=\"$out_path\", byChr=FALSE, fragLen=200, binSize=50)";
+	$chip_bin = $chip."_fragL200_bin50.txt";
+	
+	$type_string.='"chip", ';
+	$files_string.="\"$chip_bin\", ";
+
 	push(@commands, $const_chip);
 
 	if($input)
 	{
+		$input = abs_path($input);
 		my $const_input = "constructBins(infile=\"$input\", fileFormat=\"$chip_type\", 
 		outfileLoc=\"$out_path\", byChr=FALSE, fragLen=200, binSize=50)";
 		push(@commands, $const_input);
+		$input_bin = $input."_fragL200_bin50.txt";
+		$type_string.='"input", ';
+		$files_string.="\"$input_bin\", ";
 	}
 
+	if($map_score)
+	{
+		$type_string.='"M", ';
+		$files_string.="\"$map_score\", ";
+	}
 
+	if($n_score)
+	{
+		$type_string.='"N", ';
+		$files_string.="\"$n_score\", ";
+	}
+
+	if($gc_score)
+	{
+		$type_string.='"GC", ';
+		$files_string.="\"$gc_score\", ";
+	}
+
+	chomp($type_string);
+	chomp($files_string);
 	
+	$type_string =~ s/,\s$/)/;
+	$files_string =~ s/,\s$/)/;
+	$bin_command .= $type_string.", ".$files_string.")";
+	push(@commands, $bin_command);
+	
+	# Set up R env
+	say &run_updates($r_con);
+	say &load_libs($r_con);
+	say "\nLibraries loaded correctly being processing results \n";
 
-	bin1 <- readBins(type = c("chip", "input", "M", "GC", "N"), 
-		fileName = c("chip.sam_fragL200_bin50.txt", "input.sam_fragL200_bin50.txt", 
-			"hg19_ebv_M_fragL200_bin50.txt", "hg19_ebv_GC_fragL200_bin50.txt", "hg19_ebv_N_fragL200_bin50.txt"))
+	foreach my $command (@commands)
+	{
+		say "running $command";
+		say $r_con->run($command);
+	}
+	say $r_con->run("show($bin_name)");
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+########
+# Subs #
+########
 
 # Verify that user inputted the nessecary data for the given analysis type
 sub verify_auto_reqs
 {
+	my $type = shift;
 	# At the very least we need the chip data no matter the type
 	unless($chip) 
 	{ 
-		die "chip data must be submitted for automatic OS analysis \n $usage"; 
+		die "chip data must be submitted for automatic OS analysis \n $useage"; 
 	}
 	given($type)
 	{
@@ -120,38 +142,35 @@ sub verify_auto_reqs
 		{
 			unless($input or ($map_score and $gc_score and $n_score))
 			{
-				die "input data or GC,M and N data must be submitted for automatic OS analysis \n $usage";
+				die "input data or GC,M and N data must be submitted for automatic OS analysis \n $useage";
 			}
 		}
 		when(TS)
 		{
 			unless($input)
 			{
-				die "input data must be submitted for automatic TS analysis \n $usage";
+				die "input data must be submitted for automatic TS analysis \n $useage";
 			}
 		}
 		when(IO)
 		{
 			unless ($input) 
 			{
-				die "input data must be submitted for automatic IO analysis \n $usage";
+				die "input data must be submitted for automatic IO analysis \n $useage";
 			}
 		}
 	}
 	return 1;
 }
 
-## Libraries ##
+## R Library functions ##
 sub run_updates
 {
 	my $r_con = shift;
 	my $connect = 'source("http://bioconductor.org/biocLite.R")';
-	my $installer = 'biocLite("BiocInstaller")';
-	my $upgrader = 'biocLite("BiocUpgrade")';
-	my $upgrade = 'update.packages()';
-	my @commands = ($connect, $installer, $upgrader, $upgrade);
-	$r_con->run(@commands) or die "Could not check for updates";
-	return 1;
+	my $upgrader = 'biocLite()';
+	my @commands = ($connect, $upgrader);
+	return $r_con->run(@commands) or die "Could not check for updates";
 }
 
 sub load_libs
@@ -159,10 +178,8 @@ sub load_libs
 	my $r_con = shift;
 	my $parallel = "library(parallel)";
 	my $mosaics = "library(mosaics)";
-	$r_con->run(($parallel, $mosaics)) or die "Could not load R libraries";
-	return 1;
+	return $r_con->run(($parallel, $mosaics)) or die "Could not load R libraries";
 }
-
 
 ## GetOpts Handler Functions ##
 
@@ -178,7 +195,7 @@ sub handle_mode
 	} else {
 		say "Error: Invalid value $value for mode arguement";
 		say "Valid options are auto or interactive";
-		die "$usage";
+		die "$useage";
 	}
 }
 
@@ -192,7 +209,7 @@ sub handle_type
 	else {
 		say "Error: Invalid value $value for type arguement";
 		say "Valid options are OS TS or IO";
-		die "$usage";
+		die "$useage";
 	}
 }
 
@@ -205,6 +222,7 @@ sub handle_chip
 	{
 		say "CHiP File format $value is invald!";
 		say "Must be one of: @valid_types";
-		die "$usage";
-	} 
+		die "$useage";
+	}
+	$chip_type = $value;
 }
