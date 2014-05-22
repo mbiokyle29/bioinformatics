@@ -13,6 +13,7 @@ use feature qw|say switch|;
 use File::Slurp;
 use Statistics::R;
 use Cwd qw|abs_path|;
+use IO::Prompt;
 
 # R connection
 my $r_con = Statistics::R->new();
@@ -28,6 +29,7 @@ use constant IO => "IO";
 
 # Predefine Arguments - Type Flags
 my ($analysis_type, $auto, $dir);
+
 # Predefine Arguments - Bin-Level Files
 my ($chip, $chip_type, $input, $map_score, $gc_score, $n_score);
 GetOptions (
@@ -40,7 +42,8 @@ GetOptions (
 	"gc=s" => \$gc_score,
 	"n=s" => \$n_score
 );
-unless($analysis_type and $auto)
+
+unless($analysis_type and defined $auto)
 {
 	say "Error: type and mode are required!";
 	die $useage;
@@ -120,6 +123,23 @@ if($auto && &verify_auto_reqs($analysis_type))
 		say $r_con->run($command);
 	}
 	say $r_con->run("show($bin_name)");
+} 
+
+# Begin Interactive mode
+elsif(!$auto)
+{
+	my $chip_flag = 1;
+	my $chip_file;
+	while($chip_flag)
+	{
+		$chip_file = prompt("Please enter the fullpath name for your chip file: ");
+		if(-e $chip_file) 
+		{
+			$chip_flag = 0;
+		} else {
+			say "Sorry it appears that $chip_file does not exist!";
+		}
+	}
 
 }
 
