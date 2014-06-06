@@ -25,22 +25,24 @@ use Switch;
 my $read_dir;
 my $map_base;
 my $matched = 0;
+my $stat;
 
 GetOptions(
     "d=s"       => \$read_dir,
     "m=s"       => \$map_base,
-    "matched=i" => \$matched
+    "matched=i" => \$matched,
+    "stats=i" => \$stat
 ) or die("malformed command line args \n");
 
 # Figure out the number of cores to run on (total on machine - 1)
 my $cores;
-my $os = `uname -s`;
-chomp($os);
+my $kernel = `uname -s`;
+chomp($kernel);
 
-switch ($os) {
+switch ($kernel) {
     case "Linux"  { $cores = `nproc`; }
     case "Darwin" { $cores = `sysctl -n hw.ncpu`; }
-    else          { die "Are you on windows? \n"; }
+    else          { die "Get a different Kernel \n"; }
 }
 
 chomp($cores);
@@ -64,7 +66,7 @@ my $match_arg = "-U" unless $matched;
 
 for my $read_file (@read_files) {
     my $read_count = 0;
-    if ( $read_file =~ m/^(.*)\.fq$/ ) {
+    if ( $read_file =~ m/^(.*)\.f(ast)?q$/ ) {
         my $base_name = $1;
         my $fp_sam    = $fp_results . $1 . ".sam";
         my $results =
@@ -76,7 +78,7 @@ for my $read_file (@read_files) {
         &sam_to_bam( $fp_results . $base_name );
 
         # If aligning to EBV no need to run chromosome stats
-        next if ( $map_base eq "EBV" );
+        next if ($stat);
 
         # Output file and alignment counter
         my $ts          = time();
