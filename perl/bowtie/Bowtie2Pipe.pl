@@ -78,7 +78,7 @@ for my $read_file (@read_files) {
         &sam_to_bam( $fp_results . $base_name );
 
         # If aligning to EBV no need to run chromosome stats
-        next if ($stat);
+        next unless($stat);
 
         # Output file and alignment counter
         my $ts          = time();
@@ -126,6 +126,8 @@ sub sam_to_bam {
     my $bam       = $base_name . ".bam";
     my $sorted    = $base_name . ".sorted";
     `samtools view -S -b -o $bam $sam`;
-    `samtools sort $bam $sorted`;
+
+    # That speed up though
+    `samtools-rs rocksort -@ 8 -m 16G $bam $sorted`;
     `samtools index $sorted.bam`;
 }
