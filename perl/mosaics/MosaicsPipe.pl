@@ -36,7 +36,7 @@ GetOptions (
 	"type=s" => \&handle_type,
 	"mode=s" => \&handle_mode,
 	"chip=s" => \$chip,
-	"format=s" => \&handle_chip,
+	"format=s" => \&handle_format,
 	"input=s" => \$input,
 	"map=s" => \$map_score,
 	"gc=s" => \$gc_score,
@@ -54,10 +54,6 @@ if($auto && &verify_auto_reqs($analysis_type))
 { 
 	my $type_string = "type = c(";
 	my $files_string = "fileName = c(";
-	my $bin_name = "bin1";
-	my $bin_command = $bin_name." <- readBins(";
-	my $chip_bin;
-	my $input_bin;
 	
 	say "Starting automatic run-mode";
 	say "Analysis Type => $analysis_type";
@@ -104,14 +100,40 @@ if($auto && &verify_auto_reqs($analysis_type))
 		$files_string.="\"$gc_score\", ";
 	}
 
-	chomp($type_string);
-	chomp($files_string);
+	# Build constructBin command and push it
+	# bin1 is the name
+	my $bin_command = $bin_name." <- readBins(";
+	chomp($type_string, $files_string);
 	
+	# Replace trailing comma with closing bracket
 	$type_string =~ s/,\s$/)/;
 	$files_string =~ s/,\s$/)/;
+	
+	# Append and push
 	$bin_command .= $type_string.", ".$files_string.")";
 	push(@commands, $bin_command);
-	
+
+	# Push summary command for the new bin
+	my $show_bin = "show($bin_name)";
+	push(@commands, $show_bin);
+
+	# Build the fit command and push
+	# fit <- mosaicsFit(bin, analysisType="")
+	my $fit_command = generate_fit_command($analysis_type, $bin_name);
+	push(@commands, $fit_command);
+	$fit_command =~ m/^(\S)+/; my $fit_name = $1;
+	push(@commands, "show($fit_command)");
+
+	# Build the peak command and push
+	my $peak_command = generate_peak_command($analysis_type, $fit);
+	push(@commands, $peak_command);
+	$peak_command =~ m/(\S)+/; my $peak_name = $1;
+	push(@commands, "show($peak_name)");
+
+	# Build the expost command and push
+	my $export_command = "export($peak_name, type=\"bed\", filename=\"$peak_name.bed\")";
+	push(@commands, $export_command);
+
 	# Set up R env
 	say &run_updates($r_con);
 	say &load_libs($r_con);
@@ -122,30 +144,86 @@ if($auto && &verify_auto_reqs($analysis_type))
 		say "running $command";
 		say $r_con->run($command);
 	}
-	say $r_con->run("show($bin_name)");
+	
 } 
 
 # Begin Interactive mode
 elsif(!$auto)
 {
+	# Get Chip file in
 	my $chip_flag = 1;
 	my $chip_file;
 	while($chip_flag)
 	{
 		$chip_file = prompt("Please enter the fullpath name for your chip file: ");
-		if(-e $chip_file) 
+		file_exists($chip_file) ? $chip_flag = 0 : say "Sorry it appears that $chip_file does not exist!";
+	}
+
+	# Get Input file in
+	my $input_flag = 1;
+	my $input_file;
+	while($input_flag)
+	{
+		$input_file = prompt("Please enter the fullpath name for your input file: ");
+		file_exists($input_file) ? $input_flag = 0 : say "Sorry it appears that $chip_file does not exist!";
+	}
+
+	my ($gc_file, $including_gc);
+	if(prompt_file("GC"))
+	{
+		my $gc_valid_flag = 1;
+		$including_gc = 1;
+		while($gc_valid_flag)
 		{
-			$chip_flag = 0;
-		} else {
-			say "Sorry it appears that $chip_file does not exist!";
+			$gc_file = prompt("Please enter the fullpath name for you GC content file: ");
+			file_exists($gc_file) ? $gc_valid_flag = 0 : say "Sorry it appears that $gc_file does not exist!";
 		}
 	}
 
+	my ($n_file, $including_n);
+	if(prompt_file("n"))
+	{
+		my $n_valid_flag = 1;
+		$including_n = 1;
+		while($n_valid_flag)
+		{
+			$n_file = prompt("Please enter the fullpath name for you N file: ");
+			file_exists($n_file) ? $n_valid_flag = 0 : say "Sorry it appears that $n_file does not exist!";
+		}
+	}
+	
+	my ($map_file, $including_map);
+	if(prompt_file("mappability"))
+	{
+		my $map_valid_flag = 1;
+		$including_n = 1;
+		while($map_valid_flag)
+		{
+			$map_file = prompt("Please enter the fullpath name for you mappability file: ");
+			file_exists($map_file) ? $map_valid_flag = 0 : say "Sorry it appears that $map_file does not exist!";
+		}
+	}
 }
 
 ########
 # Subs #
 ########
+
+# Prompt Yes or No for a file type
+sub prompt_file
+{
+	my ($filetype) = @_;
+	my $valid_flag = 1;
+	my $answer;
+	while($valid_flag)
+	{
+		$answer = uc(prompt("Include a $filetype file (Y/N)?  "));
+		if($answer =~ m/^[YN]$/)
+		{
+			return($answer eq "Y");
+		}
+	}
+}
 
 # Verify that user inputted the nessecary data for the given analysis type
 sub verify_auto_reqs
@@ -234,15 +312,44 @@ sub handle_type
 }
 
 # CHiP results file format
-sub handle_chip 
+sub handle_format
 {
 	my ($name, $value) = @_;
 	my @valid_types = qw|eland_result eland_extended eland_export bowtie sam bed csem|;
 	unless($value ~~ @valid_types)
 	{
-		say "CHiP File format $value is invald!";
+		say "File format $value is invald!";
 		say "Must be one of: @valid_types";
 		die "$useage";
 	}
 	$chip_type = $value;
+}
+
+# Check to see if a file exists
+sub file_exists
+{
+	my ($file) = @_;
+	return(-e $file);
+}
+
+# Generate the mosaicsFit command
+# 1; analysis type
+# 2: name of the bin
+sub generate_fit_command 
+{
+	my ($analysis_type, $bin) = @_;
+	my $fit = "fit".$analysis_type;
+	my $fit_command = " <- mosaicsFit($bin, analysisType=\"$analysis_type\")";
+	return($fit_command);
+}
+
+# Generate the mosaicsPeak command
+# 1; analysis type
+# 2: name of the fit
+sub generate_peak_command 
+{
+	my ($analysis_type, $fit) = @_;
+	my $peak = "peak".$analysis_type;
+	my $peak_command = $peak." <- mosaicsPeak($fit)";
+	return($peak_command);
 }
