@@ -45,10 +45,6 @@ genomelen = len(genseq)
 z = 0
 text = fp.readline().replace("\n","")
 line = text.split("\t")
-if (line[2] != genomename):
-    print "mismatch between reference genome =", genomename, "\nand mapfile genome =", line[1]
-    exit()
-
 readlen = len(line[9])
 print "Using read length of", readlen
 
