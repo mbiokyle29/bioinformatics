@@ -64,7 +64,7 @@ if($auto && &verify_auto_reqs($analysis_type))
 	$out_path =~ s/\/[^\/]+$/\//;
 	my $const_chip = "constructBins(infile=\"$chip\", fileFormat=\"$chip_type\", 
 		outfileLoc=\"$out_path\", byChr=FALSE, fragLen=200, binSize=50)";
-	$chip_bin = $chip."_fragL200_bin50.txt";
+	my $chip_bin = $chip."_fragL200_bin50.txt";
 	
 	$type_string.='"chip", ';
 	$files_string.="\"$chip_bin\", ";
@@ -77,7 +77,7 @@ if($auto && &verify_auto_reqs($analysis_type))
 		my $const_input = "constructBins(infile=\"$input\", fileFormat=\"$chip_type\", 
 		outfileLoc=\"$out_path\", byChr=FALSE, fragLen=200, binSize=50)";
 		push(@commands, $const_input);
-		$input_bin = $input."_fragL200_bin50.txt";
+		my $input_bin = $input."_fragL200_bin50.txt";
 		$type_string.='"input", ';
 		$files_string.="\"$input_bin\", ";
 	}
@@ -102,6 +102,7 @@ if($auto && &verify_auto_reqs($analysis_type))
 
 	# Build constructBin command and push it
 	# bin1 is the name
+	my $bin_name = $analysis_type."bin";
 	my $bin_command = $bin_name." <- readBins(";
 	chomp($type_string, $files_string);
 	
@@ -121,13 +122,13 @@ if($auto && &verify_auto_reqs($analysis_type))
 	# fit <- mosaicsFit(bin, analysisType="")
 	my $fit_command = generate_fit_command($analysis_type, $bin_name);
 	push(@commands, $fit_command);
-	$fit_command =~ m/^(\S)+/; my $fit_name = $1;
-	push(@commands, "show($fit_command)");
+	$fit_command =~ m/^(\w+)\s<-/; my $fit_name = $1;
+	push(@commands, "show($fit_name)");
 
 	# Build the peak command and push
-	my $peak_command = generate_peak_command($analysis_type, $fit);
+	my $peak_command = generate_peak_command($analysis_type, $fit_name);
 	push(@commands, $peak_command);
-	$peak_command =~ m/(\S)+/; my $peak_name = $1;
+	$peak_command =~ m/^(\w+)\s<-/; my $peak_name = $1;
 	push(@commands, "show($peak_name)");
 
 	# Build the expost command and push
@@ -142,7 +143,7 @@ if($auto && &verify_auto_reqs($analysis_type))
 	foreach my $command (@commands)
 	{
 		say "running $command";
-		say $r_con->run($command);
+		#say $r_con->run($command);
 	}
 	
 } 
@@ -339,7 +340,7 @@ sub generate_fit_command
 {
 	my ($analysis_type, $bin) = @_;
 	my $fit = "fit".$analysis_type;
-	my $fit_command = " <- mosaicsFit($bin, analysisType=\"$analysis_type\")";
+	my $fit_command = "$fit <- mosaicsFit($bin, analysisType=\"$analysis_type\")";
 	return($fit_command);
 }
 
