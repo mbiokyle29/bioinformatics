@@ -2,7 +2,7 @@
 # MosaicsPipe.pl
 # Kyle McChesney
 # Script to generate and run an R Script to analyize CHiP Seq data with MOSAICS
-# Defualts:
+# Defaults:
 #	fragment length = 200
 #	bin size = 50
 use warnings;
@@ -13,11 +13,10 @@ use feature qw|say switch|;
 use File::Slurp;
 use Statistics::R;
 use Cwd qw|abs_path|;
-use IO::Prompt;
 
 # R connection
 my $r_con = Statistics::R->new();
-my @commands; # Will store all the nessecary commands
+our $r_log = "MosaicsPipe_rlog";
 
 # Useage
 my $useage = "useage: ./MosaicsPipe.pl --type OS|TS|IO";
@@ -28,7 +27,7 @@ use constant TS => "TS";
 use constant IO => "IO";
 
 # Predefine Arguments - Type Flags
-my ($analysis_type, $dir);
+my ($analysis_type, $dir, $run_all_file);
 
 # Predefine Arguments - Bin-Level Files
 my ($chip, $chip_type, $input, $map_score, $gc_score, $n_score);
@@ -39,8 +38,11 @@ GetOptions (
 	"input=s" => \$input,
 	"map=s" => \$map_score,
 	"gc=s" => \$gc_score,
-	"n=s" => \$n_score
+	"n=s" => \$n_score,
+	"run_all=s" => \$run_all_file
 );
+
+if($run_all_file) { &run_all($run_all_file, $r_con); exit; }
 
 unless($analysis_type)
 {
@@ -48,8 +50,6 @@ unless($analysis_type)
 	die $useage;
 }
 
-# Check we got everything for automatic mode
-# Then run
 if(&verify_auto_reqs($analysis_type)) 
 { 
 	my $type_string = "type = c(";
@@ -59,12 +59,12 @@ if(&verify_auto_reqs($analysis_type))
 	say "Analysis Type => $analysis_type";
 	
 	# Set up R env
-	say &run_updates($r_con);
-	say &load_libs($r_con);
+	&run_updates($r_con);
+	&load_libs($r_con);
 	say "\nLibraries loaded correctly\n  ....processing results \n";
 	
 	# Handle the chip file
-	$chip = abs_path($chip);
+	$chip = &abs_path($chip);
 	my $out_path = $chip;
 	$out_path =~ s/\/[^\/]+$/\//;
 	
@@ -76,7 +76,7 @@ if(&verify_auto_reqs($analysis_type))
 	$files_string.="\"$chip_bin\", ";
 
 	say "Constructing the chip bin";
-	say $r_con->($const_chip);
+	say $r_con->run($const_chip); &r_log($const_chip);
 
 	if($input)
 	{
@@ -88,7 +88,7 @@ if(&verify_auto_reqs($analysis_type))
 		$files_string.="\"$input_bin\", ";
 
 		say "Constructing the input bin";
-		say $r_con->($const_input);
+		say $r_con->run($const_input); &r_log($const_input);
 
 	}
 
@@ -123,29 +123,27 @@ if(&verify_auto_reqs($analysis_type))
 	# Append and push
 	$bin_command .= $type_string.", ".$files_string.")";
 	say "Running the read bins command";
-	say $r_con->run($bin_command));
+	say $r_con->run($bin_command); &r_log($bin_command);
 
 	# Push summary command for the new bin
 	my $show_bin = "show($bin_name)";
 	say "Running the show bin command";
-	say $r_con->run($show_bin));
+	say $r_con->run($show_bin); &r_log($show_bin);
 
 	# Build the fit command and push
 	# fit <- mosaicsFit(bin, analysisType="")
-	my $fit = &try_fit($analysis_type, $bin_name, $r_con) or die "DIE! Tried every combination of truncProb and bgEst could not FIT!";
-	
+	my $fit_name = &try_fit($analysis_type, $bin_name, $r_con);
+	if($fit_name == -1) { die "Could not generate a mosaics fit!"; }
 
-
-	# Build the peak command and push
-	my $peak_command = generate_peak_command($analysis_type, $fit_name);
-	push(@commands, $peak_command);
-	$peak_command =~ m/^(\w+)\s<-/; my $peak_name = $1;
-	push(@commands, "show($peak_name)");
+	my $peak_name = &try_peak($fit_name, $r_con);
+	if($peak_name == -1) { die "Could not call peaks!"; }
 
 	# Build the expost command and push
 	my $export_command = "export($peak_name, type=\"bed\", filename=\"$peak_name.bed\")";
-	push(@commands, $export_command);
-	
+	say $r_con->run($export_command); &r_log($export_command);
+	wiggle($chip, $chip_type, $r_con);
+	wiggle($input, $chip_type, $r_con);
+	say "Run complete! We did it!";
 } 
 
 
@@ -197,7 +195,8 @@ sub run_updates
 	my $connect = 'source("http://bioconductor.org/biocLite.R")';
 	my $upgrader = 'biocLite()';
 	my @commands = ($connect, $upgrader);
-	return $r_con->run(@commands) or die "Could not check for updates";
+	$r_con->run(@commands) or die "Could not check for updates";
+	&r_log($_) for @commands;
 }
 
 sub load_libs
@@ -205,7 +204,9 @@ sub load_libs
 	my $r_con = shift;
 	my $parallel = "library(parallel)";
 	my $mosaics = "library(mosaics)";
-	return $r_con->run(($parallel, $mosaics)) or die "Could not load R libraries";
+	$r_con->run(($parallel, $mosaics)) or die "Could not load R libraries";
+	&r_log($parallel); 
+	&r_log($mosaics);
 }
 
 ## GetOpts Handler Functions ##
@@ -245,62 +246,170 @@ sub file_exists
 	return(-e $file);
 }
 
-# Generate the mosaicsPeak command
-# 1; analysis type
-# 2: name of the fit
-sub generate_peak_command 
-{
-	my ($analysis_type, $fit) = @_;
-	my $peak = "peak".$analysis_type;
-	my $peak_command = $peak." <- mosaicsPeak($fit)";
-	return($peak_command);
-}
-
 sub try_fit
 {
 	my ($analysis_type, $bin, $r_con) = @_;
-	my $fit = "fit".$analysis_type;
-	my $template_fit_command = "$fit <- mosaicsFit($bin, analysisType=\"$analysis_type\"";
+	my $fit_name = "fit".$analysis_type;
+	my $template_fit_command = "$fit_name <- mosaicsFit($bin, analysisType=\"$analysis_type\"";
 	my $basic_fit = $template_fit_command.")";
 	eval { $r_con->run($basic_fit); };
 	if($@)
 	{
+		&r_log($basic_fit."  FAILED");
 		say "Command $basic_fit failed! with:\n $@";
 		say "Testing other options!...";
 		say "Trying different background estimation ";
-		my $return = &vary_bgEst($template_fit_command);
+		my $return = &vary_bgEst($template_fit_command, $r_con, $fit_name);
 		unless($return == -1) { return $return; }
-	}
-	say "Could not generate the fit using bgEst values\nAttempting truncProb value changing";
-	for my $prob (@truncProb)
-	{
-		my $trunc_command = $template_fit_command.", truncProb=$prob)";
-		eval { $r_con->run($basic_fit); };
-		if($@)
+		
+		say "Could not generate the fit using bgEst values\nAttempting truncProb value changing";
+		my @truncProb = (0.999, 0.995, 0.99, 0.85);
+		for my $prob (@truncProb)
 		{
-			say "Things are not looking good, trying truncProb + bgEst varience";
-			$trunc_command = $template_fit_command.", truncProb=$prob, ";
-			&vary_bgEst($trunc_command);
+			my $trunc_command = $template_fit_command.", truncProb=$prob)";
+			eval { $r_con->run($basic_fit); };
+			if($@)
+			{
+				&r_log($basic_fit."  FAILED");
+				say "Things are not looking good, trying truncProb + bgEst varience";
+				$trunc_command = $template_fit_command.", truncProb=$prob";
+				my $return = &vary_bgEst($trunc_command, $r_con, $fit_name);
+				unless ($return == -1) { return $return; }
+			}
 		}
 	}
+	&r_log($basic_fit);
+	return $fit_name;
+}
 
+
+### Try to call MOSaICS peaks, varying the following:
+### Threshold, FDR, maxgap = -1
+sub try_peak
+{
+	my ($fit_name, $r_con) = @_;
+	my $peak_name = "peak".$analysis_type;
+	my $template_peak_command = "$peak_name <- mosaicsPeak($fit_name";
+	my $basic_peak_command = $template_peak_command.")";
+	eval { $r_con->run($basic_peak_command); };
+	if ($@) 
+	{
+		&r_log($basic_peak_command."  FAILED");
+		say "Simple Peak calling failed";
+		say "with command: $basic_peak_command";
+		say "Trying a range of fdrs";
+		my $return = &vary_FDR($template_peak_command, $r_con, $peak_name);
+		unless ($return == -1) { return $return; }
+	
+		say "Could not call peaks by simply varying the fdr\n Attempting with maxgap = -1";
+		my $no_merge_peaks_template = $template_peak_command.", maxgap = -1";
+		my $no_merge_return = &vary_FDR($no_merge_peaks_template, $r_con, $peak_name);
+		unless ($no_merge_return == -1) { return $no_merge_return; }
+
+		say "Could not call peaks by varying FDR with maxgap = -1";
+		say "Attempting to change Threshold";
+		my $threshold_name = "Qthres";
+		my $threshold_command = "$threshold_name = quantile(".$fit_name.'@tagCount, 0.9985)';
+		say $r_con->run($threshold_command);
+		&r_log($threshold_command);
+
+		my $thres_peaks_template = $template_peak_command.", thres = $threshold_name";
+		my $thres_return = &vary_FDR($thres_peaks_template, $r_con, $peak_name);
+		unless ($thres_return == -1) { return $thres_return; }
+
+		say "thres + FDR variance did not work, last thing to try";
+		say "maxgap = -1 + thres + FDR variance!";
+		$thres_peaks_template = $template_peak_command.", thres = $threshold_name, maxgap = -1";
+		my $last_return = &vary_FDR($thres_peaks_template, $r_con, $peak_name);
+		return $last_return;
+	}
+	return $peak_name;
 }
 
 sub vary_bgEst
 {
-	my $template_fit_command = @_;
+	my ($template_fit_command, $r_con, $fit_name) = @_;
 	my @bgEst = qw|matchLow rMOM|;
 	for my $opt (@bgEst)
 	{
-		my $fit_bgEst = $template_fit_command.", bgtEst=\"".$opt."\")";
+		my $fit_bgEst = $template_fit_command.", bgtEs=\"".$opt."\")";
+		say "Running bgEst command: $fit_bgEst";
 		eval { $r_con->run($fit_bgEst); };
 		unless($@)
 		{
+			&r_log($fit_bgEst);
 			say "Command $fit_bgEst completed successfully!";
-			say "continuting pipeline with $fit";
-			say $r_con->run("show($fit)");
-			return $fit;
+			say "continuting pipeline with $fit_name";
+			say $r_con->run("show($fit_name)");
+			&r_log("show($fit_name)");
+			return $fit_name;
 		}
 	}
 	return -1;
+}
+
+sub vary_FDR
+{
+	my ($template_peak_command, $r_con,  $peak_name) = @_;
+	my @fdrs = map { $_ / 100 } (10..5);
+	for my $fdr (@fdrs)
+	{
+		my $fdr_peak = $template_peak_command.", FDR = $fdr)";
+		eval { $r_con->run($fdr_peak); };
+		unless($@)
+		{
+			&r_log($fdr_peak);
+			say "Peaks called successfully with: \n $fdr_peak";
+			say $r_con->("show($peak_name)");
+			return $peak_name;
+		}
+	}
+	return -1;
+}
+
+sub run_all
+{
+	my ($run_all_file, $r_con) = @_;
+	unless (&file_exists($run_all_file)) { die "Run all file does not exist!"; }
+	my @run_all_lines = read_file($run_all_file);
+	my %run_all_args;
+	
+	for my $arg (@run_all_lines)
+	{
+		my @split_opt = split(/\s+/, $arg);
+		$run_all_args{$split_opt[0]} = $split_opt[1];
+	}
+	
+	my $run_all_string = "mosaicsRunAll(";
+	for my $param (keys(%run_all_args))
+	{
+		$run_all_string .= ", $param = ";
+		if($run_all_args{$param} =~ m/^-?\d+$/ || $run_all_args{$param} =~ m/^(TRUE|FALSE)$/) {
+			$run_all_string .= $run_all_args{$param};
+		} else {
+			$run_all_string .= "\"$run_all_args{$param}\"";
+		}
+	}
+	$run_all_string =~ s/mosaicsRunAll\(, /mosaicsRunAll\(/;
+	$run_all_string .= ")";
+	say "Run all command = $run_all_string";
+	&run_updates($r_con);
+	&load_libs($r_con);
+	say $r_con->run($run_all_string);
+	&r_log($run_all_string);
+}
+
+sub r_log
+{
+	my $entry = shift;
+	write_file( $r_log, {append => 1 }, $entry);
+	write_file($r_log, {append => 1}, "\n");
+}
+
+sub wiggle
+{
+	my ($in_file, $in_format, $r_con) = @_;
+	my $wiggle_command = "generateWig( infile=\"$in_file\", fileFormat=\"$in_format\", outfileLoc=\"./\"";
+	$r_con->run($wiggle_command);
+	&r_log($wiggle_command);
 }
