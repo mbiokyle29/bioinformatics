@@ -351,7 +351,7 @@ sub vary_bgEst
 sub vary_FDR
 {
 	my ($template_peak_command, $r_con,  $peak_name) = @_;
-	my @fdrs = map { $_ / 100 } (10..5);
+	my @fdrs = map { $_ / 100 } (5..10);
 	for my $fdr (@fdrs)
 	{
 		my $fdr_peak = $template_peak_command.", FDR = $fdr)";
