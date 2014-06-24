@@ -355,6 +355,7 @@ sub vary_FDR
 	for my $fdr (@fdrs)
 	{
 		my $fdr_peak = $template_peak_command.", FDR = $fdr)";
+		say "Running $fdr_peak";
 		eval { $r_con->run($fdr_peak); };
 		unless($@)
 		{
@@ -409,7 +410,7 @@ sub r_log
 sub wiggle
 {
 	my ($in_file, $in_format, $r_con) = @_;
-	my $wiggle_command = "generateWig( infile=\"$in_file\", fileFormat=\"$in_format\", outfileLoc=\"./\"";
+	my $wiggle_command = "generateWig( infile=\"$in_file\", fileFormat=\"$in_format\", outfileLoc=\"./\")";
 	$r_con->run($wiggle_command);
 	&r_log($wiggle_command);
 }
