@@ -265,6 +265,8 @@ sub file_exists
 	return(-e $file);
 }
 
+### Try to generate a MOSAICS fit
+### will vary the bgEst method and stuff if it fails the first time
 sub try_fit
 {
 	my ($analysis_type, $bin, $r_con) = @_;
@@ -344,6 +346,8 @@ sub try_peak
 	return $peak_name;
 }
 
+### Helper method for try_fit
+###	actually calls the various R functions
 sub vary_bgEst
 {
 	my ($template_fit_command, $r_con, $fit_name) = @_;
@@ -370,6 +374,8 @@ sub vary_bgEst
 	return -1;
 }
 
+### Helper method for try_peak
+###	actually calls the various R functions
 sub vary_FDR
 {
 	my ($template_peak_command, $r_con,  $peak_name) = @_;
@@ -389,6 +395,8 @@ sub vary_FDR
 	return -1;
 }
 
+### Sub to the handle the run_all run option
+### parses the input file into a Mosaics runAll command and runs it
 sub run_all
 {
 	my ($run_all_file, $r_con) = @_;
@@ -421,6 +429,7 @@ sub run_all
 	&r_log($run_all_string);
 }
 
+### Logging function to track all R commands ran
 sub r_log
 {
 	my $entry = shift;
@@ -428,6 +437,7 @@ sub r_log
 	write_file($r_log, {append => 1}, "\n");
 }
 
+### Generate the wiggle file!
 sub wiggle
 {
 	my ($in_file, $in_format, $r_con) = @_;
@@ -436,6 +446,7 @@ sub wiggle
 	&r_log($wiggle_command);
 }
 
+### Special die sub to save R workspace image if we do fail
 sub die
 {
 	my ($mess, $r_con) = @_;
