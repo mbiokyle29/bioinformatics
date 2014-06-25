@@ -28,25 +28,30 @@ use constant IO => "IO";
 
 # Predefine Arguments - Type Flags
 my ($analysis_type, $dir, $run_all_file);
+my $bin_size = 50;
+my $fragment_length = 200;
 
 # Predefine Arguments - Bin-Level Files
-my ($chip, $chip_type, $input, $map_score, $gc_score, $n_score);
+my ($chip_file, $format, $input_file, $map_score, $gc_score, $n_score);
 my ($chip_bin, $input_bin);
 GetOptions (
 	"type=s" => \&handle_type,
-	"chip=s" => \$chip,
+	"chip=s" => \$chip_file,
 	"format=s" => \&handle_format,
-	"input=s" => \$input,
+	"input=s" => \$input_file,
 	"map=s" => \$map_score,
 	"gc=s" => \$gc_score,
 	"n=s" => \$n_score,
 	"run_all=s" => \$run_all_file,
 	"cbin=s" => \$chip_bin,
-	"ibin=s" => \$input_bin
+	"ibin=s" => \$input_bin,
+	"frag=i" => \$fragment_length,
+	"bin=i" => \$bin_size
 );
 
+if($chip_file and $chip_bin) { die "Cannot add a chip file and a chip bin file!"; }
+if($input_file and $input_bin) { die "Cannot add an input file and an input bin file!"; }
 if($run_all_file) { &run_all($run_all_file, $r_con); exit; }
-
 unless($analysis_type)
 {
 	say "Error: type is required!";
@@ -57,7 +62,7 @@ if(&verify_auto_reqs($analysis_type))
 { 
 	my $type_string = "type = c(";
 	my $files_string = "fileName = c(";
-	my $out_path;
+	my $out_path = "./";
 
 	say "Starting MOSAICS run";
 	say "Analysis Type => $analysis_type";
@@ -67,50 +72,28 @@ if(&verify_auto_reqs($analysis_type))
 	&load_libs($r_con);
 	say "\nLibraries loaded correctly\n  ....processing results \n";
 	
-
-	# Append file paths for read Bins since skipping construct
-	if($input_bin and $chip_bin)
-	{
-		$type_string.='"chip", ';
-		$files_string.="\"$chip_bin\", ";
-		$type_string.='"input", ';
-		$files_string.="\"$input_bin\", ";
-		$chip_bin = &abs_path($chip_bin);
-		$out_path = $chip_bin;
-		$out_path =~ s/\/[^\/]+$/\//;
-	}
-	
 	# If we arent skipping the chip bin run construct bins
 	unless($chip_bin)
 	{
-		# Handle the chip file
-		$chip = &abs_path($chip);
-		my $out_path = $chip;
-		$out_path =~ s/\/[^\/]+$/\//;
-
-		my $const_chip = "constructBins(infile=\"$chip\", fileFormat=\"$chip_type\", 
-			outfileLoc=\"$out_path\", byChr=FALSE, fragLen=200, binSize=50)";
-		$chip_bin = $chip."_fragL200_bin50.txt";
-	
-		$type_string.='"chip", ';
-		$files_string.="\"$chip_bin\", ";
-
 		say "Constructing the chip bin";
-		say $r_con->run($const_chip); &r_log($const_chip);
+		&construct_bin($chip_file, $format, $out_path, $fragment_length, $bin_size, $r_con);
+
+		$chip_bin = $chip_file."_fragL".$fragment_length."_bin".$bin_size.".txt";
 	}
 
+	# By now we have the chip_bin for sure so append
+	$type_string.='"chip", ';
+	$files_string.="\"$chip_bin\", ";
+	
 
-	if($input and not $input_bin)
+	if(not $input_bin and $input_file)
 	{
-		$input = abs_path($input);
-		my $const_input = "constructBins(infile=\"$input\", fileFormat=\"$chip_type\", 
-		outfileLoc=\"$out_path\", byChr=FALSE, fragLen=200, binSize=50)";
-		$input_bin = $input."_fragL200_bin50.txt";
+		say "Constructing the input bin";
+		&construct_bin($input_file, $format, $out_path, $fragment_length, $bin_size, $r_con);
+
+		$input_bin = $input_file."_fragL".$fragment_length."_bin".$bin_size.".txt";
 		$type_string.='"input", ';
 		$files_string.="\"$input_bin\", ";
-
-		say "Constructing the input bin";
-		say $r_con->run($const_input); &r_log($const_input);
 	}
 
 	if($map_score)
@@ -154,16 +137,16 @@ if(&verify_auto_reqs($analysis_type))
 	# Build the fit command and push
 	# fit <- mosaicsFit(bin, analysisType="")
 	my $fit_name = &try_fit($analysis_type, $bin_name, $r_con);
-	if($fit_name == -1) { &die "Could not generate a mosaics fit!"; }
+	if($fit_name == -1) { &die("Could not generate a mosaics fit!"); }
 
 	my $peak_name = &try_peak($fit_name, $r_con);
-	if($peak_name == -1) { &die "Could not call peaks!"; }
+	if($peak_name == -1) { &die("Could not call peaks!"); }
 
 	# Build the expost command and push
 	my $export_command = "export($peak_name, type=\"bed\", filename=\"$peak_name.bed\")";
 	say $r_con->run($export_command); &r_log($export_command);
-	wiggle($chip, $chip_type, $r_con);
-	wiggle($input, $chip_type, $r_con);
+	wiggle($chip_file, $format, $r_con);
+	wiggle($input_file, $format, $r_con);
 	say "Run complete! We did it!";
 } 
 
@@ -176,7 +159,7 @@ sub verify_auto_reqs
 {
 	my $type = shift;
 	# At the very least we need the chip data no matter the type
-	unless($chip or $chip_bin) 
+	unless($chip_file or $chip_bin) 
 	{ 
 		die "chip data must be submitted for automatic OS analysis \n $useage"; 
 	}
@@ -184,21 +167,21 @@ sub verify_auto_reqs
 	{
 		when(OS)
 		{
-			unless($input or ($map_score and $gc_score and $n_score))
+			unless($input_file or ($map_score and $gc_score and $n_score))
 			{
 				die "input data or GC,M and N data must be submitted for automatic OS analysis \n $useage";
 			}
 		}
 		when(TS)
 		{
-			unless($input)
+			unless($input_file)
 			{
 				die "input data must be submitted for automatic TS analysis \n $useage";
 			}
 		}
 		when(IO)
 		{
-			unless ($input or ($chip_bin and $input_bin)) 
+			unless ($input_file or ($chip_bin and $input_bin)) 
 			{
 				die "input data must be submitted for automatic IO analysis \n $useage";
 			}
@@ -255,7 +238,7 @@ sub handle_format
 		say "Must be one of: @valid_types";
 		die "$useage";
 	}
-	$chip_type = $value;
+	$format = $value;
 }
 
 # Check to see if a file exists
@@ -329,7 +312,10 @@ sub try_peak
 		say "Could not call peaks by varying FDR with maxgap = -1";
 		say "Attempting to change Threshold";
 		my $threshold_name = "Qthres";
+		chomp($threshold_name);
+		chomp($fit_name);
 		my $threshold_command = "$threshold_name = quantile(".$fit_name.'@tagCount, 0.9985)';
+		say "\n\n#####\n $threshold_command ";
 		say $r_con->run($threshold_command);
 		&r_log($threshold_command);
 
@@ -454,4 +440,13 @@ sub die
 	$r_con->run("save.image(file=\"MosaicsPipe.$ts.RData\")");
 	say $mess;
 	exit;
+}
+
+### Sub for constructing a Bin
+sub construct_bin
+{
+	my ($input_file, $input_type, $out_path, $fragment_length, $bin_size, $r_con) = @_;
+	my $const_bin = "constructBins(infile=\"$input_file\", fileFormat=\"$input_type\", outfileLoc=\"$out_path\", byChr=FALSE, fragLen=$fragment_length, binSize=$bin_size)";
+	$r_con->run($const_bin);
+	&r_log($const_bin);
 }
