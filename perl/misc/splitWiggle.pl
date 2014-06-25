@@ -30,6 +30,7 @@ for my $line (@wiggle)
 		$buffer .= $line;
 	}
 }
+
 &flush_buffer($buffer, $track_header);
 
 sub flush_buffer {

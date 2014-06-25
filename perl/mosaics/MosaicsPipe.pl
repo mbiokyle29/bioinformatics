@@ -16,7 +16,7 @@ use Cwd qw|abs_path|;
 
 # R connection
 my $r_con = Statistics::R->new();
-our $r_log = "MosaicsPipe_rlog";
+our $r_log = "MosaicsPipe_rlog".localtime(time);
 
 # Useage
 my $useage = "useage: ./MosaicsPipe.pl --type OS|TS|IO";
@@ -31,6 +31,7 @@ my ($analysis_type, $dir, $run_all_file);
 
 # Predefine Arguments - Bin-Level Files
 my ($chip, $chip_type, $input, $map_score, $gc_score, $n_score);
+my ($chip_bin, $input_bin);
 GetOptions (
 	"type=s" => \&handle_type,
 	"chip=s" => \$chip,
@@ -39,7 +40,9 @@ GetOptions (
 	"map=s" => \$map_score,
 	"gc=s" => \$gc_score,
 	"n=s" => \$n_score,
-	"run_all=s" => \$run_all_file
+	"run_all=s" => \$run_all_file,
+	"cbin=s" => \$chip_bin,
+	"ibin=s" => \$input_bin
 );
 
 if($run_all_file) { &run_all($run_all_file, $r_con); exit; }
@@ -54,7 +57,8 @@ if(&verify_auto_reqs($analysis_type))
 { 
 	my $type_string = "type = c(";
 	my $files_string = "fileName = c(";
-	
+	my $out_path;
+
 	say "Starting MOSAICS run";
 	say "Analysis Type => $analysis_type";
 	
@@ -63,33 +67,50 @@ if(&verify_auto_reqs($analysis_type))
 	&load_libs($r_con);
 	say "\nLibraries loaded correctly\n  ....processing results \n";
 	
-	# Handle the chip file
-	$chip = &abs_path($chip);
-	my $out_path = $chip;
-	$out_path =~ s/\/[^\/]+$/\//;
-	
-	my $const_chip = "constructBins(infile=\"$chip\", fileFormat=\"$chip_type\", 
-		outfileLoc=\"$out_path\", byChr=FALSE, fragLen=200, binSize=50)";
-	my $chip_bin = $chip."_fragL200_bin50.txt";
-	
-	$type_string.='"chip", ';
-	$files_string.="\"$chip_bin\", ";
 
-	say "Constructing the chip bin";
-	say $r_con->run($const_chip); &r_log($const_chip);
+	# Append file paths for read Bins since skipping construct
+	if($input_bin and $chip_bin)
+	{
+		$type_string.='"chip", ';
+		$files_string.="\"$chip_bin\", ";
+		$type_string.='"input", ';
+		$files_string.="\"$input_bin\", ";
+		$chip_bin = &abs_path($chip_bin);
+		$out_path = $chip_bin;
+		$out_path =~ s/\/[^\/]+$/\//;
+	}
+	
+	# If we arent skipping the chip bin run construct bins
+	unless($chip_bin)
+	{
+		# Handle the chip file
+		$chip = &abs_path($chip);
+		my $out_path = $chip;
+		$out_path =~ s/\/[^\/]+$/\//;
 
-	if($input)
+		my $const_chip = "constructBins(infile=\"$chip\", fileFormat=\"$chip_type\", 
+			outfileLoc=\"$out_path\", byChr=FALSE, fragLen=200, binSize=50)";
+		$chip_bin = $chip."_fragL200_bin50.txt";
+	
+		$type_string.='"chip", ';
+		$files_string.="\"$chip_bin\", ";
+
+		say "Constructing the chip bin";
+		say $r_con->run($const_chip); &r_log($const_chip);
+	}
+
+
+	if($input and not $input_bin)
 	{
 		$input = abs_path($input);
 		my $const_input = "constructBins(infile=\"$input\", fileFormat=\"$chip_type\", 
 		outfileLoc=\"$out_path\", byChr=FALSE, fragLen=200, binSize=50)";
-		my $input_bin = $input."_fragL200_bin50.txt";
+		$input_bin = $input."_fragL200_bin50.txt";
 		$type_string.='"input", ';
 		$files_string.="\"$input_bin\", ";
 
 		say "Constructing the input bin";
 		say $r_con->run($const_input); &r_log($const_input);
-
 	}
 
 	if($map_score)
@@ -133,10 +154,10 @@ if(&verify_auto_reqs($analysis_type))
 	# Build the fit command and push
 	# fit <- mosaicsFit(bin, analysisType="")
 	my $fit_name = &try_fit($analysis_type, $bin_name, $r_con);
-	if($fit_name == -1) { die "Could not generate a mosaics fit!"; }
+	if($fit_name == -1) { &die "Could not generate a mosaics fit!"; }
 
 	my $peak_name = &try_peak($fit_name, $r_con);
-	if($peak_name == -1) { die "Could not call peaks!"; }
+	if($peak_name == -1) { &die "Could not call peaks!"; }
 
 	# Build the expost command and push
 	my $export_command = "export($peak_name, type=\"bed\", filename=\"$peak_name.bed\")";
@@ -145,8 +166,6 @@ if(&verify_auto_reqs($analysis_type))
 	wiggle($input, $chip_type, $r_con);
 	say "Run complete! We did it!";
 } 
-
-
 
 ########
 # Subs #
@@ -157,7 +176,7 @@ sub verify_auto_reqs
 {
 	my $type = shift;
 	# At the very least we need the chip data no matter the type
-	unless($chip) 
+	unless($chip or $chip_bin) 
 	{ 
 		die "chip data must be submitted for automatic OS analysis \n $useage"; 
 	}
@@ -179,7 +198,7 @@ sub verify_auto_reqs
 		}
 		when(IO)
 		{
-			unless ($input) 
+			unless ($input or ($chip_bin and $input_bin)) 
 			{
 				die "input data must be submitted for automatic IO analysis \n $useage";
 			}
@@ -282,7 +301,6 @@ sub try_fit
 	return $fit_name;
 }
 
-
 ### Try to call MOSaICS peaks, varying the following:
 ### Threshold, FDR, maxgap = -1
 sub try_peak
@@ -335,8 +353,12 @@ sub vary_bgEst
 		my $fit_bgEst = $template_fit_command.", bgtEs=\"".$opt."\")";
 		say "Running bgEst command: $fit_bgEst";
 		eval { $r_con->run($fit_bgEst); };
-		unless($@)
+		if($@)
 		{
+			say "bgEst fit call: $fit_bgEst failed!";
+			say $@;
+			&r_log($fit_bgEst);
+		} else {
 			&r_log($fit_bgEst);
 			say "Command $fit_bgEst completed successfully!";
 			say "continuting pipeline with $fit_name";
@@ -357,12 +379,11 @@ sub vary_FDR
 		my $fdr_peak = $template_peak_command.", FDR = $fdr)";
 		say "Running $fdr_peak";
 		eval { $r_con->run($fdr_peak); };
-		unless($@)
+		if($@)
 		{
+			say "fdr peak call: $fdr_peak failed!";
+			say $@;
 			&r_log($fdr_peak);
-			say "Peaks called successfully with: \n $fdr_peak";
-			say $r_con->("show($peak_name)");
-			return $peak_name;
 		}
 	}
 	return -1;
@@ -413,4 +434,13 @@ sub wiggle
 	my $wiggle_command = "generateWig( infile=\"$in_file\", fileFormat=\"$in_format\", outfileLoc=\"./\")";
 	$r_con->run($wiggle_command);
 	&r_log($wiggle_command);
+}
+
+sub die
+{
+	my ($mess, $r_con) = @_;
+	my $ts = localtime(time);
+	$r_con->run("save.image(file=\"MosaicsPipe.$ts.RData\")");
+	say $mess;
+	exit;
 }
