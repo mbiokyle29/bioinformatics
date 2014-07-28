@@ -36,6 +36,7 @@ GetOptions (
 	"bin=i" => \$bin_size,
 	"dir=s" => \$dir,
 );
+
 unless($dir) { die "Working dir is required!"; }
 unless($chip_bin or $chip_file) { die "chip bin or file are required!"; 
 }
@@ -45,7 +46,7 @@ my $mos = Mosaics->new(out_loc => $dir);
 # Set everything that was given as args
 if($dir)		{ $mos->out_loc($dir);           }
 if($chip_file)  { $mos->chip_file($chip_file);   }
-if($chip_bin)   { $mos->chip_bin($chip_bin); say "setting chip bin";  }
+if($chip_bin)   { $mos->chip_bin($chip_bin)		 }
 if($input_file) { $mos->input_file($input_file); }
 if($input_bin)  { $mos->input_bin($input_bin);   }
 if($map_score)  { $mos->map_score($map_score);   }
@@ -58,9 +59,28 @@ unless($chip_bin) { $mos->make_chip_bin(); }
 
 # Read the bins
 $mos->read_bins();
-$mos->fit();
-$mos->call_peaks();
+
+say "Done reading bins!";
+
+# Generate fit
+$mos->fit({
+	bgEst => 'rMOM',
+	truncProb => 0.999
+});
+
+say "Done fitting!";
+
+$mos->call_peaks({
+	thres => 30,
+	FDR => 0.05,
+	minsize => 199,
+	maxgap => -1
+});
+
+say "Done calling";
+
 $mos->export();
-$mos->export({type => 'txt'});
+$mos->export( type => 'txt' );
+
 $mos->save_state();
 say $mos->dump_log();
