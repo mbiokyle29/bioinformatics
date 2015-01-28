@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # Sam2Wig-BFR.py
 # Eric Johannsen    Jan 2013
 #
@@ -44,6 +45,10 @@ genomelen = len(genseq)
 
 z = 0
 text = fp.readline().replace("\n","")
+
+while(text.startswith("@")):
+    text = fp.readline().replace("\n","")
+
 line = text.split("\t")
 readlen = len(line[9])
 print "Using read length of", readlen

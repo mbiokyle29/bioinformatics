@@ -34,6 +34,11 @@ GetOptions(
     "stats=i" => \$stat
 ) or die("malformed command line args \n");
 
+unless($read_dir and $map_base) {
+    &useage();
+    exit;
+}
+
 # Figure out the number of cores to run on (total on machine - 1)
 my $cores;
 my $kernel = `uname -s`;
@@ -130,4 +135,10 @@ sub sam_to_bam {
     # That speed up though
     `samtools-rs rocksort -@ 8 -m 16G $bam $sorted`;
     `samtools index $sorted.bam`;
+}
+
+sub useage {
+    say "Bowtie2Pipe.pl useage: ";
+    say "Bowtie2Pipe.pl -d DIRECTORY_WITH_READS -m BOWTIE_2_MAP_NAME --matched MATCHED_DATA_FLAG --stats STATISTICS_DATA_FLAG";
+    say "-d and -m are required!"
 }

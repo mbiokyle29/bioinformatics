@@ -17,7 +17,10 @@ GetOptions (
 	"i=s" => \$input,
 	
 	# Basename (not .fa) of chip file
-	"c=s" => \$chip
+	"c=s" => \$chip,
+
+	# Help
+	"h=s" => &useage()
 );
 
 my $fp_bowtie2 = "/home/kyle/lab/bowtie2/";
@@ -34,3 +37,14 @@ move($fp_results.$input, "./");
 
 # Run mosaics
 say `perl /home/kyle/lab/perlpipe/perl/mosaics/MosaicsPipe.pl --type IO --format sam --chip $chip --input $input`;
+
+sub useage {
+	say "bowsaics.pl - Pipeline script for bowtie2->Mosaics analysis of CHiPSeq data";
+	say "-d <directory of reads>";
+	say "-m <bowtie map name>";
+	say "-i <basename of input file (no .fa)>";
+	say "-c <basename of chip file (no .fa)>";
+	say "-h print this message";
+	say "example: bowsaics.pl -d ~/lab/run123/ -m EBV -i 123_input -c ebna2chip";
+	exit;
+}
