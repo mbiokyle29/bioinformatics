@@ -34,8 +34,9 @@ GetOptions(
     "results-dir=s" => \$results_dir,
     "cores=i"       => \$cores,
     "matched=i"     => \$matched,
-    "script-path"   => \$script_path,
-    "config=s"      => \$config_file
+    "script-path=s"   => \$script_path,
+    "config=s"      => \$config_file,
+    "fasta=s"      => \$fasta_file
 ) or die("malformed command line args \n");
 
 # Do config file
@@ -62,11 +63,11 @@ for my $read_file (@read_files) {
         my $sorted_bam = &sam_to_bam($results_dir.$base_name );
 
         # Reconvert the sorted bam to a sam
-        my $sorted_sam = &bam_back_to_sam($sorted_bam);
+        #my $sorted_sam = &bam_back_to_sam($sorted_bam);
 
         # generate the wigs with external script
         # Must use sorted SAM
-        my $wig = &generate_wig($sorted_sam, $script_path, $fasta_file);
+        #my $wig = &generate_wig($sorted_sam, $script_path, $fasta_file);
     } else {
         say "Skipping non read file: $read_file";
         next;
