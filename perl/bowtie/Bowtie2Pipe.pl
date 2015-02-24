@@ -52,22 +52,12 @@ my $match_arg = "-U" unless $matched;
 
 for my $read_file (@read_files) {
     my $read_count = 0;
-    if ( $read_file =~ m/^(.*)\.f(ast)?q$/ ) {
+    if ( $read_file =~ m/^(.*)\.f(ast)?q(\.gz)?$/ ) {
         my $base_name = $1;
         my $fp_sam    = $results_dir . $1 . ".sam";
         my $results ="bowtie2 -p $cores -t --no-unal -x $map_dir$map_name $read_dir$read_file -S $fp_sam";
         my $bowtie_output = `$results`;
         say $bowtie_output;
-
-        # Run Sam->Bam conversion
-        my $sorted_bam = &sam_to_bam($results_dir.$base_name );
-
-        # Reconvert the sorted bam to a sam
-        #my $sorted_sam = &bam_back_to_sam($sorted_bam);
-
-        # generate the wigs with external script
-        # Must use sorted SAM
-        #my $wig = &generate_wig($sorted_sam, $script_path, $fasta_file);
     } else {
         say "Skipping non read file: $read_file";
         next;
@@ -90,24 +80,9 @@ sub sam_to_bam {
     return $sorted;
 }
 
-sub bam_back_to_sam {
-    my $bam = shift;
-    my $sam = $bam;
-    $sam =~ s/bam^/sam^/;
-    `samtools view -h -o $sam $bam`;
-    say "Returning $sam as the sorted sam file";
-    return $sam;
-}
 
 sub useage {
     say "Bowtie2Pipe.pl useage: ";
     say "Bowtie2Pipe.pl -d DIRECTORY_WITH_READS -m BOWTIE_2_MAP_NAME --matched MATCHED_DATA_FLAG --stats STATISTICS_DATA_FLAG";
     say "-d and -m are required!"
-}
-sub generate_wig {
-    my ($sam, $script, $fasta) = @_;
-    `$script $sam $fasta`;
-    my $wig = $sam."-B.wig";
-    say "returning $wig as the new wig track";
-    return $wig;
 }
