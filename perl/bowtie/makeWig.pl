@@ -9,7 +9,7 @@ use strict;
 use File::Slurp;
 use Data::Printer;
 use feature 'say';
-use Binder;
+use FileDo;
 
 my $sam = shift;
 $sam =~ m/(.*)\.sam/;
