@@ -173,65 +173,107 @@ mkdir $results_dir.$experiment_name;
 mkdir $one_output;
 mkdir $two_output;
 
-# create the experiement specific results
-my $create = $data_files_one->do_name("mkdir $one_output/(?)");
-$create = $data_files_two->do_name("mkdir $two_output/(?)");
-
 # Add them to clean up
 push(@generated_dirs, $one_output);
 push(@generated_dirs, $two_output);
 
+
+# create the experiement specific results
 if ($mated) {
+	say "Running mate pairs";
+
+	$data_files_one->do_basename("mkdir $one_output/(?)");
+	$data_files_two->do_basename("mkdir $two_output/(?)");	
 
 	$result = $data_files_one->do_mated_name_fp_fp("tophat2  -G $genome_gtf -p 8 -o $one_output/(?)  $reference_directory/$reference_basename (?) (?)");
 	unless($result == 1) { &die("tophat2", $data_files_one); }
 
-	$result = $data_files_two->do_mated_name_fp_fp("tophat2  -G $genome_gtf -p 8 -o $one_output/(?)  $reference_directory/$reference_basename (?) (?)");
+	$result = $data_files_two->do_mated_name_fp_fp("tophat2  -G $genome_gtf -p 8 -o $two_output/(?)  $reference_directory/$reference_basename (?) (?)");
 	unless($result == 1) { &die("tophat2", $data_files_two); }
 
+	# Run cufflinks
+	$result = $data_files_one->do_mated_basename_basename("cufflinks -G $genome_gtf -o $one_output/(?)/cufflinks_out_$ts $one_output/(?)/accepted_hits.bam");
+	unless($result == 1) { &die("cufflinks", $data_files_one); }
+	
+	$result = $data_files_two->do_mated_basename_basename("cufflinks -G $genome_gtf -o $two_output/(?)/cufflinks_out_$ts $two_output/(?)/accepted_hits.bam"); 
+	unless($result == 1) { &die("cufflinks", $data_files_two); }
+
+	## build the cuffmerge manifest file
+	my $manifest_filename = $results_dir."/".$experiment_name."/".$experiment_name."_manifest-$ts";
+	my @manifest_content;
+
+	my $manifest_body;
+	$manifest_body .= $data_files_one->print_basename("$one_output/(?)/cufflinks_out_$ts/transcripts.gtf\n",1);
+	$manifest_body .= $data_files_two->print_basename("$two_output/(?)/cufflinks_out_$ts/transcripts.gtf\n",1);
+	say "Writing manifest:";
+	say $manifest_body;
+
+	write_file($manifest_filename, $manifest_filename) or &die("manifest file", $manifest_filename);
+
+	# run cuffmerge on the manifest file
+	my $merge_stats = $results_dir."/".$experiment_name."/".$experiment_name."_merge.stats";
+	push(@generated_dirs, $merge_stats);
+	system("cuffmerge -g $genome_gtf -p 8 -o $merge_stats $manifest_filename") == 0 or &die("cuffmerge", $manifest_filename);
+
+	# Run cuffdiff
+	my $merged_file = $merge_stats."/merged.gtf";
+
+	my $condition_one_bams = $data_files_one->print_basename("$one_output/(?)/accepted_hits.bam,",1);
+	$condition_one_bams = &clean_bam_list($condition_one_bams);
+
+	my $condition_two_bams = $data_files_two->print_basename("$two_output/(?)/accepted_hits.bam,",1);
+	$condition_two_bams = &clean_bam_list($condition_two_bams);
+
+	system("cuffdiff -p 8 $merged_file -o $results_dir/$experiment_name/ --labels $condition_one_name,$condition_two_name  $condition_one_bams $condition_two_bams") == 0 or &die("cuffdiff", $merged_file);
+	say "Tuxedo protocol complete";
+
+
 } else {
+	$data_files_one->do_name("mkdir $one_output/(?)");
+	$data_files_two->do_name("mkdir $two_output/(?)");
+	
 	$result = $data_files_one->do_name_fp("tophat2 -G $genome_gtf -p 8 -o $one_output/(?) $reference_directory/$reference_basename (?)");
 	unless($result == 1) { &die("tophat2", $data_files_one); }
 
 	$result = $data_files_two->do_name_fp("tophat2 -G $genome_gtf -p 8 -o $two_output/(?) $reference_directory/$reference_basename (?)");
 	unless($result == 1) { &die("tophat2", $data_files_two); }
+
+	# Run cufflinks
+	$result = $data_files_one->do_name_name("cufflinks -G $genome_gtf -o $one_output/(?)/cufflinks_out_$ts $one_output/(?)/accepted_hits.bam");
+	unless($result == 1) { &die("cufflinks", $data_files_one); }
+	
+	$result = $data_files_two->do_name_name("cufflinks -G $genome_gtf -o $two_output/(?)/cufflinks_out_$ts $two_output/(?)/accepted_hits.bam"); 
+	unless($result == 1) { &die("cufflinks", $data_files_two); }
+
+	## build the cuffmerge manifest file
+	my $manifest_filename = $results_dir."/".$experiment_name."/".$experiment_name."_manifest-$ts";
+	my @manifest_content;
+
+	my $manifest_body;
+	$manifest_body .= $data_files_one->print_name("$one_output/(?)/cufflinks_out_$ts/transcripts.gtf\n",1);
+	$manifest_body .= $data_files_two->print_name("$two_output/(?)/cufflinks_out_$ts/transcripts.gtf\n",1);
+	say "Writing manifest:";
+	say $manifest_body;
+
+	write_file($manifest_filename, $manifest_filename) or &die("manifest file", $manifest_filename);
+
+	# run cuffmerge on the manifest file
+	my $merge_stats = $results_dir."/".$experiment_name."/".$experiment_name."_merge.stats";
+	push(@generated_dirs, $merge_stats);
+	system("cuffmerge -g $genome_gtf -p 8 -o $merge_stats $manifest_filename") == 0 or &die("cuffmerge", $manifest_filename);
+
+	# Run cuffdiff
+	my $merged_file = $merge_stats."/merged.gtf";
+
+	my $condition_one_bams = $data_files_one->print_name("$one_output/(?)/accepted_hits.bam,",1);
+	$condition_one_bams = &clean_bam_list($condition_one_bams);
+
+	my $condition_two_bams = $data_files_two->print_name("$two_output/(?)/accepted_hits.bam,",1);
+	$condition_two_bams = &clean_bam_list($condition_two_bams);
+
+	system("cuffdiff -p 8 $merged_file -o $results_dir/$experiment_name/ --labels $condition_one_name,$condition_two_name  $condition_one_bams $condition_two_bams") == 0 or &die("cuffdiff", $merged_file);
+	say "Tuxedo protocol complete";
 }
-
-# Run cufflinks
-$result = $data_files_one->do_name_twice("cufflinks -G $genome_gtf -o $one_output/(?)/cufflinks_out_$ts $one_output/(?)/accepted_hits.bam");
-unless($result == 1) { &die("cufflinks", $data_files_one); }
-
-$result = $data_files_two->do_name_twice("cufflinks -G $genome_gtf -o $two_output/(?)/cufflinks_out_$ts $two_output/(?)/accepted_hits.bam"); 
-unless($result == 1) { &die("cufflinks", $data_files_two); }
-
-## build the cuffmerge manifest file
-my $manifest_filename = $results_dir."/".$experiment_name."/".$experiment_name."_manifest-$ts";
-my @manifest_content;
-
-my $manifest_body;
-$manifest_body .= $data_files_one->print_name("$one_output/(?)/cufflinks_out_$ts/transcripts.gtf\n",1);
-$manifest_body .= $data_files_two->print_name("$two_output/(?)/cufflinks_out_$ts/transcripts.gtf\n",1);
-say "Writing manifest:";
-say $manifest_body;
-
-write_file($manifest_filename, $manifest_filename) or &die("manifest file", $manifest_filename);
-
-# run cuffmerge on the manifest file
-my $merge_stats = $results_dir."/".$experiment_name."/".$experiment_name."_merge.stats";
-push(@generated_dirs, $merge_stats);
-system("cuffmerge -g $genome_gtf -p 8 -o $merge_stats $manifest_filename") == 0 or &die("cuffmerge", $manifest_filename);
-
-# Run cuffdiff
-my $merged_file = $merge_stats."/merged.gtf";
-
-my $condition_one_bams = $data_files_one->print_name("$one_output/(?)/accepted_hits.bam,",1);
-$condition_one_bams = &clean_bam_list($condition_one_bams);
-
-my $condition_two_bams = $data_files_two->print_name("$two_output/(?)/accepted_hits.bam,",1);
-$condition_two_bams = &clean_bam_list($condition_two_bams);
-
-system("cuffdiff -p 8 $merged_file -o $results_dir/$experiment_name/ --labels $condition_one_name,$condition_two_name  $condition_one_bams $condition_two_bams") == 0 or &die("cuffdiff", $merged_file);
-say "Tuxedo protocol complete";
 
 sub die {
 	my ($program, $issue, $delete) = @_;
