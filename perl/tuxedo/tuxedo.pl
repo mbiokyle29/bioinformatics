@@ -21,7 +21,7 @@ use FileDo;
 my ($reference_directory, $reference_basename);
 
 # Data files
-my ($condition_one_dir, $condition_two_dir, $data_file_type, $genome_gtf);
+my ($condition_one_dir, $condition_two_dir, $data_file_type, $genome_gtf, $mated);
 my ($results_dir);
 
 # Optional config file
@@ -42,6 +42,7 @@ GetOptions(
 	"cond_two_name=s"	 => \$condition_two_name,
 	"gtf=s"		 => \$genome_gtf,
 	"res_dir=s"	 => \$results_dir,
+	"mated=i"	 => \$mated
 ) or die "Error parsing command line args!\n";
 
 # Parse optional config file
@@ -87,6 +88,10 @@ if($config_file) {
 
 	if (exists $$opts{cond_two_name}) {
 		$condition_two_name = $$opts{cond_two_name};
+	}
+
+	if (exists $$opts{mated}) {
+		$mated = $$opts{mated};
 	}
 }
 
@@ -176,11 +181,21 @@ $create = $data_files_two->do_name("mkdir $two_output/(?)");
 push(@generated_dirs, $one_output);
 push(@generated_dirs, $two_output);
 
-$result = $data_files_one->do_name_fp("tophat2 -G $genome_gtf -p 8 -o $one_output/(?) $reference_directory/$reference_basename (?)");
-unless($result == 1) { &die("tophat2", $data_files_one); }
+if ($mated) {
 
-$result = $data_files_two->do_name_fp("tophat2 -G $genome_gtf -p 8 -o $two_output/(?) $reference_directory/$reference_basename (?)");
-unless($result == 1) { &die("tophat2", $data_files_two); }
+	$result = $data_files_one->do_mated_name_fp_fp("tophat2  -G $genome_gtf -p 8 -o $one_output/(?)  $reference_directory/$reference_basename (?) (?)");
+	unless($result == 1) { &die("tophat2", $data_files_one); }
+
+	$result = $data_files_two->do_mated_name_fp_fp("tophat2  -G $genome_gtf -p 8 -o $one_output/(?)  $reference_directory/$reference_basename (?) (?)");
+	unless($result == 1) { &die("tophat2", $data_files_two); }
+
+} else {
+	$result = $data_files_one->do_name_fp("tophat2 -G $genome_gtf -p 8 -o $one_output/(?) $reference_directory/$reference_basename (?)");
+	unless($result == 1) { &die("tophat2", $data_files_one); }
+
+	$result = $data_files_two->do_name_fp("tophat2 -G $genome_gtf -p 8 -o $two_output/(?) $reference_directory/$reference_basename (?)");
+	unless($result == 1) { &die("tophat2", $data_files_two); }
+}
 
 # Run cufflinks
 $result = $data_files_one->do_name_twice("cufflinks -G $genome_gtf -o $one_output/(?)/cufflinks_out_$ts $one_output/(?)/accepted_hits.bam");
@@ -254,7 +269,7 @@ sub read_config {
 	# Values
 	my @valid_config_opts = ('reference_dir', 'reference_basename',
 		'condition_one_dir', 'condition_two_dir', 'data_file_type',
-		'experiment_name', 'genome_gtf', 'res_dir', 'cond_one_name','cond_two_name');
+		'experiment_name', 'genome_gtf', 'res_dir', 'cond_one_name','cond_two_name','mated');
 	foreach my $line (@config) {
 		next if($line =~ m/^#/);
 		my ($opt, $val) = split(/\t/, $line);
