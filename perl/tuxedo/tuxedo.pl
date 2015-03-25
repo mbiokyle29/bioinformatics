@@ -230,7 +230,7 @@ $condition_one_bams = &clean_bam_list($condition_one_bams);
 my $condition_two_bams = $data_files_two->print_name("$two_output/(?)/accepted_hits.bam,",1);
 $condition_two_bams = &clean_bam_list($condition_two_bams);
 
-system("cuffdiff -p 8 $merged_file --labels $condition_one_name,$condition_two_name  $condition_one_bams $condition_two_bams") == 0 or &die("cuffdiff", $merged_file);
+system("cuffdiff -p 8 $merged_file -o $results_dir/$experiment_name/ --labels $condition_one_name,$condition_two_name  $condition_one_bams $condition_two_bams") == 0 or &die("cuffdiff", $merged_file);
 say "Tuxedo protocol complete";
 
 sub die {
