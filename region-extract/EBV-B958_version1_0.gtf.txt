@@ -1,0 +1,648 @@
+SEQNAME	SOURCE	FEATURE	START	END	SCORE	STRAND	FRAME	ATTRIBUTE
+V01555.2	genbank	exon	109930	111792	.	+	.	gene_id "BKRF2"; transcript_id "BKRF2_lytic"; # predicted TATA at 109905
+V01555.2	genbank	5UTR	109930	109957	.	+	.	gene_id "BKRF2"; transcript_id "BKRF2_lytic";
+V01555.2	genbank	start_codon	109958	109960	.	+	0	gene_id "BKRF2"; transcript_id "BKRF2_lytic"; 
+V01555.2	genbank	CDS	109958	110368	.	+	0	gene_id "BKRF2"; transcript_id "BKRF2_lytic"; 
+V01555.2	genbank	stop_codon	110369	110371	.	+	0	gene_id "BKRF2"; transcript_id "BKRF2_lytic"; 
+V01555.2	genbank	3UTR	110372	111792	.	+	.	gene_id "BKRF2"; transcript_id "BKRF2_lytic"; # predicted polyA at 111787
+V01555.2	genbank	exon	110352	111792	.	+	.	gene_id "BKRF3"; transcript_id "BKRF3_lytic"; # used ATG-1
+V01555.2	genbank	5UTR	110352	110352	.	+	.	gene_id "BKRF3"; transcript_id "BKRF3_lytic";
+V01555.2	genbank	start_codon	110353	110355	.	+	0	gene_id "BKRF3"; transcript_id "BKRF3_lytic"; 
+V01555.2	genbank	CDS	110353	111117	.	+	0	gene_id "BKRF3"; transcript_id "BKRF3_lytic"; 
+V01555.2	genbank	stop_codon	111118	111120	.	+	0	gene_id "BKRF3"; transcript_id "BKRF3_lytic"; 
+V01555.2	genbank	3UTR	111121	111792	.	+	.	gene_id "BKRF3"; transcript_id "BKRF3_lytic"; # predicted polyA at 111787
+V01555.2	genbank	exon	111133	111792	.	+	.	gene_id "BKRF4"; transcript_id "BKRF4_lytic"; # used ATG-1
+V01555.2	genbank	5UTR	111133	111133	.	+	.	gene_id "BKRF4"; transcript_id "BKRF4_lytic";
+V01555.2	genbank	start_codon	111134	111136	.	+	1	gene_id "BKRF4"; transcript_id "BKRF4_lytic"; 
+V01555.2	genbank	CDS	111134	111784	.	+	1	gene_id "BKRF4"; transcript_id "BKRF4_lytic"; 
+V01555.2	genbank	stop_codon	111785	111787	.	+	1	gene_id "BKRF4"; transcript_id "BKRF4_lytic"; 
+V01555.2	genbank	3UTR	111788	111792	.	+	.	gene_id "BKRF4"; transcript_id "BKRF4_lytic"; # predicted polyA at 111787
+V01555.2	genbank	exon	113901	116790	.	+	.	gene_id "BBRF1"; transcript_id "BBRF1_lytic"; # predicted TATA at 113876
+V01555.2	genbank	5UTR	113901	114203	.	+	.	gene_id "BBRF1"; transcript_id "BBRF1_lytic";
+V01555.2	genbank	start_codon	114204	114206	.	+	2	gene_id "BBRF1"; transcript_id "BBRF1_lytic";
+V01555.2	genbank	CDS	114204	116042	.	+	2	gene_id "BBRF1"; transcript_id "BBRF1_lytic"; 
+V01555.2	genbank	stop_codon	116043	116045	.	+	2	gene_id "BBRF1"; transcript_id "BBRF1_lytic"; 
+V01555.2	genbank	3UTR	116046	116790	.	+	.	gene_id "BBRF1"; transcript_id "BBRF1_lytic"; # predicted polyA at 116785
+V01555.2	genbank	exon	115947	116790	.	+	.	gene_id "BBRF2"; transcript_id "BBRF2_lytic"; # used ATG-1
+V01555.2	genbank	5UTR	115947	115947	.	+	.	gene_id "BBRF2"; transcript_id "BBRF2_lytic";
+V01555.2	genbank	start_codon	115948	115950	.	+	0	gene_id "BBRF2"; transcript_id "BBRF2_lytic";
+V01555.2	genbank	CDS	115948	116781	.	+	0	gene_id "BBRF2"; transcript_id "BBRF2_lytic"; 
+V01555.2	genbank	stop_codon	116782	116784	.	+	0	gene_id "BBRF2"; transcript_id "BBRF2_lytic"; 
+V01555.2	genbank	3UTR	116785	116790	.	+	.	gene_id "BBRF2"; transcript_id "BBRF2_lytic"; # predicted polyA at 116785
+V01555.2	genbank	exon	119123	120363	.	+	.	gene_id "BBRF3"; transcript_id "BBRF3_lytic"; # predicted TATA at 119098
+V01555.2	genbank	5UTR	119123	119136	.	+	.	gene_id "BBRF3"; transcript_id "BBRF3_lytic";
+V01555.2	genbank	start_codon	119137	119139	.	+	0	gene_id "BBRF3"; transcript_id "BBRF3_lytic";
+V01555.2	genbank	CDS	119137	120351	.	+	0	gene_id "BBRF3"; transcript_id "BBRF3_lytic"; 
+V01555.2	genbank	stop_codon	120352	120354	.	+	0	gene_id "BBRF3"; transcript_id "BBRF3_lytic"; 
+V01555.2	genbank	3UTR	120355	120363	.	+	.	gene_id "BBRF3"; transcript_id "BBRF3_lytic"; # predicted polyA at 120358
+V01555.2	genbank	exon	137464	140975	.	+	.	gene_id "BcRF1"; transcript_id "BcRF1_lytic"; used ATG-1
+V01555.2	genbank	5UTR	137464	137464	.	+	.	gene_id "BcRF1"; transcript_id "BcRF1_lytic";
+V01555.2	genbank	start_codon	137465	137467	.	+	1	gene_id "BcRF1"; transcript_id "BcRF1_lytic";
+V01555.2	genbank	CDS	137465	139715	.	+	1	gene_id "BcRF1"; transcript_id "BcRF1_lytic";
+V01555.2	genbank	stop_codon	139716	139718	.	+	1	gene_id "BcRF1"; transcript_id "BcRF1_lytic";
+V01555.2	genbank	3UTR	139719	140975	.	+	.	gene_id "BcRF1"; transcript_id "BcRF1_lytic"; # predicted polyA at 140970
+V01555.2	genbank	exon	139704	140975	.	+	.	gene_id "BTRF1"; transcript_id "BTRF1_lytic"; used ATG-1
+V01555.2	genbank	5UTR	139704	139704	.	+	.	gene_id "BTRF1"; transcript_id "BTRF1_lytic";
+V01555.2	genbank	start_codon	139705	139707	.	+	0	gene_id "BTRF1"; transcript_id "BTRF1_lytic";
+V01555.2	genbank	CDS	139705	140915	.	+	0	gene_id "BTRF1"; transcript_id "BTRF1_lytic";
+V01555.2	genbank	stop_codon	140916	140919	.	+	0	gene_id "BTRF1"; transcript_id "BTRF1_lytic";
+V01555.2	genbank	3UTR	140920	140975	.	+	.	gene_id "BTRF1"; transcript_id "BTRF1_lytic"; # predicted polyA at 140970
+V01555.2	genbank	exon	144859	147175	.	+	.	gene_id "BXRF1"; transcript_id "BXRF1_lytic"; used ATG-1
+V01555.2	genbank	5UTR	144859	144859	.	+	.	gene_id "BXRF1"; transcript_id "BXRF1_lytic";
+V01555.2	genbank	start_codon	144860	144862	.	+	1	gene_id "BXRF1"; transcript_id "BXRF1_lytic";
+V01555.2	genbank	CDS	144860	145603	.	+	1	gene_id "BXRF1"; transcript_id "BXRF1_lytic";
+V01555.2	genbank	stop_codon	145604	145606	.	+	1	gene_id "BXRF1"; transcript_id "BXRF1_lytic";
+V01555.2	genbank	3UTR	145607	147175	.	+	.	gene_id "BXRF1"; transcript_id "BXRF1_lytic"; # predicted polyA at 147170
+V01555.2	genbank	exon	145327	147175	.	+	.	gene_id "BVRF1"; transcript_id "BVRF1_lytic"; # predicted TATA at 145302
+V01555.2	genbank	5UTR	145327	145415	.	+	.	gene_id "BVRF1"; transcript_id "BVRF1_lytic";
+V01555.2	genbank	start_codon	145416	145418	.	+	2	gene_id "BVRF1"; transcript_id "BVRF1_lytic";
+V01555.2	genbank	CDS	145416	147125	.	+	2	gene_id "BVRF1"; transcript_id "BVRF1_lytic";
+V01555.2	genbank	stop_codon	147126	147128	.	+	2	gene_id "BVRF1"; transcript_id "BVRF1_lytic";
+V01555.2	genbank	3UTR	147129	147175	.	+	.	gene_id "BVRF1"; transcript_id "BVRF1_lytic"; # predicted polyA at 147170
+V01555.2	genbank	exon	147746	149745	.	+	.	gene_id "BVRF2"; transcript_id "BVRF2_lytic"; # predicted TATA at 147721
+V01555.2	genbank	5UTR	147746	147926	.	+	.	gene_id "BVRF2"; transcript_id "BVRF2_lytic";
+V01555.2	genbank	start_codon	147927	147929	.	+	2	gene_id "BVRF2"; transcript_id "BVRF2_lytic";
+V01555.2	genbank	CDS	147927	149741	.	+	2	gene_id "BVRF2"; transcript_id "BVRF2_lytic";
+V01555.2	genbank	stop_codon	149742	149744	.	+	2	gene_id "BVRF2"; transcript_id "BVRF2_lytic";
+V01555.2	genbank	3UTR	149745	149745	.	+	.	gene_id "BVRF2"; transcript_id "BVRF2_lytic"; # predicted polyA at 149727
+V01555.2	genbank	exon	148645	149745	.	+	.	gene_id "BdRF1"; transcript_id "BdRF1_lytic"; # TATA at 148620
+V01555.2	genbank	5UTR	148645	148706	.	+	.	gene_id "BdRF1"; transcript_id "BdRF1_lytic";
+V01555.2	genbank	start_codon	148707	148709	.	+	2	gene_id "BdRF1"; transcript_id "BdRF1_lytic";
+V01555.2	genbank	CDS	148707	149741	.	+	2	gene_id "BdRF1"; transcript_id "BdRF1_lytic";
+V01555.2	genbank	stop_codon	149742	149744	.	+	2	gene_id "BdRF1"; transcript_id "BdRF1_lytic";
+V01555.2	genbank	3UTR	149745	149745	.	+	.	gene_id "BdRF1"; transcript_id "BdRF1_lytic"; # predicted polyA at 149727
+V01555.2	genbank	exon	165491	166170	.	+	.	gene_id "BARF1"; transcript_id "BARF1_lytic"; # predicted TATA at 165466
+V01555.2	genbank	5UTR	165491	165503	.	+	.	gene_id "BARF1"; transcript_id "BARF1_lytic";
+V01555.2	genbank	start_codon	165504	165506	.	+	2	gene_id "BARF1"; transcript_id "BARF1_lytic";
+V01555.2	genbank	CDS	165504	166166	.	+	2	gene_id "BARF1"; transcript_id "BARF1_lytic";
+V01555.2	genbank	stop_codon	166167	166169	.	+	2	gene_id "BARF1"; transcript_id "BARF1_lytic";
+V01555.2	genbank	3UTR	166170	166170	.	+	.	gene_id "BARF1"; transcript_id "BARF1_lytic"; # predicted polyA at 166165
+V01555.2	genbank	exon	1701	5856	.	+	.	gene_id "BNRF1"; transcript_id "BNRF1_lytic"; # predicted TATA at 1676
+V01555.2	genbank	5UTR	1701	1735	.	+	.	gene_id "BNRF1"; transcript_id "BNRF1_lytic";
+V01555.2	genbank	start_codon	1736	1738	.	+	1	gene_id "BNRF1"; transcript_id "BNRF1_lytic";
+V01555.2	genbank	CDS	1736	5689	.	+	1	gene_id "BNRF1"; transcript_id "BNRF1_lytic";
+V01555.2	genbank	stop_codon	5690	5692	.	+	1	gene_id "BNRF1"; transcript_id "BNRF1_lytic";
+V01555.2	genbank	3UTR	5693	5856	.	+	.	gene_id "BNRF1"; transcript_id "BNRF1_lytic"; # predicted polyA at 5841
+V01555.2	genbank	exon	6629	6795	.	+	.	gene_id "EBER1"; transcript_id "EBER1_latent";
+V01555.2	genbank	exon	6956	7128	.	+	.	gene_id "EBER2"; transcript_id "EBER2_latent";
+V01555.2	genbank	exon	9656	10262	.	+	.	gene_id "BCRF1"; transcript_id "BCRF1_lytic"; # predicted TATA at 9631
+V01555.2	genbank	5UTR	9656	9674	.	+	.	gene_id "BCRF1"; transcript_id "BCRF1_lytic";
+V01555.2	genbank	start_codon	9675	9677	.	+	2	gene_id "BCRF1"; transcript_id "BCRF1_lytic";
+V01555.2	genbank	CDS	9675	10184	.	+	2	gene_id "BCRF1"; transcript_id "BCRF1_lytic";
+V01555.2	genbank	stop_codon	10185	10187	.	+	2	gene_id "BCRF1"; transcript_id "BCRF1_lytic";
+V01555.2	genbank	3UTR	10188	10262	.	+	.	gene_id "BCRF1"; transcript_id "BCRF1_lytic"; # predicted TATA at 10257
+V01555.2	genbank	exon	53784	55523	.	+	.	gene_id "BHRF1"; transcript_id "BHRF1_lytic3"; # predicted TATA at 53759
+V01555.2	genbank	5UTR	53784	54375	.	+	.	gene_id "BHRF1"; transcript_id "BHRF1_lytic3";
+V01555.2	genbank	start_codon	54376	54378	.	+	0	gene_id "BHRF1"; transcript_id "BHRF1_lytic3";
+V01555.2	genbank	CDS	54376	54948	.	+	0	gene_id "BHRF1"; transcript_id "BHRF1_lytic3";
+V01555.2	genbank	stop_codon	54949	54951	.	+	0	gene_id "BHRF1"; transcript_id "BHRF1_lytic3";
+V01555.2	genbank	3UTR	54952	55523	.	+	.	gene_id "BHRF1"; transcript_id "BHRF1_lytic3"; # predicted polyA at 55518
+V01555.2	genbank	exon	53784	55523	.	+	.	gene_id "BHRF1"; transcript_id "BHRF1_lytic4"; # predicted TATA at 53759
+V01555.2	genbank	5UTR	53784	53895	.	+	.	gene_id "BHRF1"; transcript_id "BHRF1_lytic4";
+V01555.2	genbank	5UTR	54335	54375	.	+	.	gene_id "BHRF1"; transcript_id "BHRF1_lytic4";
+V01555.2	genbank	start_codon	54376	54378	.	+	0	gene_id "BHRF1"; transcript_id "BHRF1_lytic4";
+V01555.2	genbank	CDS	54376	54948	.	+	0	gene_id "BHRF1"; transcript_id "BHRF1_lytic4";
+V01555.2	genbank	stop_codon	54949	54951	.	+	0	gene_id "BHRF1"; transcript_id "BHRF1_lytic4";
+V01555.2	genbank	3UTR	54952	55523	.	+	.	gene_id "BHRF1"; transcript_id "BHRF1_lytic4"; # predicted polyA at 55518
+V01555.2	genbank	exon	58523	62075	.	+	.	gene_id "BFRF0.5"; transcript_id "BFRF0.5_lytic"; # used ATG-1
+V01555.2	genbank	5UTR	58523	58523	.	+	.	gene_id "BFRF0.5"; transcript_id "BFRF0.5_lytic";
+V01555.2	genbank	start_codon	58524	58526	.	+	2	gene_id "BFRF0.5"; transcript_id "BFRF0.5_lytic";
+V01555.2	genbank	CDS	58524	58928	.	+	2	gene_id "BFRF0.5"; transcript_id "BFRF0.5_lytic";
+V01555.2	genbank	stop_codon	58929	58931	.	+	2	gene_id "BFRF0.5"; transcript_id "BFRF0.5_lytic";
+V01555.2	genbank	3UTR	58932	62075	.	+	.	gene_id "BFRF0.5"; transcript_id "BFRF0.5_lytic"; # predicted polyA at 62069
+V01555.2	genbank	exon	58857	62075	.	+	.	gene_id "BFRF1"; transcript_id "BFRF1_lytic"; # predicted TATA at 58832
+V01555.2	genbank	5UTR	58857	58890	.	+	.	gene_id "BFRF1"; transcript_id "BFRF1_lytic";
+V01555.2	genbank	start_codon	58891	58893	.	+	0	gene_id "BFRF1"; transcript_id "BFRF1_lytic";
+V01555.2	genbank	CDS	58891	59898	.	+	0	gene_id "BFRF1"; transcript_id "BFRF1_lytic";
+V01555.2	genbank	stop_codon	59899	59901	.	+	0	gene_id "BFRF1"; transcript_id "BFRF1_lytic";
+V01555.2	genbank	3UTR	59902	62075	.	+	.	gene_id "BFRF1"; transcript_id "BFRF1_lytic"; # predicted polyA at 62069
+V01555.2	genbank	exon	59807	62075	.	+	.	gene_id "BFRF2"; transcript_id "BFRF2_lytic"; # used ATG-1
+V01555.2	genbank	5UTR	59807	59807	.	+	.	gene_id "BFRF2"; transcript_id "BFRF2_lytic";
+V01555.2	genbank	start_codon	59808	59810	.	+	2	gene_id "BFRF2"; transcript_id "BFRF2_lytic";
+V01555.2	genbank	CDS	59808	61580	.	+	2	gene_id "BFRF2"; transcript_id "BFRF2_lytic";
+V01555.2	genbank	stop_codon	61581	61583	.	+	2	gene_id "BFRF2"; transcript_id "BFRF2_lytic";
+V01555.2	genbank	3UTR	61584	62075	.	+	.	gene_id "BFRF2"; transcript_id "BFRF2_lytic"; # predicted polyA at 62069
+V01555.2	genbank	exon	61369	62075	.	+	.	gene_id "BFRF3"; transcript_id "BFRF3_lytic"; # predicted TATA at 61344
+V01555.2	genbank	5UTR	61369	61506	.	+	.	gene_id "BFRF3"; transcript_id "BFRF3_lytic";
+V01555.2	genbank	start_codon	61507	61509	.	+	0	gene_id "BFRF3"; transcript_id "BFRF3_lytic";
+V01555.2	genbank	CDS	61507	62034	.	+	0	gene_id "BFRF3"; transcript_id "BFRF3_lytic";
+V01555.2	genbank	stop_codon	62035	62037	.	+	0	gene_id "BFRF3"; transcript_id "BFRF3_lytic";
+V01555.2	genbank	3UTR	62038	62075	.	+	.	gene_id "BFRF3"; transcript_id "BFRF3_lytic"; # predicted polyA at 62069
+V01555.2	genbank	exon	75042	78888	.	+	.	gene_id "BORF1"; transcript_id "BORF1_lytic"; # predicted TATA at 75017
+V01555.2	genbank	5UTR	75042	75237	.	+	.	gene_id "BORF1"; transcript_id "BORF1_lytic";
+V01555.2	genbank	start_codon	75238	75240	.	+	0	gene_id "BORF1"; transcript_id "BORF1_lytic";
+V01555.2	genbank	CDS	75238	76329	.	+	0	gene_id "BORF1"; transcript_id "BORF1_lytic";
+V01555.2	genbank	stop_codon	76330	76332	.	+	0	gene_id "BORF1"; transcript_id "BORF1_lytic";
+V01555.2	genbank	3UTR	76333	78888	.	+	.	gene_id "BORF1"; transcript_id "BORF1_lytic"; # predicted polyA at 78883
+V01555.2	genbank	exon	76194	78888	.	+	.	gene_id "BORF2"; transcript_id "BORF2_lytic"; # predicted TATA at 76169
+V01555.2	genbank	5UTR	76194	76406	.	+	.	gene_id "BORF2"; transcript_id "BORF2_lytic";
+V01555.2	genbank	start_codon	76407	76409	.	+	2	gene_id "BORF2"; transcript_id "BORF2_lytic";
+V01555.2	genbank	CDS	76407	78884	.	+	2	gene_id "BORF2"; transcript_id "BORF2_lytic";
+V01555.2	genbank	stop_codon	78885	78887	.	+	2	gene_id "BORF2"; transcript_id "BORF2_lytic";
+V01555.2	genbank	3UTR	78888	78888	.	+	.	gene_id "BORF2"; transcript_id "BORF2_lytic"; # predicted polyA at 78883
+V01555.2	genbank	exon	78829	82185	.	+	.	gene_id "BaRF1"; transcript_id "BaRF1_lytic"; # predicted TATA at 78804
+V01555.2	genbank	5UTR	78829	78899	.	+	.	gene_id "BaRF1"; transcript_id "BaRF1_lytic";
+V01555.2	genbank	start_codon	78900	78902	.	+	2	gene_id "BaRF1"; transcript_id "BaRF1_lytic";
+V01555.2	genbank	CDS	78900	79805	.	+	2	gene_id "BaRF1"; transcript_id "BaRF1_lytic";
+V01555.2	genbank	stop_codon	79806	79808	.	+	2	gene_id "BaRF1"; transcript_id "BaRF1_lytic";
+V01555.2	genbank	3UTR	79809	82185	.	+	.	gene_id "BaRF1"; transcript_id "BaRF1_lytic"; # predicted polyA at 82180
+V01555.2	genbank	exon	79865	82185	.	+	.	gene_id "BMRF1"; transcript_id "BMRF1_lytic"; # predicted TATA at 79840
+V01555.2	genbank	5UTR	79865	79898	.	+	.	gene_id "BMRF1"; transcript_id "BMRF1_lytic";
+V01555.2	genbank	start_codon	79899	79901	.	+	2	gene_id "BMRF1"; transcript_id "BMRF1_lytic";
+V01555.2	genbank	CDS	79899	81110	.	+	2	gene_id "BMRF1"; transcript_id "BMRF1_lytic";
+V01555.2	genbank	stop_codon	81111	81113	.	+	2	gene_id "BMRF1"; transcript_id "BMRF1_lytic";
+V01555.2	genbank	3UTR	81114	82185	.	+	.	gene_id "BMRF1"; transcript_id "BMRF1_lytic"; # predicted polyA at 82180
+V01555.2	genbank	exon	80804	82185	.	+	.	gene_id "BMRF2"; transcript_id "BMRF2_lytic"; # predicted TATA at 80779
+V01555.2	genbank	5UTR	80804	81117	.	+	.	gene_id "BMRF2"; transcript_id "BMRF2_lytic";
+V01555.2	genbank	start_codon	81118	81120	.	+	0	gene_id "BMRF2"; transcript_id "BMRF2_lytic";
+V01555.2	genbank	CDS	81118	82188	.	+	0	gene_id "BMRF2"; transcript_id "BMRF2_lytic";
+V01555.2	genbank	stop_codon	82189	82191	.	+	0	gene_id "BMRF2"; transcript_id "BMRF2_lytic";
+V01555.2	genbank	3UTR	82192	82185	.	+	.	gene_id "BMRF2"; transcript_id "BMRF2_lytic"; # predicted polyA at 82180
+V01555.2	genbank	exon	86907	87604	.	+	.	gene_id "BSRF1"; transcript_id "BSRF1_lytic"; # predicted TATA at 86882
+V01555.2	genbank	5UTR	86907	86923	.	+	.	gene_id "BSRF1"; transcript_id "BSRF1_lytic";
+V01555.2	genbank	start_codon	86924	86926	.	+	1	gene_id "BSRF1"; transcript_id "BSRF1_lytic";
+V01555.2	genbank	CDS	86924	87577	.	+	1	gene_id "BSRF1"; transcript_id "BSRF1_lytic";
+V01555.2	genbank	stop_codon	87578	87580	.	+	1	gene_id "BSRF1"; transcript_id "BSRF1_lytic";
+V01555.2	genbank	3UTR	87581	87604	.	+	.	gene_id "BSRF1"; transcript_id "BSRF1_lytic"; # predicted polyA at 87599
+V01555.2	genbank	exon	88532	89417	.	+	.	gene_id "BLRF1"; transcript_id "BLRF1_lytic"; # predicted TATA at 88507
+V01555.2	genbank	5UTR	88532	88546	.	+	.	gene_id "BLRF1"; transcript_id "BLRF1_lytic";
+V01555.2	genbank	start_codon	88547	88549	.	+	1	gene_id "BLRF1"; transcript_id "BLRF1_lytic";
+V01555.2	genbank	CDS	88547	88852	.	+	1	gene_id "BLRF1"; transcript_id "BLRF1_lytic";
+V01555.2	genbank	stop_codon	88853	88855	.	+	1	gene_id "BLRF1"; transcript_id "BLRF1_lytic";
+V01555.2	genbank	3UTR	88856	89417	.	+	.	gene_id "BLRF1"; transcript_id "BLRF1_lytic"; # predicted polyA at 89412
+V01555.2	genbank	exon	88888	89417	.	+	.	gene_id "BLRF2"; transcript_id "BLRF2_lytic"; # predicted TATA at 88863
+V01555.2	genbank	5UTR	88888	88924	.	+	.	gene_id "BLRF2"; transcript_id "BLRF2_lytic";
+V01555.2	genbank	start_codon	88925	88927	.	+	1	gene_id "BLRF2"; transcript_id "BLRF2_lytic";
+V01555.2	genbank	CDS	88925	89410	.	+	1	gene_id "BLRF2"; transcript_id "BLRF2_lytic";
+V01555.2	genbank	stop_codon	89411	89413	.	+	1	gene_id "BLRF2"; transcript_id "BLRF2_lytic";
+V01555.2	genbank	3UTR	89414	89417	.	+	.	gene_id "BLRF2"; transcript_id "BLRF2_lytic"; # predicted polyA at 89412
+V01555.2	genbank	exon	105041	106115	.	+	.	gene_id "BRRF1"; transcript_id "BRRF1_lytic"; # predicted TATA at 105016
+V01555.2	genbank	5UTR	105041	105181	.	+	.	gene_id "BRRF1"; transcript_id "BRRF1_lytic";
+V01555.2	genbank	start_codon	105182	105184	.	+	1	gene_id "BRRF1"; transcript_id "BRRF1_lytic";
+V01555.2	genbank	CDS	105182	106111	.	+	1	gene_id "BRRF1"; transcript_id "BRRF1_lytic";
+V01555.2	genbank	stop_codon	106112	106114	.	+	1	gene_id "BRRF1"; transcript_id "BRRF1_lytic";
+V01555.2	genbank	3UTR	106115	106115	.	+	.	gene_id "BRRF1"; transcript_id "BRRF1_lytic"; # predicted polyA at 106110
+V01555.2	genbank	exon	106268	107947	.	+	.	gene_id "BRRF2"; transcript_id "BRRF2_lytic"; # predicted TATA at 106243
+V01555.2	genbank	5UTR	106268	106301	.	+	.	gene_id "BRRF2"; transcript_id "BRRF2_lytic";
+V01555.2	genbank	start_codon	106302	106304	.	+	2	gene_id "BRRF2"; transcript_id "BRRF2_lytic";
+V01555.2	genbank	CDS	106302	107912	.	+	2	gene_id "BRRF2"; transcript_id "BRRF2_lytic";
+V01555.2	genbank	stop_codon	107913	107915	.	+	2	gene_id "BRRF2"; transcript_id "BRRF2_lytic";
+V01555.2	genbank	3UTR	107916	107947	.	+	.	gene_id "BRRF2"; transcript_id "BRRF2_lytic"; # predicted polyA at 107942
+V01555.2	genbank	exon	166941	169176	.	-	.	gene_id "LMP1-D1"; transcript_id "LMP1-D1_lytic";
+V01555.2	genbank	3UTR	166941	168159	.	-	.	gene_id "LMP1-D1"; transcript_id "LMP1-D1_lytic"; # predicted polyA at (166946)
+V01555.2	genbank	stop_codon	168160	168162	.	-	2	gene_id "LMP1-D1"; transcript_id "LMP1-D1_lytic";
+V01555.2	genbank	CDS	168163	168936	.	-	2	gene_id "LMP1-D1"; transcript_id "LMP1-D1_lytic";
+V01555.2	genbank	start_codon	168934	168936	.	-	2	gene_id "LMP1-D1"; transcript_id "LMP1-D1_lytic";
+V01555.2	genbank	5UTR	168937	169176	.	-	.	gene_id "LMP1-D1"; transcript_id "LMP1-D1_lytic"; # predicted TATA at (169201)
+V01555.2	genbank	exon	166941	167500	.	-	.	gene_id "BNLF2a"; transcript_id "BNLF2a_lytic";
+V01555.2	genbank	3UTR	166941	167303	.	-	.	gene_id "BNLF2a"; transcript_id "BNLF2a_lytic"; # predicted polyA at (166946)
+V01555.2	genbank	stop_codon	167304	167306	.	-	1	gene_id "BNLF2a"; transcript_id "BNLF2a_lytic";
+V01555.2	genbank	CDS	167307	167486	.	-	1	gene_id "BNLF2a"; transcript_id "BNLF2a_lytic";
+V01555.2	genbank	start_codon	167484	167486	.	-	1	gene_id "BNLF2a"; transcript_id "BNLF2a_lytic";
+V01555.2	genbank	5UTR	167487	167500	.	-	.	gene_id "BNLF2a"; transcript_id "BNLF2a_lytic"; # predicted TATA at (167525)
+V01555.2	genbank	exon	166941	167295	.	-	.	gene_id "BNLF2b"; transcript_id "BNLF2b_lytic";
+V01555.2	genbank	3UTR	166941	166997	.	-	.	gene_id "BNLF2b"; transcript_id "BNLF2b_lytic"; # predicted polyA at (166946)
+V01555.2	genbank	stop_codon	166998	167000	.	-	1	gene_id "BNLF2b"; transcript_id "BNLF2b_lytic";
+V01555.2	genbank	CDS	167001	167294	.	-	1	gene_id "BNLF2b"; transcript_id "BNLF2b_lytic";
+V01555.2	genbank	start_codon	167292	167294	.	-	1	gene_id "BNLF2b"; transcript_id "BNLF2b_lytic";
+V01555.2	genbank	5UTR	167295	167295	.	-	.	gene_id "BNLF2b"; transcript_id "BNLF2b_lytic"; # used (ATG-1)
+V01555.2	genbank	exon	164846	165688	.	-	.	gene_id "BALF1"; transcript_id "BALF1_lytic"; 
+V01555.2	genbank	3UTR	164846	164854	.	-	.	gene_id "BALF1"; transcript_id "BALF1_lytic"; # predicted polyA at (164851)
+V01555.2	genbank	stop_codon	164855	164857	.	-	0	gene_id "BALF1"; transcript_id "BALF1_lytic";
+V01555.2	genbank	CDS	164858	165403	.	-	0	gene_id "BALF1"; transcript_id "BALF1_lytic";
+V01555.2	genbank	start_codon	165401	165403	.	-	0	gene_id "BALF1"; transcript_id "BALF1_lytic";
+V01555.2	genbank	5UTR	165404	165688	.	-	.	gene_id "BALF1"; transcript_id "BALF1_lytic"; # predicted TATA at (165713)
+V01555.2	genbank	exon	161008	164789	.	-	.	gene_id "BALF2"; transcript_id "BALF2_lytic";
+V01555.2	genbank	3UTR	161008	164769	.	-	.	gene_id "BALF2"; transcript_id "BALF2_lytic"; # predicted polyA at (161013)
+V01555.2	genbank	stop_codon	164770	164772	.	-	1	gene_id "BALF2"; transcript_id "BALF2_lytic";
+V01555.2	genbank	CDS	161384	164773	.	-	1	gene_id "BALF2"; transcript_id "BALF2_lytic";
+V01555.2	genbank	start_codon	161382	161384	.	-	1	gene_id "BALF2"; transcript_id "BALF2_lytic";
+V01555.2	genbank	5UTR	161385	164789	.	-	.	gene_id "BALF2"; transcript_id "BALF2_lytic"; # predicted TATA at (164814)
+V01555.2	genbank	exon	159308	161367	.	-	.	gene_id "BALF3"; transcript_id "BALF3_lytic";
+V01555.2	genbank	3UTR	159308	159308	.	-	.	gene_id "BALF3"; transcript_id "BALF3_lytic"; # used (stop+1)
+V01555.2	genbank	stop_codon	159309	159311	.	-	1	gene_id "BALF3"; transcript_id "BALF3_lytic";
+V01555.2	genbank	CDS	159312	161366	.	-	1	gene_id "BALF3"; transcript_id "BALF3_lytic";
+V01555.2	genbank	start_codon	161364	161366	.	-	1	gene_id "BALF3"; transcript_id "BALF3_lytic";
+V01555.2	genbank	5UTR	161367	161367	.	-	.	gene_id "BALF3"; transcript_id "BALF3_lytic"; # used (ATG-1)
+V01555.2	genbank	exon	156702	159345	.	-	.	gene_id "BALF4"; transcript_id "BALF4_lytic";
+V01555.2	genbank	3UTR	156702	156748	.	-	.	gene_id "BALF4"; transcript_id "BALF4_lytic"; # predicted polyA at (156707)
+V01555.2	genbank	stop_codon	156749	156751	.	-	0	gene_id "BALF4"; transcript_id "BALF4_lytic";
+V01555.2	genbank	CDS	156752	159322	.	-	0	gene_id "BALF4"; transcript_id "BALF4_lytic";
+V01555.2	genbank	start_codon	159320	159322	.	-	0	gene_id "BALF4"; transcript_id "BALF4_lytic";
+V01555.2	genbank	5UTR	159323	159345	.	-	.	gene_id "BALF4"; transcript_id "BALF4_lytic"; # predicted TATA at (159370)
+V01555.2	genbank	exon	156702	158501	.	-	.	gene_id "late-1.8kb"; transcript_id "late-1.8kb_lytic"; # predicted polyA at (156707)
+V01555.2	genbank	exon	153698	156747	.	-	.	gene_id "BALF5"; transcript_id "BALF5_lytic";
+V01555.2	genbank	3UTR	153698	153698	.	-	.	gene_id "BALF5"; transcript_id "BALF5_lytic"; used (stop+1)
+V01555.2	genbank	stop_codon	153699	153701	.	-	1	gene_id "BALF5"; transcript_id "BALF5_lytic";
+V01555.2	genbank	CDS	153702	156746	.	-	1	gene_id "BALF5"; transcript_id "BALF5_lytic";
+V01555.2	genbank	start_codon	156744	156746	.	-	1	gene_id "BALF5"; transcript_id "BALF5_lytic";
+V01555.2	genbank	5UTR	156747	156747	.	-	.	gene_id "BALF5"; transcript_id "BALF5_lytic"; used (ATG-1)
+V01555.2	genbank	exon	152160	153100	.	-	.	gene_id "BILF1"; transcript_id "BILF1_lytic";
+V01555.2	genbank	3UTR	152160	152160	.	-	.	gene_id "BILF1"; transcript_id "BILF1_lytic"; # (stop+1)
+V01555.2	genbank	stop_codon	152161	152163	.	-	2	gene_id "BILF1"; transcript_id "BILF1_lytic";
+V01555.2	genbank	CDS	152164	153099	.	-	2	gene_id "BILF1"; transcript_id "BILF1_lytic";
+V01555.2	genbank	start_codon	153097	153099	.	-	2	gene_id "BILF1"; transcript_id "BILF1_lytic";
+V01555.2	genbank	5UTR	153100	153100	.	-	.	gene_id "BILF1"; transcript_id "BILF1_lytic"; # used (ATG-1)
+V01555.2	genbank	exon	149753	150546	.	-	.	gene_id "BILF2"; transcript_id "BILF2_lytic";
+V01555.2	genbank	3UTR	149753	149778	.	-	.	gene_id "BILF2"; transcript_id "BILF2_lytic"; # predicted polyA at (149758)
+V01555.2	genbank	stop_codon	149779	149781	.	-	2	gene_id "BILF2"; transcript_id "BILF2_lytic";
+V01555.2	genbank	CDS	149782	150525	.	-	2	gene_id "BILF2"; transcript_id "BILF2_lytic";
+V01555.2	genbank	start_codon	150523	150525	.	-	2	gene_id "BILF2"; transcript_id "BILF2_lytic";
+V01555.2	genbank	5UTR	150526	150546	.	-	.	gene_id "BILF2"; transcript_id "BILF2_lytic"; # predicted TATA at (150571)
+V01555.2	genbank	exon	146921	147917	.	-	.	gene_id "BVLF1"; transcript_id "BVLF1_lytic";
+V01555.2	genbank	3UTR	146921	147097	.	-	.	gene_id "BVLF1"; transcript_id "BVLF1_lytic"; # predicted polyA at (146926)
+V01555.2	genbank	stop_codon	147098	147100	.	-	0	gene_id "BVLF1"; transcript_id "BVLF1_lytic";
+V01555.2	genbank	CDS	147101	147916	.	-	0	gene_id "BVLF1"; transcript_id "BVLF1_lytic";
+V01555.2	genbank	start_codon	147914	147916	.	-	0	gene_id "BVLF1"; transcript_id "BVLF1_lytic";
+V01555.2	genbank	5UTR	147917	147917	.	-	.	gene_id "BVLF1"; transcript_id "BVLF1_lytic"; # used (ATG-1)
+V01555.2	genbank	exon	141281	145110	.	-	.	gene_id "BXLF1"; transcript_id "BXLF1_lytic";
+V01555.2	genbank	3UTR	141281	143037	.	-	.	gene_id "BXLF1"; transcript_id "BXLF1_lytic"; # predicted polyA at (141286)
+V01555.2	genbank	stop_codon	143038	143040	.	-	2	gene_id "BXLF1"; transcript_id "BXLF1_lytic";
+V01555.2	genbank	CDS	143041	144861	.	-	2	gene_id "BXLF1"; transcript_id "BXLF1_lytic";
+V01555.2	genbank	start_codon	144859	144861	.	-	2	gene_id "BXLF1"; transcript_id "BXLF1_lytic";
+V01555.2	genbank	5UTR	144862	145110	.	-	.	gene_id "BXLF1"; transcript_id "BXLF1_lytic"; # predicted TATA at (145135)
+V01555.2	genbank	exon	140897	143037	.	-	.	gene_id "BXLF2"; transcript_id "BXLF2_lytic";
+V01555.2	genbank	3UTR	140897	140915	.	-	.	gene_id "BXLF2"; transcript_id "BXLF2_lytic"; # predicted polyA at (140902)
+V01555.2	genbank	stop_codon	140916	140918	.	-	1	gene_id "BXLF2"; transcript_id "BXLF2_lytic";
+V01555.2	genbank	CDS	140919	143036	.	-	1	gene_id "BXLF2"; transcript_id "BXLF2_lytic";
+V01555.2	genbank	start_codon	143034	143036	.	-	1	gene_id "BXLF2"; transcript_id "BXLF2_lytic";
+V01555.2	genbank	5UTR	143037	143037	.	-	.	gene_id "BXLF2"; transcript_id "BXLF2_lytic"; # used (ATG-1)
+V01555.2	genbank	exon	133307	137685	.	-	.	gene_id "BcLF1"; transcript_id "BcLF1_lytic";
+V01555.2	genbank	3UTR	133307	133320	.	-	.	gene_id "BcLF1"; transcript_id "BcLF1_lytic"; # predicted polyA at (133312)
+V01555.2	genbank	stop_codon	133321	133323	.	-	2	gene_id "BcLF1"; transcript_id "BcLF1_lytic";
+V01555.2	genbank	CDS	133324	137466	.	-	2	gene_id "BcLF1"; transcript_id "BcLF1_lytic";
+V01555.2	genbank	start_codon	137464	137466	.	-	2	gene_id "BcLF1"; transcript_id "BcLF1_lytic";
+V01555.2	genbank	5UTR	137467	137685	.	-	.	gene_id "BcLF1"; transcript_id "BcLF1_lytic"; # predicted TATA at (137710)
+V01555.2	genbank	exon	130354	133327	.	-	.	gene_id "BDLF1"; transcript_id "BDLF1_lytic";
+V01555.2	genbank	3UTR	130354	132399	.	-	.	gene_id "BDLF1"; transcript_id "BDLF1_lytic"; # predicted polyA at (130359)
+V01555.2	genbank	stop_codon	132400	132402	.	-	2	gene_id "BDLF1"; transcript_id "BDLF1_lytic";
+V01555.2	genbank	CDS	132403	133305	.	-	2	gene_id "BDLF1"; transcript_id "BDLF1_lytic";
+V01555.2	genbank	start_codon	133303	133305	.	-	2	gene_id "BDLF1"; transcript_id "BDLF1_lytic";
+V01555.2	genbank	5UTR	133306	133327	.	-	.	gene_id "BDLF1"; transcript_id "BDLF1_lytic"; # predicted TATA at (133352)
+V01555.2	genbank	exon	130354	132451	.	-	.	gene_id "BDLF2"; transcript_id "BDLF2_lytic";
+V01555.2	genbank	3UTR	130354	131126	.	-	.	gene_id "BDLF2"; transcript_id "BDLF2_lytic"; # predicted polyA at (130359)
+V01555.2	genbank	stop_codon	131127	131129	.	-	1	gene_id "BDLF2"; transcript_id "BDLF2_lytic";
+V01555.2	genbank	CDS	131130	132389	.	-	1	gene_id "BDLF2"; transcript_id "BDLF2_lytic";
+V01555.2	genbank	start_codon	132387	132389	.	-	1	gene_id "BDLF2"; transcript_id "BDLF2_lytic";
+V01555.2	genbank	5UTR	132390	132451	.	-	.	gene_id "BDLF2"; transcript_id "BDLF2_lytic"; # predicted TATA at (132476)
+V01555.2	genbank	exon	130354	131079	.	-	.	gene_id "BDLF3"; transcript_id "BDLF3_lytic";
+V01555.2	genbank	3UTR	130354	130361	.	-	.	gene_id "BDLF3"; transcript_id "BDLF3_lytic"; # predicted polyA at (130359)
+V01555.2	genbank	stop_codon	130362	130364	.	-	1	gene_id "BDLF3"; transcript_id "BDLF3_lytic";
+V01555.2	genbank	CDS	130365	131066	.	-	1	gene_id "BDLF3"; transcript_id "BDLF3_lytic";
+V01555.2	genbank	start_codon	131064	131066	.	-	1	gene_id "BDLF3"; transcript_id "BDLF3_lytic";
+V01555.2	genbank	5UTR	131067	131079	.	-	.	gene_id "BDLF3"; transcript_id "BDLF3_lytic"; # predicted TATA at (131104)
+V01555.2	genbank	exon	125479	129234	.	-	.	gene_id "BDLF3.5"; transcript_id "BDLF3.5_lytic";
+V01555.2	genbank	3UTR	125479	128999	.	-	.	gene_id "BDLF3.5"; transcript_id "BDLF3.5_lytic"; # predicted polyA at (125484)
+V01555.2	genbank	stop_codon	129000	129002	.	-	1	gene_id "BDLF3.5"; transcript_id "BDLF3.5_lytic";
+V01555.2	genbank	CDS	129003	129233	.	-	1	gene_id "BDLF3.5"; transcript_id "BDLF3.5_lytic";
+V01555.2	genbank	start_codon	129231	129233	.	-	1	gene_id "BDLF3.5"; transcript_id "BDLF3.5_lytic";
+V01555.2	genbank	5UTR	129234	129234	.	-	.	gene_id "BDLF3.5"; transcript_id "BDLF3.5_lytic"; # used (ATG-1)
+V01555.2	genbank	exon	125479	129029	.	-	.	gene_id "BDLF4"; transcript_id "BDLF4_lytic";
+V01555.2	genbank	3UTR	125479	128343	.	-	.	gene_id "BDLF4"; transcript_id "BDLF4_lytic"; # predicted polyA at (125484)
+V01555.2	genbank	stop_codon	128344	128346	.	-	2	gene_id "BDLF4"; transcript_id "BDLF4_lytic";
+V01555.2	genbank	CDS	128347	129021	.	-	2	gene_id "BDLF4"; transcript_id "BDLF4_lytic";
+V01555.2	genbank	start_codon	129019	129021	.	-	2	gene_id "BDLF4"; transcript_id "BDLF4_lytic";
+V01555.2	genbank	5UTR	129022	129029	.	-	.	gene_id "BDLF4"; transcript_id "BDLF4_lytic"; # predicted TATA at (129054)
+V01555.2	genbank	exon	125479	128407	.	-	.	gene_id "BGLF1"; transcript_id "BGLF1_lytic";
+V01555.2	genbank	3UTR	125479	126850	.	-	.	gene_id "BGLF1"; transcript_id "BGLF1_lytic"; # predicted polyA at (125484)
+V01555.2	genbank	stop_codon	126851	126853	.	-	0	gene_id "BGLF1"; transcript_id "BGLF1_lytic";
+V01555.2	genbank	CDS	126854	128374	.	-	0	gene_id "BGLF1"; transcript_id "BGLF1_lytic";
+V01555.2	genbank	start_codon	128372	128374	.	-	0	gene_id "BGLF1"; transcript_id "BGLF1_lytic";
+V01555.2	genbank	5UTR	128375	128407	.	-	.	gene_id "BGLF1"; transcript_id "BGLF1_lytic"; # predicted TATA at (128432)
+V01555.2	genbank	exon	125479	127212	.	-	.	gene_id "late-1.8kb"; transcript_id "late-1.8kb_lytic2"; # predicted TATA at (127237)
+V01555.2	genbank	exon	125479	126904	.	-	.	gene_id "BGLF2"; transcript_id "BGLF2_lytic";
+V01555.2	genbank	3UTR	125479	125862	.	-	.	gene_id "BGLF2"; transcript_id "BGLF2_lytic"; # predicted polyA at (125484)
+V01555.2	genbank	stop_codon	125863	125865	.	-	2	gene_id "BGLF2"; transcript_id "BGLF2_lytic";
+V01555.2	genbank	CDS	125866	126873	.	-	2	gene_id "BGLF2"; transcript_id "BGLF2_lytic";
+V01555.2	genbank	start_codon	126871	126873	.	-	2	gene_id "BGLF2"; transcript_id "BGLF2_lytic";
+V01555.2	genbank	5UTR	126874	126904	.	-	.	gene_id "BGLF2"; transcript_id "BGLF2_lytic"; # predicted TATA at (126929)
+V01555.2	genbank	exon	120759	125088	.	-	.	gene_id "BGLF3"; transcript_id "BGLF3_lytic";
+V01555.2	genbank	3UTR	120759	123940	.	-	.	gene_id "BGLF3"; transcript_id "BGLF3_lytic"; # predicted polyA at (120764)
+V01555.2	genbank	stop_codon	123941	123943	.	-	0	gene_id "BGLF3"; transcript_id "BGLF3_lytic";
+V01555.2	genbank	CDS	123944	124939	.	-	0	gene_id "BGLF3"; transcript_id "BGLF3_lytic";
+V01555.2	genbank	start_codon	124937	124939	.	-	0	gene_id "BGLF3"; transcript_id "BGLF3_lytic";
+V01555.2	genbank	5UTR	124940	125088	.	-	.	gene_id "BGLF3"; transcript_id "BGLF3_lytic"; # predicted TATA at (125113)
+V01555.2	genbank	exon	120759	124092	.	-	.	gene_id "BGLF3.5"; transcript_id "BGLF3.5_lytic";
+V01555.2	genbank	3UTR	120759	123492	.	-	.	gene_id "BGLF3.5"; transcript_id "BGLF3.5_lytic"; # predicted polyA at (120764)
+V01555.2	genbank	stop_codon	123493	123495	.	-	2	gene_id "BGLF3.5"; transcript_id "BGLF3.5_lytic";
+V01555.2	genbank	CDS	123496	123954	.	-	2	gene_id "BGLF3.5"; transcript_id "BGLF3.5_lytic";
+V01555.2	genbank	start_codon	123952	123954	.	-	2	gene_id "BGLF3.5"; transcript_id "BGLF3.5_lytic";
+V01555.2	genbank	5UTR	123955	124092	.	-	.	gene_id "BGLF3.5"; transcript_id "BGLF3.5_lytic"; # predicted TATA at (124117)
+V01555.2	genbank	exon	120759	123615	.	-	.	gene_id "BGLF4"; transcript_id "BGLF4_lytic";
+V01555.2	genbank	3UTR	120759	122324	.	-	.	gene_id "BGLF4"; transcript_id "BGLF4_lytic"; # predicted polyA at (120764)
+V01555.2	genbank	stop_codon	122325	122327	.	-	1	gene_id "BGLF4"; transcript_id "BGLF4_lytic";
+V01555.2	genbank	CDS	122328	123614	.	-	1	gene_id "BGLF4"; transcript_id "BGLF4_lytic";
+V01555.2	genbank	start_codon	123612	123614	.	-	1	gene_id "BGLF4"; transcript_id "BGLF4_lytic";
+V01555.2	genbank	5UTR	123615	123615	.	-	.	gene_id "BGLF4"; transcript_id "BGLF4_lytic"; # used (ATG-1)
+V01555.2	genbank	exon	120759	122342	.	-	.	gene_id "BGLF5"; transcript_id "BGLF5_lytic";
+V01555.2	genbank	3UTR	120759	120928	.	-	.	gene_id "BGLF5"; transcript_id "BGLF5_lytic"; # predicted polyA at (120764)
+V01555.2	genbank	stop_codon	120929	120931	.	-	0	gene_id "BGLF5"; transcript_id "BGLF5_lytic";
+V01555.2	genbank	CDS	120932	122341	.	-	0	gene_id "BGLF5"; transcript_id "BGLF5_lytic";
+V01555.2	genbank	start_codon	122339	122341	.	-	0	gene_id "BGLF5"; transcript_id "BGLF5_lytic";
+V01555.2	genbank	5UTR	122342	122342	.	-	.	gene_id "BGLF5"; transcript_id "BGLF5_lytic"; # used (ATG-1)
+V01555.2	genbank	exon	120746	121306	.	-	.	gene_id "BBLF1"; transcript_id "BBLF1_lytic";
+V01555.2	genbank	3UTR	120746	120746	.	-	.	gene_id "BBLF1"; transcript_id "BBLF1_lytic"; # used (stop+1)
+V01555.2	genbank	stop_codon	120747	120749	.	-	1	gene_id "BBLF1"; transcript_id "BBLF1_lytic";
+V01555.2	genbank	CDS	120750	120974	.	-	1	gene_id "BBLF1"; transcript_id "BBLF1_lytic";
+V01555.2	genbank	start_codon	120972	120974	.	-	1	gene_id "BBLF1"; transcript_id "BBLF1_lytic";
+V01555.2	genbank	5UTR	120975	121306	.	-	.	gene_id "BBLF1"; transcript_id "BBLF1_lytic"; # predicted TATA at (121331)
+V01555.2	genbank	exon	111825	114260	.	-	.	gene_id "BBLF4"; transcript_id "BBLF4_lytic";
+V01555.2	genbank	3UTR	111825	111829	.	-	.	gene_id "BBLF4"; transcript_id "BBLF4_lytic"; # predicted polyA at (111830)
+V01555.2	genbank	stop_codon	111830	111832	.	-	0	gene_id "BBLF4"; transcript_id "BBLF4_lytic";
+V01555.2	genbank	CDS	111833	114259	.	-	0	gene_id "BBLF4"; transcript_id "BBLF4_lytic";
+V01555.2	genbank	start_codon	114257	114259	.	-	0	gene_id "BBLF4"; transcript_id "BBLF4_lytic";
+V01555.2	genbank	5UTR	114260	114260	.	-	.	gene_id "BBLF4"; transcript_id "BBLF4_lytic"; # used (ATG-1)
+V01555.2	genbank	exon	99632	102131	.	-	.	gene_id "BZLF2"; transcript_id "BZLF2_lytic";
+V01555.2	genbank	3UTR	99632	101444	.	-	.	gene_id "BZLF2"; transcript_id "BZLF2_lytic"; # mRNA known to be 2.5kb in size
+V01555.2	genbank	stop_codon	101445	101447	.	-	1	gene_id "BZLF2"; transcript_id "BZLF2_lytic";
+V01555.2	genbank	CDS	101448	102116	.	-	1	gene_id "BZLF2"; transcript_id "BZLF2_lytic";
+V01555.2	genbank	start_codon	102114	102116	.	-	1	gene_id "BZLF2"; transcript_id "BZLF2_lytic";
+V01555.2	genbank	5UTR	102117	102131	.	-	.	gene_id "BZLF2"; transcript_id "BZLF2_lytic"; # predicted TATA at (102156)
+V01555.2	genbank	exon	89396	92172	.	-	.	gene_id "BLLF1-gp350"; transcript_id "BLLF1-gp350_lytic";
+V01555.2	genbank	3UTR	89396	89429	.	-	.	gene_id "BLLF1-gp350"; transcript_id "BLLF1-gp350_lytic"; # known polyA site
+V01555.2	genbank	stop_codon	89430	89432	.	-	1	gene_id "BLLF1-gp350"; transcript_id "BLLF1-gp350_lytic";
+V01555.2	genbank	CDS	89433	92153	.	-	1	gene_id "BLLF1-gp350"; transcript_id "BLLF1-gp350_lytic";
+V01555.2	genbank	start_codon	92151	92153	.	-	1	gene_id "BLLF1-gp350"; transcript_id "BLLF1-gp350_lytic";
+V01555.2	genbank	5UTR	92154	92172	.	-	.	gene_id "BLLF1-gp350"; transcript_id "BLLF1-gp350_lytic"; # known TSS
+V01555.2	genbank	exon	89396	90026	.	-	.	gene_id "BLLF2"; transcript_id "BLLF2_lytic";
+V01555.2	genbank	3UTR	89396	89566	.	-	.	gene_id "BLLF2"; transcript_id "BLLF2_lytic"; # known polyA site
+V01555.2	genbank	stop_codon	89567	89569	.	-	0	gene_id "BLLF2"; transcript_id "BLLF2_lytic";
+V01555.2	genbank	CDS	89570	90013	.	-	0	gene_id "BLLF2"; transcript_id "BLLF2_lytic";
+V01555.2	genbank	start_codon	90011	90013	.	-	0	gene_id "BLLF2"; transcript_id "BLLF2_lytic";
+V01555.2	genbank	5UTR	90014	90026	.	-	.	gene_id "BLLF2"; transcript_id "BLLF2_lytic"; # predicted TATA at (90051)
+V01555.2	genbank	exon	87608	88489	.	-	.	gene_id "BLLF3"; transcript_id "BLLF3_lytic";
+V01555.2	genbank	3UTR	87608	87637	.	-	.	gene_id "BLLF3"; transcript_id "BLLF3_lytic"; # predicted polyA at (87613)
+V01555.2	genbank	stop_codon	87638	87640	.	-	0	gene_id "BLLF3"; transcript_id "BLLF3_lytic";
+V01555.2	genbank	CDS	87641	88474	.	-	0	gene_id "BLLF3"; transcript_id "BLLF3_lytic";
+V01555.2	genbank	start_codon	88472	88474	.	-	0	gene_id "BLLF3"; transcript_id "BLLF3_lytic";
+V01555.2	genbank	5UTR	88475	88489	.	-	.	gene_id "BLLF3"; transcript_id "BLLF3_lytic"; # predicted TATA at (88514)
+V01555.2	genbank	exon	82742	86882	.	-	.	gene_id "BSLF1"; transcript_id "BSLF1_lytic";
+V01555.2	genbank	3UTR	82742	84256	.	-	.	gene_id "BSLF1"; transcript_id "BSLF1_lytic"; # predicted polyA at (82747)
+V01555.2	genbank	stop_codon	84257	84259	.	-	0	gene_id "BSLF1"; transcript_id "BSLF1_lytic";
+V01555.2	genbank	CDS	84260	86881	.	-	0	gene_id "BSLF1"; transcript_id "BSLF1_lytic";
+V01555.2	genbank	start_codon	86879	86881	.	-	0	gene_id "BSLF1"; transcript_id "BSLF1_lytic";
+V01555.2	genbank	5UTR	86882	86882	.	-	.	gene_id "BSLF1"; transcript_id "BSLF1_lytic"; # used (ATG-1)
+V01555.2	genbank	exon	82742	84060	.	-	.	gene_id "BMLF1"; transcript_id "BMLF1_lytic";
+V01555.2	genbank	3UTR	82742	82742	.	-	.	gene_id "BMLF1"; transcript_id "BMLF1_lytic"; # predicted polyA at (82747)
+V01555.2	genbank	stop_codon	82743	82745	.	-	1	gene_id "BMLF1"; transcript_id "BMLF1_lytic";
+V01555.2	genbank	CDS	82746	84059	.	-	1	gene_id "BMLF1"; transcript_id "BMLF1_lytic";
+V01555.2	genbank	start_codon	84057	84059	.	-	1	gene_id "BMLF1"; transcript_id "BMLF1_lytic";
+V01555.2	genbank	5UTR	84060	84060	.	-	.	gene_id "BMLF1"; transcript_id "BMLF1_lytic"; # used (ATG-1)
+V01555.2	genbank	exon	71519	75297	.	-	.	gene_id "BOLF1"; transcript_id "BOLF1_lytic";
+V01555.2	genbank	3UTR	71519	71519	.	-	.	gene_id "BOLF1"; transcript_id "BOLF1_lytic"; # used (stop+1)
+V01555.2	genbank	stop_codon	71520	71522	.	-	1	gene_id "BOLF1"; transcript_id "BOLF1_lytic";
+V01555.2	genbank	CDS	71523	75239	.	-	1	gene_id "BOLF1"; transcript_id "BOLF1_lytic";
+V01555.2	genbank	start_codon	75237	75239	.	-	1	gene_id "BOLF1"; transcript_id "BOLF1_lytic";
+V01555.2	genbank	5UTR	75240	75297	.	-	.	gene_id "BOLF1"; transcript_id "BOLF1_lytic"; # predicted TATA at (75322)
+V01555.2	genbank	exon	62063	72167	.	-	.	gene_id "BPLF1"; transcript_id "BPLF1_lytic";
+V01555.2	genbank	3UTR	62063	62077	.	-	.	gene_id "BPLF1"; transcript_id "BPLF1_lytic"; # predicted polyA at (62068)
+V01555.2	genbank	stop_codon	62078	62080	.	-	0	gene_id "BPLF1"; transcript_id "BPLF1_lytic";
+V01555.2	genbank	CDS	62081	71527	.	-	0	gene_id "BPLF1"; transcript_id "BPLF1_lytic";
+V01555.2	genbank	start_codon	71525	71527	.	-	0	gene_id "BPLF1"; transcript_id "BPLF1_lytic";
+V01555.2	genbank	5UTR	71528	72167	.	-	.	gene_id "BPLF1"; transcript_id "BPLF1_lytic"; # predicted TATA at (72192)
+V01555.2	genbank	exon	55985	58543	.	-	.	gene_id "BFLF1"; transcript_id "BFLF1_lytic";
+V01555.2	genbank	3UTR	55985	56947	.	-	.	gene_id "BFLF1"; transcript_id "BFLF1_lytic"; # predicted polyA at (55990)
+V01555.2	genbank	stop_codon	56948	56950	.	-	0	gene_id "BFLF1"; transcript_id "BFLF1_lytic";
+V01555.2	genbank	CDS	56951	58525	.	-	0	gene_id "BFLF1"; transcript_id "BFLF1_lytic";
+V01555.2	genbank	start_codon	58523	58525	.	-	0	gene_id "BFLF1"; transcript_id "BFLF1_lytic";
+V01555.2	genbank	5UTR	58526	58543	.	-	.	gene_id "BFLF1"; transcript_id "BFLF1_lytic"; # predicted TATA at (58568)
+V01555.2	genbank	exon	55985	57056	.	-	.	gene_id "BFLF2"; transcript_id "BFLF2_lytic";
+V01555.2	genbank	3UTR	55985	55978	.	-	.	gene_id "BFLF2"; transcript_id "BFLF2_lytic"; # predicted polyA at (55990)
+V01555.2	genbank	stop_codon	55979	55981	.	-	0	gene_id "BFLF2"; transcript_id "BFLF2_lytic";
+V01555.2	genbank	CDS	55982	56935	.	-	0	gene_id "BFLF2"; transcript_id "BFLF2_lytic";
+V01555.2	genbank	start_codon	56933	56935	.	-	0	gene_id "BFLF2"; transcript_id "BFLF2_lytic";
+V01555.2	genbank	5UTR	56936	57056	.	-	.	gene_id "BFLF2"; transcript_id "BFLF2_lytic"; # predicted TATA at (57081)
+V01555.2	genbank	exon	50312	52792	.	-	.	gene_id "BHLF1"; transcript_id "BHLF1_lytic";
+V01555.2	genbank	3UTR	50312	50574	.	-	.	gene_id "BHLF1"; transcript_id "BHLF1_lytic"; # predicted polyA at (50317)
+V01555.2	genbank	stop_codon	50575	50577	.	-	2	gene_id "BHLF1"; transcript_id "BHLF1_lytic";
+V01555.2	genbank	CDS	50578	52557	.	-	2	gene_id "BHLF1"; transcript_id "BHLF1_lytic";
+V01555.2	genbank	start_codon	52555	52557	.	-	2	gene_id "BHLF1"; transcript_id "BHLF1_lytic";
+V01555.2	genbank	5UTR	52558	52792	.	-	.	gene_id "BHLF1"; transcript_id "BHLF1_lytic"; # predicted TATA at (52817)
+V01555.2	genbank	exon	169207	169517	.	-	.	gene_id "LMP1"; transcript_id "LMP1_latent"; # exon1
+V01555.2	genbank	exon	169042	169128	.	-	.	gene_id "LMP1"; transcript_id "LMP1_latent"; # exon2
+V01555.2	genbank	exon	166941	168965	.	-	.	gene_id "LMP1"; transcript_id "LMP1_latent"; # exon3
+V01555.2	genbank	3UTR	166941	168159	.	-	.	gene_id "LMP1"; transcript_id "LMP1_latent"; # predicted polyA at (166946)
+V01555.2	genbank	stop_codon	168160	168162	.	-	1	gene_id "LMP1"; transcript_id "LMP1_latent";
+V01555.2	genbank	CDS	168163	168965	.	-	1	gene_id "LMP1"; transcript_id "LMP1_latent";
+V01555.2	genbank	intron	168966	169041	.	-	.	gene_id "LMP1"; transcript_id "LMP1_latent";
+V01555.2	genbank	CDS	169042	169128	.	-	0	gene_id "LMP1"; transcript_id "LMP1_latent";
+V01555.2	genbank	intron	169129	169206	.	-	.	gene_id "LMP1"; transcript_id "LMP1_latent";
+V01555.2	genbank	CDS	169207	169474	.	-	0	gene_id "LMP1"; transcript_id "LMP1_latent";
+V01555.2	genbank	start_codon	169472	169474	.	-	0	gene_id "LMP1"; transcript_id "LMP1_latent";
+V01555.2	genbank	5UTR	169475	169517	.	-	.	gene_id "LMP1"; transcript_id "LMP1_latent"; # known TSS at (169517)
+V01555.2	genbank	exon	90653	92172	.	-	.	gene_id "BLLF1-gp220"; transcript_id "BLLF1-gp220_lytic"; # exon1
+V01555.2	genbank	exon	89396	90061	.	-	.	gene_id "BLLF1-gp220"; transcript_id "BLLF1-gp220_lytic"; # exon2
+V01555.2	genbank	3UTR	89396	89429	.	-	.	gene_id "BLLF1-gp220"; transcript_id "BLLF1-gp220_lytic"; # known polyA site
+V01555.2	genbank	stop_codon	89430	89432	.	-	1	gene_id "BLLF1-gp220"; transcript_id "BLLF1-gp220_lytic";
+V01555.2	genbank	CDS	89433	90061	.	-	1	gene_id "BLLF1-gp220"; transcript_id "BLLF1-gp220_lytic";
+V01555.2	genbank	intron	90062	90652	.	-	.	gene_id "BLLF1-gp220"; transcript_id "BLLF1-gp220_lytic";
+V01555.2	genbank	CDS	90653	92153	.	-	1	gene_id "BLLF1-gp220"; transcript_id "BLLF1-gp220_lytic";
+V01555.2	genbank	start_codon	92151	92153	.	-	1	gene_id "BLLF1-gp220"; transcript_id "BLLF1-gp220_lytic";
+V01555.2	genbank	5UTR	92154	92172	.	-	.	gene_id "BLLF1-gp220"; transcript_id "BLLF1-gp220_lytic"; # known TSS
+V01555.2	genbank	exon	84228	84326	.	-	.	gene_id "SM"; transcript_id "SM_lytic"; # exon1
+V01555.2	genbank	exon	82742	84121	.	-	.	gene_id "SM"; transcript_id "SM_lytic"; # exon2
+V01555.2	genbank	3UTR	82742	82742	.	-	.	gene_id "SM"; transcript_id "SM_lytic"; # predicted polyA at (82747)
+V01555.2	genbank	stop_codon	82743	82745	.	-	2	gene_id "SM"; transcript_id "SM_lytic";
+V01555.2	genbank	CDS	82746	84121	.	-	1	gene_id "SM"; transcript_id "SM_lytic";
+V01555.2	genbank	intron	84122	84227	.	-	.	gene_id "SM"; transcript_id "SM_lytic";
+V01555.2	genbank	CDS	84228	84288	.	-	2	gene_id "SM"; transcript_id "SM_lytic";
+V01555.2	genbank	start_codon	84286	84288	.	-	2	gene_id "SM"; transcript_id "SM_lytic";
+V01555.2	genbank	5UTR	84289	84326	.	-	.	gene_id "SM"; transcript_id "SM_lytic"; # known TSS
+V01555.2	genbank	exon	106125	106181	.	-	.	gene_id "BRLF1"; transcript_id "BRLF1_lytic"; # exon1
+V01555.2	genbank	exon	102655	105185	.	-	.	gene_id "BRLF1"; transcript_id "BRLF1_lytic"; # exon2
+V01555.2	genbank	exon	102424	102530	.	-	.	gene_id "BRLF1"; transcript_id "BRLF1_lytic"; # exon3 (BZLF1 exon2)
+V01555.2	genbank	exon	102151	102339	.	-	.	gene_id "BRLF1"; transcript_id "BRLF1_lytic"; # exon4 (BZLF1 exon3)
+V01555.2	genbank	3UTR	102151	102339	.	-	.	gene_id "BRLF1"; transcript_id "BRLF1_lytic"; # predicted polyA at (102156)
+V01555.2	genbank	intron	102340	102423	.	-	.	gene_id "BRLF1"; transcript_id "BRLF1_lytic";
+V01555.2	genbank	3UTR	102424	102530	.	-	.	gene_id "BRLF1"; transcript_id "BRLF1_lytic";
+V01555.2	genbank	intron	102531	102654	.	-	.	gene_id "BRLF1"; transcript_id "BRLF1_lytic";
+V01555.2	genbank	3UTR	102655	103365	.	-	.	gene_id "BRLF1"; transcript_id "BRLF1_lytic";
+V01555.2	genbank	stop_codon	103366	103368	.	-	2	gene_id "BRLF1"; transcript_id "BRLF1_lytic";
+V01555.2	genbank	CDS	103369	105183	.	-	2	gene_id "BRLF1"; transcript_id "BRLF1_lytic";
+V01555.2	genbank	start_codon	105181	105183	.	-	2	gene_id "BRLF1"; transcript_id "BRLF1_lytic";
+V01555.2	genbank	5UTR	105184	105185	.	-	.	gene_id "BRLF1"; transcript_id "BRLF1_lytic"; 
+V01555.2	genbank	intron	105186	106124	.	-	.	gene_id "BRLF1"; transcript_id "BRLF1_lytic"; 
+V01555.2	genbank	5UTR	106125	106181	.	-	.	gene_id "BRLF1"; transcript_id "BRLF1_lytic"; # known TSS at (106181)
+V01555.2	genbank	exon	106125	106181	.	-	.	gene_id "BRLF1"; transcript_id "RZ_lytic"; # BRLF1 exon1
+V01555.2	genbank	exon	104926	105185	.	-	.	gene_id "BRLF1"; transcript_id "RZ_lytic"; # BRLF1 exon2A
+V01555.2	genbank	exon	102655	102918	.	-	.	gene_id "BRLF1"; transcript_id "RZ_lytic"; # BRLF1 exon2B
+V01555.2	genbank	exon	102424	102530	.	-	.	gene_id "BRLF1"; transcript_id "RZ_lytic"; # BRLF1 exon3 (BZLF1 exon2)
+V01555.2	genbank	exon	102151	102339	.	-	.	gene_id "BRLF1"; transcript_id "RZ_lytic"; # BRLF1 exon4 (BZLF1 exon3)
+V01555.2	genbank	3UTR	102151	102209	.	-	.	gene_id "BRLF1"; transcript_id "RZ_lytic"; # predicted polyA at (102156)
+V01555.2	genbank	stop_codon	102210	102212	.	-	0	gene_id "BRLF1"; transcript_id "RZ_lytic";
+V01555.2	genbank	CDS	102213	102339	.	-	0	gene_id "BRLF1"; transcript_id "RZ_lytic";
+V01555.2	genbank	intron	102340	102423	.	-	.	gene_id "BRLF1"; transcript_id "RZ_lytic";
+V01555.2	genbank	CDS	102424	102530	.	-	1	gene_id "BRLF1"; transcript_id "RZ_lytic";
+V01555.2	genbank	intron	102531	102654	.	-	.	gene_id "BRLF1"; transcript_id "RZ_lytic";
+V01555.2	genbank	CDS	102655	102918	.	-	2	gene_id "BRLF1"; transcript_id "RZ_lytic";
+V01555.2	genbank	intron	102919	104925	.	-	.	gene_id "BRLF1"; transcript_id "RZ_lytic";
+V01555.2	genbank	CDS	104926	105183	.	-	2	gene_id "BRLF1"; transcript_id "RZ_lytic";
+V01555.2	genbank	start_codon	105181	105183	.	-	2	gene_id "BRLF1"; transcript_id "RZ_lytic";
+V01555.2	genbank	5UTR	105184	105185	.	-	.	gene_id "BRLF1"; transcript_id "RZ_lytic"; 
+V01555.2	genbank	intron	105186	106124	.	-	.	gene_id "BRLF1"; transcript_id "RZ_lytic"; 
+V01555.2	genbank	5UTR	106125	106181	.	-	.	gene_id "BRLF1"; transcript_id "RZ_lytic"; # known TSS at (106181)
+V01555.2	genbank	exon	102655	103194	.	-	.	gene_id "BZLF1"; transcript_id "BZLF1_lytic"; # exon1
+V01555.2	genbank	exon	102424	102530	.	-	.	gene_id "BZLF1"; transcript_id "BZLF1_lytic"; # exon2 (BRLF1 exon3)
+V01555.2	genbank	exon	102151	102339	.	-	.	gene_id "BZLF1"; transcript_id "BZLF1_lytic"; # exon3 (BRLF1 exon4)
+V01555.2	genbank	3UTR	102151	102209	.	-	.	gene_id "BZLF1"; transcript_id "BZLF1_lytic"; # predicted polyA at (102156)
+V01555.2	genbank	stop_codon	102210	102212	.	-	0	gene_id "BZLF1"; transcript_id "BZLF1_lytic";
+V01555.2	genbank	CDS	102213	102339	.	-	0	gene_id "BZLF1"; transcript_id "BZLF1_lytic";
+V01555.2	genbank	intron	102340	102423	.	-	.	gene_id "BZLF1"; transcript_id "BZLF1_lytic";
+V01555.2	genbank	CDS	102424	102530	.	-	1	gene_id "BZLF1"; transcript_id "BZLF1_lytic";
+V01555.2	genbank	intron	102531	102654	.	-	.	gene_id "BZLF1"; transcript_id "BZLF1_lytic";
+V01555.2	genbank	CDS	102655	103155	.	-	2	gene_id "BZLF1"; transcript_id "BZLF1_lytic";
+V01555.2	genbank	start_codon	103153	103155	.	-	2	gene_id "BZLF1"; transcript_id "BZLF1_lytic";
+V01555.2	genbank	5UTR	103156	103194	.	-	.	gene_id "BZLF1"; transcript_id "BZLF1_lytic"; # known TSS at (103194)
+V01555.2	genbank	exon	117516	119039	.	-	.	gene_id "BBLF2/3"; transcript_id "BBLF2/3_lytic"; # BBLF2 exon
+V01555.2	genbank	exon	116691	117385	.	-	.	gene_id "BBLF2/3"; transcript_id "BBLF2/3_lytic"; # BBLF3 exon
+V01555.2	genbank	3UTR	116691	116780	.	-	.	gene_id "BBLF2/3"; transcript_id "BBLF2/3_lytic"; # predicted polyA at (116696)
+V01555.2	genbank	stop_codon	116781	116783	.	-	1	gene_id "BBLF2/3"; transcript_id "BBLF2/3_lytic";
+V01555.2	genbank	CDS	116784	117386	.	-	1	gene_id "BBLF2/3"; transcript_id "BBLF2/3_lytic";
+V01555.2	genbank	intron	117387	117514	.	-	.	gene_id "BBLF2/3"; transcript_id "BBLF2/3_lytic";
+V01555.2	genbank	CDS	117515	119038	.	-	0	gene_id "BBLF2/3"; transcript_id "BBLF2/3_lytic";
+V01555.2	genbank	start_codon	119036	119038	.	-	0	gene_id "BBLF2/3"; transcript_id "BBLF2/3_lytic";
+V01555.2	genbank	5UTR	119039	119039	.	-	.	gene_id "BBLF2/3"; transcript_id "BBLF2/3_lytic"; # used (ATG-1)
+V01555.2	genbank	exon	124937	125873	.	+	.	gene_id "BGDRF1"; transcript_id "BGDRF1_lytic"; # BGRF1 exon
+V01555.2	genbank	exon	129215	130352	.	+	.	gene_id "BGDRF1"; transcript_id "BGDRF1_lytic"; # BDRF1 exon
+V01555.2	genbank	5UTR	124937	124937	.	+	.	gene_id "BGDRF1"; transcript_id "BGDRF1_lytic"; # used ATG-1
+V01555.2	genbank	start_codon	124938	124940	.	+	2	gene_id "BGDRF1"; transcript_id "BGDRF1_lytic";
+V01555.2	genbank	CDS	124938	125873	.	+	2	gene_id "BGDRF1"; transcript_id "BGDRF1_lytic";
+V01555.2	genbank	intron	125874	129214	.	+	.	gene_id "BGDRF1"; transcript_id "BGDRF1_lytic";
+V01555.2	genbank	CDS	129215	130348	.	+	1	gene_id "BGDRF1"; transcript_id "BGDRF1_lytic";
+V01555.2	genbank	stop_codon	130349	130351	.	+	1	gene_id "BGDRF1"; transcript_id "BGDRF1_lytic";
+V01555.2	genbank	3UTR	130352	130352	.	+	.	gene_id "BGDRF1"; transcript_id "BGDRF1_lytic"; # predicted polyA at 130347
+V01555.2	genbank	exon	166497	166916	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent"; # LMP2 exon1A
+V01555.2	genbank	exon	58	272	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent"; # LMP2 exon2
+V01555.2	genbank	exon	360	458	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent"; # LMP2 exon3
+V01555.2	genbank	exon	540	788	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent"; # LMP2 exon4
+V01555.2	genbank	exon	871	951	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent"; # LMP2 exon5
+V01555.2	genbank	exon	1026	1196	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent"; # LMP2 exon6
+V01555.2	genbank	exon	1280	1495	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent"; # LMP2 exon7
+V01555.2	genbank	exon	1574	1682	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent"; # LMP2 exon8
+V01555.2	genbank	exon	5408	5856	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent"; # LMP2 exon9
+V01555.2	genbank	5UTR	166497	166560	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent"; # known TSS at 166497
+V01555.2	genbank	start_codon	166561	166563	.	+	0	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	CDS	166561	166916	.	+	0	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	CDS	58	272	.	+	1	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	intron	273	359	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	CDS	360	458	.	+	0	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	intron	459	539	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	CDS	540	788	.	+	2	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	intron	789	870	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	CDS	871	951	.	+	2	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	intron	952	1025	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	CDS	1026	1196	.	+	0	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	intron	1197	1279	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	CDS	1280	1495	.	+	1	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	intron	1496	1573	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	CDS	1574	1677	.	+	1	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	stop_codon	1678	1680	.	+	1	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	3UTR	1681	1682	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	intron	1683	5407	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent";
+V01555.2	genbank	3UTR	5408	5856	.	+	.	gene_id "LMP2"; transcript_id "LMP2A_latent"; # known polyA
+V01555.2	genbank	exon	169752	169906	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent"; # LMP2 exon1B
+V01555.2	genbank	exon	58	272	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent"; # LMP2 exon2
+V01555.2	genbank	exon	360	458	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent"; # LMP2 exon3
+V01555.2	genbank	exon	540	788	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent"; # LMP2 exon4
+V01555.2	genbank	exon	871	951	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent"; # LMP2 exon5
+V01555.2	genbank	exon	1026	1196	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent"; # LMP2 exon6
+V01555.2	genbank	exon	1280	1495	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent"; # LMP2 exon7
+V01555.2	genbank	exon	1574	1682	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent"; # LMP2 exon8
+V01555.2	genbank	exon	5408	5856	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent"; # LMP2 exon9
+V01555.2	genbank	5UTR	169752	169906	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	intron	169907	57	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	5UTR	58	58	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	start_codon	59	61	.	+	1	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	CDS	59	272	.	+	1	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	intron	273	359	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	CDS	360	458	.	+	0	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	intron	459	539	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	CDS	540	788	.	+	2	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	intron	789	870	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	CDS	871	951	.	+	2	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	intron	952	1025	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	CDS	1026	1196	.	+	0	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	intron	1197	1279	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	CDS	1280	1495	.	+	1	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	intron	1496	1573	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	CDS	1574	1677	.	+	1	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	stop_codon	1678	1680	.	+	1	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	3UTR	1681	1682	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	intron	1683	5407	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent";
+V01555.2	genbank	3UTR	5408	5856	.	+	.	gene_id "LMP2"; transcript_id "LMP2B_latent"; # known polyA
+V01555.2	genbank	exon	11336	11480	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # C1 exon
+V01555.2	genbank	exon	11626	11657	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # C2 exon
+V01555.2	genbank	exon	14384	14410	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W0 exon
+V01555.2	genbank	exon	14559	14619	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W1' exon
+V01555.2	genbank	exon	14701	14811	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W2B exon
+V01555.2	genbank	exon	14554	14619	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W1 exon
+V01555.2	genbank	exon	14701	14832	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W2 exon
+V01555.2	genbank	exon	17626	17691	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W1 exon
+V01555.2	genbank	exon	17773	17904	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W2 exon
+V01555.2	genbank	exon	20698	20763	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W1 exon
+V01555.2	genbank	exon	20845	20976	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W2 exon
+V01555.2	genbank	exon	23770	23835	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W1 exon
+V01555.2	genbank	exon	23917	24048	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W2 exon
+V01555.2	genbank	exon	26842	26907	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W1 exon
+V01555.2	genbank	exon	26989	27120	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W2 exon
+V01555.2	genbank	exon	29914	29979	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W1 exon
+V01555.2	genbank	exon	30061	30192	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W2 exon
+V01555.2	genbank	exon	32986	33051	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W1 exon
+V01555.2	genbank	exon	33133	33192	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W2 exon
+V01555.2	genbank	exon	36058	36123	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W1 exon
+V01555.2	genbank	exon	36205	36336	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W2 exon
+V01555.2	genbank	exon	39130	39195	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W1 exon
+V01555.2	genbank	exon	39277	39408	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W2 exon
+V01555.2	genbank	exon	42202	42267	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W1 exon
+V01555.2	genbank	exon	42349	42480	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W2 exon
+V01555.2	genbank	exon	45274	45339	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W1 exon
+V01555.2	genbank	exon	45421	45552	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # W2 exon
+V01555.2	genbank	exon	47761	47793	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # Y1 exon
+V01555.2	genbank	exon	47878	47999	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # Y2 exon
+V01555.2	genbank	exon	48385	48444	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # Y3 exon
+V01555.2	genbank	exon	48385	50029	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA2 exon
+V01555.2	genbank	exon	49852	49995	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # H1 exon
+V01555.2	genbank	exon	67478	67649	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # U exon
+V01555.2	genbank	exon	92238	92581	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA3A exon 1
+V01555.2	genbank	exon	92670	95248	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA3A exon 2
+V01555.2	genbank	5UTR	92238	92242	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	start_codon	92243	92245	.	+	1	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	CDS	92243	92581	.	+	1	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA3A exon 1
+V01555.2	genbank	intron	92582	92669	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	CDS	92670	95162	.	+	2	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA3A exon 2
+V01555.2	genbank	stop_codon	95163	95165	.	+	2	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	3UTR	95166	95248	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	exon	95352	95709	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA3B exon1
+V01555.2	genbank	exon	95788	101792	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA3B exon2
+V01555.2	genbank	5UTR	95352	95352	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # used ATG-1
+V01555.2	genbank	start_codon	95353	95355	.	+	0	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	CDS	95353	95709	.	+	0	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA3B exon1
+V01555.2	genbank	intron	95710	95787	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	CDS	95788	98244	.	+	0	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA3B exon2
+V01555.2	genbank	stop_codon	98245	98247	.	+	0	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	3UTR	98248	101792	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # used polyA for EBNA3C
+V01555.2	genbank	exon	98364	98730	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA3C exon1
+V01555.2	genbank	exon	98805	101792	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA3C exon2
+V01555.2	genbank	5UTR	98364	98370	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	start_codon	98371	98373	.	+	0	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	CDS	98371	98730	.	+	0	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA3C exon1
+V01555.2	genbank	intron	98731	98804	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	CDS	98805	101420	.	+	2	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA3C exon2
+V01555.2	genbank	stop_codon	101421	101423	.	+	2	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	3UTR	101424	101792	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	exon	107944	109942	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA1 exon
+V01555.2	genbank	5UTR	107944	107949	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	start_codon	107950	107952	.	+	0	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	CDS	107950	109872	.	+	0	gene_id "EBNA"; transcript_id "EBNA_latent"; # EBNA1 exon
+V01555.2	genbank	stop_codon	109873	109875	.	+	0	gene_id "EBNA"; transcript_id "EBNA_latent";
+V01555.2	genbank	3UTR	109876	109942	.	+	.	gene_id "EBNA"; transcript_id "EBNA_latent"; # predicted polyA at 109937
+V01555.2	genbank	exon	150641	150769	.	+	.	gene_id "BART"; transcript_id "BART_I";
+V01555.2	genbank	exon	151736	151841	.	+	.	gene_id "BART"; transcript_id "BART_IA";
+V01555.2	genbank	exon	155725	157195	.	+	.	gene_id "BART"; transcript_id "BART_V";
+V01555.2	genbank	exon	155725	155807	.	+	.	gene_id "BART"; transcript_id "BART_VA";
+V01555.2	genbank	exon	156985	157195	.	+	.	gene_id "BART"; transcript_id "BART_VB";
+V01555.2	genbank	exon	157304	157386	.	+	.	gene_id "BART"; transcript_id "BART_VI";
+V01555.2	genbank	exon	159083	160989	.	+	.	gene_id "BART"; transcript_id "BART_VII"; # known polyA site
+V01555.2	genbank	exon	159083	159209	.	+	.	gene_id "BART"; transcript_id "BART_VIIA";
+V01555.2	genbank	exon	160239	160989	.	+	.	gene_id "BART"; transcript_id "BART_VIIB"; # known polyA site
+V01555.2	genbank	exon	159083	160067	.	+	.	gene_id "BART"; transcript_id "BART_VIID";

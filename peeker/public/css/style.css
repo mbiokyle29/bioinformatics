@@ -1,0 +1,22 @@
+.model-attr {
+    padding-right: 5px;
+    font-weight: bold;
+}
+
+.model-list {
+    height: 300px;
+    overflow-y: auto;
+}
+
+.gtf-span {
+    font-weight: bold;
+    display: block;
+}
+
+.sidebar-nav {
+	font-weight: bold;
+}
+
+#gene-spacer {
+	padding-top: 30px;
+}

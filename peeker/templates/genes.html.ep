@@ -1,0 +1,9 @@
+% layout 'layout';
+<div class="col-md-6">
+	<h3> Genes </h3>
+	%= include 'genes-list'
+	<h3> Upload a new gene file </h3>
+	%= form_for upload_genes => (enctype => 'multipart/form-data') => begin
+      %= file_field 'gene_file', class => 'file', 'data-show-preview' => 'false'
+    % end
+</div>

@@ -1,0 +1,13 @@
+NOTES
+*.cfg
+QC/
+archive/
+fastq/
+first-run/
+scripts/
+tophat-test/
+configs/
+results/
+R/
+alignments/
+small/

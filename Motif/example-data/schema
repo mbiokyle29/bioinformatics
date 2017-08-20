@@ -1,0 +1,59 @@
+CREATE TABLE peaks
+(
+	id INT NOT NULL AUTO_INCREMENT,
+	chromosome VARCHAR(500) NOT NULL,
+	
+	start BIGINT NOT NULL,
+	stop BIGINT NOT NULL,
+	summit BIGINT NOT NULL,
+
+	sequence VARCHAR(5000) NOT NULL,
+
+	ebna3a  INT DEFAULT 0,
+    ebna2   INT DEFAULT 0,
+    ebna3b  INT DEFAULT 0,
+    ebna3c  INT DEFAULT 0,
+    rbpj92  INT DEFAULT 0,
+    rbpj234 INT DEFAULT 0,
+
+	PRIMARY KEY (id)
+
+);
+
+CREATE TABLE refined_peaks
+(
+	id INT NOT NULL AUTO_INCREMENT,
+	chromosome VARCHAR(500) NOT NULL,
+	
+	start BIGINT NOT NULL,
+	stop BIGINT NOT NULL,
+	summit BIGINT NOT NULL,
+
+	sequence VARCHAR(5000) NOT NULL,
+
+	ebna3a  INT DEFAULT 0,
+    ebna2   INT DEFAULT 0,
+    ebna3b  INT DEFAULT 0,
+    ebna3c  INT DEFAULT 0,
+    rbpj92  INT DEFAULT 0,
+    rbpj234 INT DEFAULT 0,
+
+	PRIMARY KEY (id)
+
+);
+
+USE Peaks;
+CREATE USER 'peaker'@'localhost' IDENTIFIED BY '######';
+GRANT ALL PRIVILEGES ON Peaks.* TO 'peaker'@'localhost';
+FLUSH PRIVILEGES;
+
+CREATE TABLE hg19 (
+position BIGINT NOT NULL,
+chromosome varchar(255),
+base varchar(1)
+);
+
+GRANT ALL PRIVILEGES ON genomes.* TO 'peaker'@'localhost';
+
+INSERT INTO peaks (chromosome, start, stop, summit, sequence, ebna 3a, ebna3b, ebna3c, ebna2, rbpj234, rbpj92) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+SELECT id FROM peaks WHERE chromosome='chr1' AND start BETWEEN 1 AND 100;

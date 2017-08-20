@@ -1,0 +1,96 @@
+alignment is text dump from NCBI
+cleaned up to delete the etraneous stuff
+BLASTN 2.2.30+
+Reference: Zheng Zhang, Scott Schwartz, Lukas Wagner, and
+Webb Miller (2000), "A greedy algorithm for aligning DNA
+sequences", J Comput Biol 2000; 7(1-2):203-14.
+
+
+RID: 7PW330X0114
+
+
+Query= gi|428161017|gb|KC207813.1| Human herpesvirus 4 strain Akata, complete
+genome
+
+Length=171323
+
+
+                                                                   Score     E
+Sequences producing significant alignments:                       (Bits)  Value
+
+emb|V01555.2|EBV  Epstein-Barr virus (EBV) genome, strain B95-8    83379   0.0  
+
+ALIGNMENTS
+>emb|V01555.2|EBV Epstein-Barr virus (EBV) genome, strain B95-8
+Length=172281
+
+
+OLD SCRIPT STUFF
+use lib './lib/';
+use Sequence;
+
+my @orig_genome = read_file(shift);
+my @second_genome = read_file(shift);
+
+# Bye Bye Header!
+shift @orig_genome;
+shift @second_genome;
+
+# Raw strings
+my $orig_raw;
+my $sec_raw;
+
+foreach my $line (@orig_genome) {
+	chomp($line);
+	$orig_raw .= $line;
+}
+
+foreach my $line (@second_genome) {
+	chomp($line);
+	$sec_raw .= $line;
+}
+
+# Build objs
+my $orig_seq = Sequence->new(seq => $orig_raw);
+my $sec_seq  = Sequence->new(seq => $sec_raw);
+
+# Result hash key: orig pos, val: sec pos
+my %base_mapping;
+my $orig_pointer = 0;
+my $sec_pointer = 0;
+
+while($orig_pointer <= $orig_seq->length() && $sec_pointer <= $sec_seq->length()) {
+	my $orig_base = $orig_seq->base_at($orig_pointer);
+	my $sec_base = $sec_seq->base_at($sec_pointer);
+
+	if($orig_base eq $sec_base) {
+		$base_mapping{$orig_pointer} = $sec_pointer;
+		$orig_pointer++;
+		$sec_pointer++;
+		say $orig_base ."\t".$sec_base;
+
+	# Check for a simple insertion
+	} elsif($orig_seq->base_at($orig_pointer+1) eq $sec_base) {
+		say "Found an insertion at pos $orig_pointer";
+		# Map it
+		$base_mapping{$orig_pointer+1} = $sec_pointer;
+		
+		# Update pointers skip the inserted 
+		$orig_pointer += 2;
+		$sec_pointer++;
+
+	# Check for a simple deletion
+	} elsif($sec_seq->base_at($sec_pointer+1) eq $orig_pointer) {
+		say "Found a deletion at pos $orig_pointer";
+
+		# Map it
+		$base_mapping{$orig_pointer} = $sec_pointer+1;
+		
+		# Update pointers skip the inserted 
+		$orig_pointer++;
+		$sec_pointer += 2;
+	} else {
+		p(%base_mapping);
+		die "Found not an easy one"
+	}
+}

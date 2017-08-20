@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Kyle McChesney">
+
+        <title>Peeker - CHiP SEQ Query Tool</title>
+        
+        <!-- bower:css -->
+        <link rel="stylesheet" href="/dist/bootstrap-css/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/dist/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="/dist/bootstrap-fileinput/css/fileinput.min.css" />
+        <link rel="stylesheet" href="/dist/font-awesome/css/font-awesome.css" />
+        <!-- endbower -->
+        <link rel="stylesheet" href="/css/simple-sidebar.css" />
+        <link rel="stylesheet" href="/css/style.css" />
+
+        
+        <!-- bower:js -->
+        <script src="/dist/jquery/dist/jquery.js"></script>
+        <script src="/dist/bootstrap-css/js/bootstrap.min.js"></script>
+        <script src="/dist/simple-sidebar/dist/jquery.simplesidebar.min.js"></script>
+        <script src="/dist/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="/dist/bootstrap-fileinput/js/fileinput.min.js"></script>
+        <!-- endbower -->
+        <script src="/js/main.js"></script>
+
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand"><%= link_to '/' => begin %>Peeker<% end %></li>
+                    <li><%= link_to 'peaks' => begin %>Manage Peaks<% end %></li>
+                    <li><%= link_to 'genes' => begin %>Manage Genes<% end %></li>
+                    <li><%= link_to 'query' => begin %>Query<% end %></li>
+                </ul>
+            </div>
+
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <%= content %>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

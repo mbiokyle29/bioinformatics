@@ -1,0 +1,11 @@
+% layout 'layout';
+<div class="col-md-6">
+	<h2> Peaks </h2>
+	<hr></hr>
+	%= include 'peaks-list'
+</div>
+<div class="col-md-6">
+	<h2> Genes </h2>
+	<hr id="gene-spacer"></hr>
+	%= include 'genes-list'
+</div>

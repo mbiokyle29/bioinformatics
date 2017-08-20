@@ -1,0 +1,13 @@
+% for my $file (keys(%$peaks)) {
+	<h4><%= $file %></h4>
+	<ul class="list-group model-list">
+	% for my $peak (@{$$peaks{$file}}) {
+		<li class="list-group-item">
+			<span class="model-attr"><%= "start: ".$peak->peak_start %></span>
+			<span class="model-attr"><%= "summit: ".$peak->peak_summit %></span>
+			<span class="model-attr"><%= "stop: ".$peak->peak_stop %></span>
+			<span class="gtf-span"><%= $peak->gtf %></span>
+		</li>
+	% }
+	</ul>
+% }

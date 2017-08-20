@@ -1,0 +1,8 @@
+Query  1  CTGGACACATGTGCCAGACGCCTGGGCCTCTAAGGCCCTCGGGtccccctggaccccggc  59
+          ||||||||||||||||||||||| ||||||||||||||||||||||||||||||||||||
+Sbjct  2  CTGGACACATGTGCCAGACGCCTTGGCCTCTAAGGCCCTCGGGTCCCCCTGGACCCCGGC  60
+
+Query  10  CTGGACACATGTGCCAGACGCCTGGGCCTCTAAGGCCCTCGGGtccccctggacccc--C  67
+           ||||||||||||||||||||||| |||||||||||||||||||||||||||||||||  |
+Sbjct  10  CTGGACACATGTGCCAGACGCCTTGGCCTCTAAGGCCCTCGGGTCCCCCTGGACCCCGGC  69
+

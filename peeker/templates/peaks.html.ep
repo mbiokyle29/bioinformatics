@@ -1,0 +1,9 @@
+% layout 'layout';
+<div class="col-md-6">
+	<h3> Peaks </h3>
+	%= include 'peaks-list'
+	<h3> Upload a new peak file </h3>
+	%= form_for upload_peaks => (enctype => 'multipart/form-data') => begin
+      %= file_field 'peak_file', class => 'file', 'data-show-preview' => 'false'
+    % end
+</div>

@@ -1,0 +1,9 @@
+<ul class="list-group model-list">
+	% for my $gene (@$genes) {
+		<li class="list-group-item">
+			<span class="model-attr"><%= "Name: ".$gene->name ." - ". $gene->gtf %><br></span>
+			<span class="model-attr"><%= "Start: ".$gene->gene_start %><br></span>
+			<span class="model-attr"><%= "Stop: ".$gene->gene_stop %></span>
+		</li>
+	% }
+</ul>
